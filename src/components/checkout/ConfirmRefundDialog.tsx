@@ -64,9 +64,7 @@ export function ConfirmRefundDialog({
     // { address, network: network.name, currency: currency.symbol }.
     // Server must recompute fees — do not trust client `breakdown`.
     // See INTEGRATION.md §5.
-    } else {
-      setPhase("submitted");
-    }
+    setPhase("submitted");
   };
 
   return (
