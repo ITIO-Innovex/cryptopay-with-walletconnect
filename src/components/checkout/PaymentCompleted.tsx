@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertCircle, Check, CheckCircle2, Copy } from "lucide-react";
+import { AlertCircle, Check, CheckCircle2, Copy, Wallet } from "lucide-react";
 import type { CryptoCurrency, CryptoNetwork } from "@/data/cryptocurrencies";
 import { MOCK_DEPOSIT_ADDRESS } from "@/data/cryptocurrencies";
 import { formatAmount, shortenMiddle } from "@/lib/payment";
@@ -19,6 +19,8 @@ interface PaymentCompletedProps {
   orderId: string;
   email: string;
   txHashes: string[];
+  /** Which flow produced the deposit — WalletConnect signing vs manual send. */
+  paymentMethod?: "wallet_connect" | "manual" | null;
   /** Opens the report-a-problem dialog. */
   onReport: () => void;
   /** Returns the buyer to the merchant store. */
@@ -40,6 +42,7 @@ export function PaymentCompleted({
   orderId,
   email,
   txHashes,
+  paymentMethod,
   onReport,
   onReturnToMerchant,
 }: PaymentCompletedProps) {
@@ -78,6 +81,13 @@ export function PaymentCompleted({
     { label: "Order ID", value: shortenMiddle(orderId, 6, 8), copyValue: orderId },
   ];
 
+  const methodLabel =
+    paymentMethod === "wallet_connect"
+      ? "WalletConnect"
+      : paymentMethod === "manual"
+        ? "Manual transfer"
+        : null;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col items-center text-center">
@@ -85,6 +95,12 @@ export function PaymentCompleted({
         <h2 className="mt-4 text-xl font-semibold tracking-tight text-foreground">
           Payment completed
         </h2>
+        {methodLabel && (
+          <span className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 px-3 py-1 text-xs font-medium text-brand">
+            <Wallet className="h-3.5 w-3.5" />
+            Paid via {methodLabel}
+          </span>
+        )}
       </div>
 
       <dl className="space-y-3">
