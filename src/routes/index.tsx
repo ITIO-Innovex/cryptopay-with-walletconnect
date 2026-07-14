@@ -57,6 +57,7 @@ function Checkout() {
   const [secondsLeft, setSecondsLeft] = useState(PAYMENT_WINDOW_SECONDS);
   // Simulated incoming transfers (each with its own tx hash).
   const [txs, setTxs] = useState<{ hash: string; amount: number }[]>([]);
+  const [paymentMethod, setPaymentMethod] = useState<"wallet_connect" | "manual" | null>(null);
   const [orderId] = useState(makeOrderId);
   const [senderAddress] = useState(randomWalletAddress);
   const [reportOpen, setReportOpen] = useState(false);
@@ -84,11 +85,18 @@ function Checkout() {
   const expired =
     step === "send" && secondsLeft === 0 && (status === "awaiting" || status === "insufficient");
 
-  const handleReceive = (amount: number) =>
+  const handleReceive = (amount: number) => {
+    setPaymentMethod((prev) => prev ?? "manual");
     setTxs((prev) => [...prev, { hash: randomTxHash(), amount }]);
-  const handleWalletTx = (hash: string, amount: number) =>
+  };
+  const handleWalletTx = (hash: string, amount: number) => {
+    setPaymentMethod("wallet_connect");
     setTxs((prev) => [...prev, { hash, amount }]);
-  const handleResetSim = () => setTxs([]);
+  };
+  const handleResetSim = () => {
+    setTxs([]);
+    setPaymentMethod(null);
+  };
 
   // Brief "Checking payment status..." transition after each incoming transfer.
   const [checking, setChecking] = useState(false);
@@ -124,6 +132,7 @@ function Checkout() {
     setNetwork(net);
     setSecondsLeft(PAYMENT_WINDOW_SECONDS);
     setTxs([]);
+    setPaymentMethod(null);
     setStep("send");
   };
   const goToSend = () => {
@@ -135,6 +144,7 @@ function Checkout() {
     setSymbol(null);
     setNetwork(null);
     setTxs([]);
+    setPaymentMethod(null);
   };
 
   // Footer presentation derived from the current state.
@@ -240,6 +250,7 @@ function Checkout() {
               windowSeconds={PAYMENT_WINDOW_SECONDS}
               txHashes={txHashes}
               expired={expired}
+              paymentMethod={paymentMethod}
               onReport={() => setReportOpen(true)}
             />
           )}
@@ -254,6 +265,7 @@ function Checkout() {
               orderId={orderId}
               email={customerEmail}
               txHashes={txHashes}
+              paymentMethod={paymentMethod}
               onReport={() => setReportOpen(true)}
               onReturnToMerchant={resetToStart}
             />

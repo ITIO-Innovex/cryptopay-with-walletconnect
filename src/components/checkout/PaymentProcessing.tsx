@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, QrCode } from "lucide-react";
+import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, QrCode, Wallet } from "lucide-react";
 import type { CryptoCurrency, CryptoNetwork } from "@/data/cryptocurrencies";
 import { MOCK_DEPOSIT_ADDRESS } from "@/data/cryptocurrencies";
 import { formatAmount } from "@/lib/payment";
@@ -18,6 +18,8 @@ interface PaymentProcessingProps {
   windowSeconds: number;
   /** Hashes of the partial transfers received so far. */
   txHashes: string[];
+  /** Which flow produced the partial deposit. */
+  paymentMethod?: "wallet_connect" | "manual" | null;
   /** True when the payment window has elapsed. */
   expired?: boolean;
   /** Opens the report-a-problem dialog. */
@@ -37,6 +39,7 @@ export function PaymentProcessing({
   windowSeconds,
   txHashes,
   expired,
+  paymentMethod,
   onReport,
 }: PaymentProcessingProps) {
   const remainingLabel = formatAmount(remaining);
@@ -68,6 +71,13 @@ export function PaymentProcessing({
         </div>
         <CountdownRing secondsLeft={secondsLeft} total={windowSeconds} />
       </div>
+
+      {paymentMethod === "wallet_connect" && (
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 px-3 py-1 text-xs font-medium text-brand">
+          <Wallet className="h-3.5 w-3.5" />
+          Paid via WalletConnect
+        </div>
+      )}
 
       <div className="flex items-start gap-3 rounded-2xl border border-destructive/50 bg-destructive/5 px-4 py-4 text-sm">
         <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
