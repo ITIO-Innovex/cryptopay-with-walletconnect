@@ -5,6 +5,8 @@ import { MOCK_DEPOSIT_ADDRESS } from "@/data/cryptocurrencies";
 import { CountdownRing } from "./CountdownRing";
 import { PaymentQr, type QrMode } from "./PaymentQr";
 import { StatusCheckButton } from "./StatusCheckButton";
+import { WalletConnectPay } from "./WalletConnectPay";
+import { isEvmNetwork } from "@/lib/evm-chains";
 
 interface SendFundsProps {
   currency: CryptoCurrency;
@@ -21,6 +23,8 @@ interface SendFundsProps {
   onBack: () => void;
   /** Opens the report-a-problem dialog. */
   onReport: () => void;
+  /** Called when the user submits a real on-chain tx via WalletConnect. */
+  onWalletTx?: (hash: string, amount: number) => void;
 }
 
 /**
@@ -37,6 +41,7 @@ export function SendFunds({
   expired,
   onBack,
   onReport,
+  onWalletTx,
 }: SendFundsProps) {
   const [qrMode, setQrMode] = useState<QrMode>("address");
   const [copied, setCopied] = useState<"amount" | "address" | null>(null);
@@ -75,6 +80,21 @@ export function SendFunds({
         </div>
         <CountdownRing secondsLeft={secondsLeft} total={windowSeconds} />
       </div>
+
+      {isEvmNetwork(network.name) && !expired && onWalletTx && (
+        <div className="border-t border-border pt-6">
+          <WalletConnectPay
+            currency={currency}
+            network={network}
+            to={MOCK_DEPOSIT_ADDRESS as `0x${string}`}
+            amount={amount}
+            onTxSubmitted={onWalletTx}
+          />
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            or send manually to the address below
+          </p>
+        </div>
+      )}
 
       <div className="border-t border-border pt-6">
         <PaymentQr
