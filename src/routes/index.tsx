@@ -86,6 +86,8 @@ function Checkout() {
 
   const handleReceive = (amount: number) =>
     setTxs((prev) => [...prev, { hash: randomTxHash(), amount }]);
+  const handleWalletTx = (hash: string, amount: number) =>
+    setTxs((prev) => [...prev, { hash, amount }]);
   const handleResetSim = () => setTxs([]);
 
   // Brief "Checking payment status..." transition after each incoming transfer.
@@ -225,6 +227,7 @@ function Checkout() {
               expired={expired}
               onBack={() => setStep(currency.networks.length === 1 ? "currency" : "network")}
               onReport={() => setReportOpen(true)}
+              onWalletTx={handleWalletTx}
             />
           )}
 
