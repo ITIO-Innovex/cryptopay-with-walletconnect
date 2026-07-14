@@ -197,5 +197,9 @@ export const PRICE_PER_USD: Record<string, number> = {
   LTC: 0.0119,
 };
 
-/** Mock deposit address shown on the final step. */
+/**
+ * Mock deposit address shown on the final step.
+ * BACKEND: replace with per-(currency, network) address issued by
+ * `POST /api/checkout/session/:id/deposit-address`. See INTEGRATION.md §2.
+ */
 export const MOCK_DEPOSIT_ADDRESS = "0x68436e61f2e5b07023d957c1584a53d982018b49";

@@ -58,9 +58,13 @@ export function ConfirmRefundDialog({
   const handleConfirm = () => {
     if (breakdown.belowMinimum) {
       setPhase("below-minimum");
-    } else {
-      setPhase("submitted");
+      return;
     }
+    // BACKEND: POST /api/checkout/session/:id/refund with
+    // { address, network: network.name, currency: currency.symbol }.
+    // Server must recompute fees — do not trust client `breakdown`.
+    // See INTEGRATION.md §5.
+    setPhase("submitted");
   };
 
   return (

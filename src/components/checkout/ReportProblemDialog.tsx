@@ -60,6 +60,8 @@ export function ReportProblemDialog({ open, defaultTxHash, onClose }: ReportProb
     }
     setError(null);
     // Mock submit — payload ready to send to a backend later.
+    // BACKEND: POST /api/checkout/session/:id/report (multipart).
+    // See INTEGRATION.md §6. `reportSchema` above is the authoritative payload shape.
     setSubmitted(true);
   };
 

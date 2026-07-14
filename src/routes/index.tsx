@@ -56,8 +56,12 @@ function Checkout() {
   const [notesOpen, setNotesOpen] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(PAYMENT_WINDOW_SECONDS);
   // Simulated incoming transfers (each with its own tx hash).
+  // BACKEND: replace this local array with data from
+  // `GET /api/checkout/session/:id/status` (poll or WS). See INTEGRATION.md §3.
   const [txs, setTxs] = useState<{ hash: string; amount: number }[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<"wallet_connect" | "manual" | null>(null);
+  // BACKEND: `orderId` and `senderAddress` come from the session/status
+  // responses (INTEGRATION.md §1 & §7). Random generators are dev-only.
   const [orderId] = useState(makeOrderId);
   const [senderAddress] = useState(randomWalletAddress);
   const [reportOpen, setReportOpen] = useState(false);
