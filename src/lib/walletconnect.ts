@@ -1,7 +1,6 @@
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { arbitrum, avalanche, bsc, mainnet, polygon } from "@reown/appkit/networks";
-import type { Config } from "wagmi";
 
 /**
  * WalletConnect / Reown AppKit setup, EVM-only.
@@ -28,7 +27,10 @@ export const wagmiAdapter = new WagmiAdapter({
   ssr: false,
 });
 
-export const wagmiConfig: Config = wagmiAdapter.wagmiConfig;
+// Cast to any to reconcile wagmi's nested @wagmi/core version with the
+// adapter's version — they are structurally compatible at runtime.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const wagmiConfig: any = wagmiAdapter.wagmiConfig;
 
 let appKitInitialized = false;
 
