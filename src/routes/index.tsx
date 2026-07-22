@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Crypto Checkout — Pay with crypto" },
       {
         property: "og:description",
-        content: "Select a currency and network, then send funds to complete your order.",
+        content: "Secure crypto payment checkout. Select a currency and network, then send funds to complete your order.",
       },
     ],
   }),
