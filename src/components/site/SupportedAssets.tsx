@@ -64,3 +64,18 @@ export function SupportedAssets() {
     </section>
   );
 }
+
+/** Small circular blockchain logo used in the network row. */
+function NetworkChipIcon({ name, color }: { name: string; color: string }) {
+  const Icon = getNetworkIcon(name);
+  return (
+    <span
+      className="flex h-[18px] w-[18px] items-center justify-center rounded-full text-white"
+      style={{ backgroundColor: color }}
+    >
+      {Icon ? <Icon variant="mono" size={12} /> : (
+        <span className="text-[9px] font-semibold">{name.slice(0, 1)}</span>
+      )}
+    </span>
+  );
+}
