@@ -56,60 +56,76 @@ const FEATURES = [
   },
   {
     icon: ShieldCheck,
-    title: "No chargebacks",
-    body: "Settled on-chain. Once confirmed, a payment cannot be reversed by the payer.",
+    title: "Non-custodial by design",
+    body: "Funds move from the customer's wallet to your wallet. Our software never holds or controls the money.",
   },
 ];
 
 const STEPS = [
-  { n: "1", t: "Create a payment", b: "Send the order amount to Cryptope from your store or API." },
-  { n: "2", t: "Customer pays in crypto", b: "They pick a coin and network, then pay by wallet or address." },
-  { n: "3", t: "You get confirmed", b: "Cryptope watches the chain and confirms the order in crypto." },
+  { n: "1", t: "Create a payment", b: "Your store or API tells our software the order amount and the asset you accept." },
+  { n: "2", t: "Customer pays from their wallet", b: "They pick an asset and network, then pay by connected wallet or to the displayed address." },
+  { n: "3", t: "The chain confirms it", b: "Our software watches the public blockchain and reports the confirmed payment back to your order." },
 ];
 
 const FAQS = [
   {
     q: "What is Cryptope?",
-    a: "Cryptope is a payment gateway that lets online businesses accept cryptocurrency payments at their checkout and receive the funds in their own wallet.",
+    a: "Cryptope is the payment technology product of Onternity Tech Limited. It is software: a hosted payment page and integration tools that let an online business present a digital asset payment option at its own checkout.",
   },
   {
-    q: "What kind of payments does Cryptope process?",
-    a: "Payments are made and settled in digital assets on public blockchains. Cryptope does not process card, bank transfer or cash payments, and it does not convert what your customer sends into a national currency — you receive the asset itself in your own wallet.",
+    q: "Is Cryptope a financial institution or a licensed crypto business?",
+    a: "No. We are a technology company. We do not operate as a bank, money transmitter, exchange, broker or custodian, we do not hold client money, and we do not hold ourselves out as holding a financial services licence. Merchants are responsible for any licensing or registration their own activity requires.",
   },
-
   {
-    q: "Which coins can I accept?",
-    a: "Bitcoin, Ethereum, BNB, Polygon, Avalanche, Tron and major stablecoins such as USDT and USDC on their supported networks.",
+    q: "Does Cryptope hold or control funds?",
+    a: "No. The design is non-custodial. A payment moves directly from the customer's wallet to the wallet addresses the merchant configures and controls. We do not pool funds, we cannot spend them, and we cannot reverse a confirmed transaction.",
+  },
+  {
+    q: "Do you convert crypto to fiat currency?",
+    a: "No. We do not buy, sell, exchange or convert digital assets, and we do not handle national currency. The merchant receives the asset the customer sent.",
+  },
+  {
+    q: "What does the service cost?",
+    a: "Pricing starts at 0.5% of the value processed through the payment page, with no setup fee, no monthly minimum and no commitment. High-volume businesses can connect with sales for a special rate. Blockchain network fees are separate, set by the network and paid by the sender.",
+  },
+  {
+    q: "Which assets and networks are supported?",
+    a: "Bitcoin, Ethereum, BNB, Polygon, Avalanche, Tron and major stablecoins such as USDT and USDC on their supported networks. The full list is shown on this page and at the payment page itself.",
   },
   {
     q: "How does a customer pay?",
-    a: "They select a coin and network, then either connect a wallet through WalletConnect or send funds to the shown address or QR code.",
+    a: "They select an asset and network, then either connect a wallet through WalletConnect or send funds to the displayed address or QR code.",
   },
   {
     q: "What happens if a customer underpays?",
-    a: "The checkout stays open and shows the remaining balance so the customer can top up before the payment window ends.",
+    a: "The payment page stays open and shows the remaining balance so the customer can top up before the payment window ends.",
   },
   {
     q: "What happens with an overpayment?",
-    a: "The order is marked paid and the extra amount can be refunded to the sending address from the refund flow.",
+    a: "The order is marked paid and the excess can be returned to the sending address through the refund flow, net of network fees and subject to network minimums.",
   },
   {
     q: "How long is a payment window open?",
-    a: "Each payment page holds a live rate and address for one hour, with a countdown shown to the customer.",
+    a: "Each payment page holds a quoted rate and address for one hour, with a countdown shown to the customer.",
   },
   {
     q: "Are there chargebacks?",
-    a: "No. Crypto settlements are final once confirmed on-chain, so there is no chargeback risk.",
+    a: "No. A blockchain transaction is final once confirmed, so there is no chargeback mechanism. That also means a payment sent to a wrong address or over a wrong network cannot be recovered.",
   },
   {
     q: "Do I need my own wallet?",
-    a: "Yes. Settlement happens in crypto to the wallet addresses you configure for your business.",
+    a: "Yes. Settlement happens to the wallet addresses you configure for your business, so you must control a suitable wallet on each network you accept.",
+  },
+  {
+    q: "What checks do you run before opening an account?",
+    a: "Every merchant goes through onboarding and due diligence, including business identification and a review of the activity being sold, under our AML and CFT policy and Acceptable Use Policy. We may decline or withdraw access.",
   },
   {
     q: "How do I get started?",
-    a: "Send us a message with your website and the coins you want to accept and we will share integration details.",
+    a: "Send us a message with your website and the assets you want to accept, and we will share integration details and confirm your pricing in writing.",
   },
 ];
+
 
 function HomePage() {
   const [sent, setSent] = useState(false);
