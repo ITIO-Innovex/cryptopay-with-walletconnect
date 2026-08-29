@@ -96,7 +96,7 @@ function LoginPage() {
                   name="remember"
                   type="checkbox"
                   defaultChecked
-                  className="h-4 w-4 rounded border-input accent-[hsl(var(--brand))]"
+                  className="h-4 w-4 rounded border-input accent-brand"
                 />
                 Remember me
               </label>
