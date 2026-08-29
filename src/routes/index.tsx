@@ -103,6 +103,9 @@ const FAQS = [
 
 function HomePage() {
   const [sent, setSent] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const [demoKey, setDemoKey] = useState(0);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
