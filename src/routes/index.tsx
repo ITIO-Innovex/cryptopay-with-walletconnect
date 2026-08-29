@@ -188,6 +188,8 @@ function HomePage() {
           </div>
         </section>
 
+        <SupportedAssets />
+
         {/* How it works */}
         <section id="how" className="border-y border-border bg-card/50">
 
@@ -435,13 +437,3 @@ function Field({
   );
 }
 
-/** Text-only styled logo. */
-function Wordmark() {
-  return (
-    <div className="text-xl font-semibold tracking-tight">
-      <span className="text-foreground">crypto</span>
-      <span className="text-brand">pe</span>
-      <span className="text-muted-foreground">.net</span>
-    </div>
-  );
-}
