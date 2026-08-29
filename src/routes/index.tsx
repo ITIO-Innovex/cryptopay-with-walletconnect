@@ -2,7 +2,10 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertTriangle, ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SupportedAssets } from "@/components/site/SupportedAssets";
 import { EmailPill } from "@/components/site/EmailPill";
+
 
 
 
