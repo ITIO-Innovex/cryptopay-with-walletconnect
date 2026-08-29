@@ -116,29 +116,8 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-          <Wordmark />
-          <nav className="flex items-center gap-5 text-sm">
-            <a href="#features" className="hidden text-muted-foreground hover:text-foreground sm:inline">
-              Features
-            </a>
-            <a href="#how" className="hidden text-muted-foreground hover:text-foreground sm:inline">
-              How it works
-            </a>
-            <a href="#faq" className="hidden text-muted-foreground hover:text-foreground sm:inline">
-              FAQ
-            </a>
-            <a
-              href="#contact"
-              className="rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground"
-            >
-              Talk to us
-            </a>
-          </nav>
+      <SiteHeader />
 
-        </div>
-      </header>
 
       <main>
         {/* Hero */}
