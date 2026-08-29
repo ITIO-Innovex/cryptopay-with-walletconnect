@@ -64,9 +64,10 @@ const FAQS = [
     a: "Cryptope is a crypto-only payment gateway that lets online businesses accept cryptocurrency payments on their checkout.",
   },
   {
-    q: "Do you support fiat payments?",
-    a: "No. Cryptope is crypto only — there is no card, bank or fiat processing anywhere in the flow.",
+    q: "What kind of payments does Cryptope process?",
+    a: "Payments are made and settled in digital assets on public blockchains. Cryptope does not process card, bank transfer or cash payments, and it does not convert what your customer sends into a national currency — you receive the asset itself in your own wallet.",
   },
+
   {
     q: "Which coins can I accept?",
     a: "Bitcoin, Ethereum, BNB, Polygon, Avalanche, Tron and major stablecoins such as USDT and USDC on their supported networks.",
