@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { EmailPill } from "./EmailPill";
+
 
 /** Site footer: policy navigation, support links and company details. No social links. */
 const LEGAL = [
@@ -41,10 +43,8 @@ export function SiteFooter() {
             <h3 className="text-sm font-semibold">Company</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
               <li>Onternity Tech Limited</li>
-              <li>
-                <a href="mailto:gateway@cryptope.net" className="hover:text-foreground">
-                  gateway@cryptope.net
-                </a>
+              <li className="pt-1">
+                <EmailPill compact />
               </li>
               <li>
                 <a href="/#contact" className="hover:text-foreground">
@@ -62,9 +62,17 @@ export function SiteFooter() {
 
         <div className="mt-10 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
           <p>
-            Digital asset payments settle on public blockchains and are final once confirmed. Asset
-            values can move quickly, and nothing on this website is investment, tax or legal advice.
-            Merchants remain responsible for the wallet addresses and networks they configure.
+            Digital asset payments are final once confirmed on the blockchain and cannot be
+            reversed. Assets sent to a wrong address, over an unsupported network, or in an asset
+            the address is not configured for are permanently lost and cannot be recovered.{" "}
+            <Link
+              to="/legal/$slug"
+              params={{ slug: "risk-disclaimer" }}
+              className="font-medium text-foreground underline underline-offset-2"
+            >
+              Read the full disclaimer
+            </Link>
+            .
           </p>
           <p className="mt-3">
             © {new Date().getFullYear()} Onternity Tech Limited. All rights reserved.
@@ -74,6 +82,7 @@ export function SiteFooter() {
     </footer>
   );
 }
+
 
 function FooterColumn({ title, items }: { title: string; items: { slug: string; label: string }[] }) {
   return (

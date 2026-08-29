@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
+import { AlertTriangle, ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { EmailPill } from "@/components/site/EmailPill";
+
 
 
 export const Route = createFileRoute("/")({
@@ -121,19 +123,20 @@ function HomePage() {
             <a href="#features" className="hidden text-muted-foreground hover:text-foreground sm:inline">
               Features
             </a>
-            <a href="#demo" className="hidden text-muted-foreground hover:text-foreground sm:inline">
-              Demo
+            <a href="#how" className="hidden text-muted-foreground hover:text-foreground sm:inline">
+              How it works
             </a>
-            <a href="#contact" className="text-muted-foreground hover:text-foreground">
-              Contact
+            <a href="#faq" className="hidden text-muted-foreground hover:text-foreground sm:inline">
+              FAQ
             </a>
-            <Link
-              to="/checkout"
+            <a
+              href="#contact"
               className="rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground"
             >
-              Live checkout
-            </Link>
+              Talk to us
+            </a>
           </nav>
+
         </div>
       </header>
 
@@ -153,21 +156,18 @@ function HomePage() {
             checkout, let them pay from any wallet, and get confirmed on-chain — with no cards,
             banks or chargebacks involved.
           </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <a
-              href="#demo"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-            >
-              Try the checkout demo <ArrowRight className="h-4 w-4" />
-            </a>
-
+          <div className="mt-7 flex flex-col items-center gap-3">
             <a
               href="#contact"
-              className="inline-flex items-center rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
-              Talk to us
+              Talk to us <ArrowRight className="h-4 w-4" />
+            </a>
+            <a href="#demo" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
+              See the payment page
             </a>
           </div>
+
         </section>
 
         {/* Problem / solution */}
@@ -207,7 +207,8 @@ function HomePage() {
         </section>
 
         {/* How it works */}
-        <section className="border-y border-border bg-card/50">
+        <section id="how" className="border-y border-border bg-card/50">
+
           <div className="mx-auto max-w-5xl px-4 py-16">
             <h2 className="text-2xl font-semibold tracking-tight">How it works</h2>
             <ol className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -226,12 +227,14 @@ function HomePage() {
 
         {/* Demo */}
         <section id="demo" className="mx-auto max-w-5xl px-4 py-16">
-          <h2 className="text-2xl font-semibold tracking-tight">See the checkout</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Preview the payment page</h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            A working demo of the Cryptope payment page, including WalletConnect, QR payment,
-            underpayment top-up, overpayment refund and the completed order screen. It runs on
-            sample data, so nothing is charged, and it opens right here on this page.
+            This is the page your customers see: coin and network selection, WalletConnect or QR
+            payment, live status, top-up on a shortfall and the completed order screen. It opens
+            below in a sample environment — the addresses and confirmations are generated for
+            illustration, so nothing is charged and nothing is sent on-chain.
           </p>
+
           <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">
             {[
               "Coin and network selection",
@@ -249,16 +252,17 @@ function HomePage() {
             <button
               type="button"
               onClick={() => setDemoOpen(true)}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
             >
-              Run the demo here <ArrowRight className="h-4 w-4" />
+              Open the preview <ArrowRight className="h-4 w-4" />
             </button>
           ) : (
             <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
               <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
                 <span className="text-xs font-medium text-muted-foreground">
-                  Demo checkout · sample data
+                  Preview · sample data · no real payment
                 </span>
+
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
@@ -287,6 +291,37 @@ function HomePage() {
           )}
         </section>
 
+        {/* Important before you pay */}
+        <section className="mx-auto max-w-5xl px-4 pb-16">
+          <div className="rounded-2xl border border-warning/40 bg-warning/10 p-5">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-warning-foreground" aria-hidden="true" />
+              <h2 className="text-sm font-semibold">Important before you pay</h2>
+            </div>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <li>
+                Blockchain payments are final. Once a transaction is confirmed it cannot be
+                reversed, cancelled or charged back by anyone.
+              </li>
+              <li>
+                Assets sent to a wrong address are permanently lost and cannot be recovered or
+                refunded.
+              </li>
+              <li>
+                Assets sent over the wrong network, or in an asset the address was not issued for,
+                are lost in the same way. Match the coin and network exactly as shown at checkout.
+              </li>
+            </ul>
+            <Link
+              to="/legal/$slug"
+              params={{ slug: "risk-disclaimer" }}
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium underline underline-offset-4"
+            >
+              Read the full risk disclaimer <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </section>
+
 
         {/* FAQ */}
         <section id="faq" className="border-y border-border bg-card/50">
@@ -306,22 +341,33 @@ function HomePage() {
         {/* Contact */}
         <section id="contact" className="mx-auto max-w-5xl px-4 py-16">
           <h2 className="text-2xl font-semibold tracking-tight">Contact us</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Tell us about your business and which coins you want to accept. Messages reach us at{" "}
-            <a href="mailto:gateway@cryptope.net" className="font-medium text-foreground underline">
-              gateway@cryptope.net
-            </a>
-            .
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            Tell us about your business and which coins you want to accept.
           </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-border bg-card p-5">
+            <div>
+              <p className="text-sm font-semibold">Email us</p>
+              <p className="text-xs text-muted-foreground">
+                We usually reply within one business day.
+              </p>
+            </div>
+            <EmailPill />
+          </div>
+
           {sent ? (
             <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
               <p className="font-medium">Thanks — your message is ready to send.</p>
               <p className="mt-1 text-muted-foreground">
-                Your email app should have opened with the details filled in. If it did not, write
-                to gateway@cryptope.net directly.
+                Your email app should have opened with the details filled in. If it did not, copy
+                the address below and write to us directly.
               </p>
+              <div className="mt-3">
+                <EmailPill />
+              </div>
             </div>
           ) : (
+
             <form
               className="mt-6 grid max-w-xl gap-4"
               onSubmit={(e) => {
