@@ -250,16 +250,17 @@ function HomePage() {
             <button
               type="button"
               onClick={() => setDemoOpen(true)}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
             >
-              Run the demo here <ArrowRight className="h-4 w-4" />
+              Open the preview <ArrowRight className="h-4 w-4" />
             </button>
           ) : (
             <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
               <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
                 <span className="text-xs font-medium text-muted-foreground">
-                  Demo checkout · sample data
+                  Preview · sample data · no real payment
                 </span>
+
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
