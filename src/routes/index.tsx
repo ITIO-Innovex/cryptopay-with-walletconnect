@@ -205,7 +205,8 @@ function HomePage() {
         </section>
 
         {/* How it works */}
-        <section className="border-y border-border bg-card/50">
+        <section id="how" className="border-y border-border bg-card/50">
+
           <div className="mx-auto max-w-5xl px-4 py-16">
             <h2 className="text-2xl font-semibold tracking-tight">How it works</h2>
             <ol className="mt-6 grid gap-4 sm:grid-cols-3">
