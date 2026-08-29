@@ -217,7 +217,7 @@ function HomePage() {
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             A working demo of the Cryptope payment page, including WalletConnect, QR payment,
             underpayment top-up, overpayment refund and the completed order screen. It runs on
-            sample data, so nothing is charged.
+            sample data, so nothing is charged, and it opens right here on this page.
           </p>
           <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">
             {[
@@ -231,13 +231,49 @@ function HomePage() {
               </li>
             ))}
           </ul>
-          <Link
-            to="/checkout"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-          >
-            Open the demo checkout <ArrowRight className="h-4 w-4" />
-          </Link>
+
+          {!demoOpen ? (
+            <button
+              type="button"
+              onClick={() => setDemoOpen(true)}
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+            >
+              Run the demo here <ArrowRight className="h-4 w-4" />
+            </button>
+          ) : (
+            <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
+              <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Demo checkout · sample data
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setDemoKey((k) => k + 1)}
+                    className="rounded-lg border border-input px-2.5 py-1 text-xs font-medium hover:bg-accent"
+                  >
+                    Restart
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDemoOpen(false)}
+                    className="rounded-lg border border-input px-2.5 py-1 text-xs font-medium hover:bg-accent"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+              <iframe
+                key={demoKey}
+                src="/checkout"
+                title="Cryptope demo checkout"
+                loading="lazy"
+                className="h-[720px] w-full border-0 bg-background"
+              />
+            </div>
+          )}
         </section>
+
 
         {/* FAQ */}
         <section id="faq" className="border-y border-border bg-card/50">
