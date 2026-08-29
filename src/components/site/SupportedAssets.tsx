@@ -54,7 +54,7 @@ export function SupportedAssets() {
               key={n.name}
               className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs"
             >
-              <CoinIcon symbol={n.name.slice(0, 1)} color={n.color} size={18} />
+              <NetworkChipIcon name={n.name} color={n.color} />
               {n.name}
               <span className="text-muted-foreground">{n.standard}</span>
             </li>
