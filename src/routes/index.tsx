@@ -121,19 +121,20 @@ function HomePage() {
             <a href="#features" className="hidden text-muted-foreground hover:text-foreground sm:inline">
               Features
             </a>
-            <a href="#demo" className="hidden text-muted-foreground hover:text-foreground sm:inline">
-              Demo
+            <a href="#how" className="hidden text-muted-foreground hover:text-foreground sm:inline">
+              How it works
             </a>
-            <a href="#contact" className="text-muted-foreground hover:text-foreground">
-              Contact
+            <a href="#faq" className="hidden text-muted-foreground hover:text-foreground sm:inline">
+              FAQ
             </a>
-            <Link
-              to="/checkout"
+            <a
+              href="#contact"
               className="rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground"
             >
-              Live checkout
-            </Link>
+              Talk to us
+            </a>
           </nav>
+
         </div>
       </header>
 
