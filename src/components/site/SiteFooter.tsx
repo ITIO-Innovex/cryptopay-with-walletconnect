@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { EmailPill } from "./EmailPill";
+
 
 /** Site footer: policy navigation, support links and company details. No social links. */
 const LEGAL = [
