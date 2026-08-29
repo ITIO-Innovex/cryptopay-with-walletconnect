@@ -229,6 +229,81 @@ function HomePage() {
           </div>
         </section>
 
+        {/* Pricing */}
+        <section id="pricing" className="mx-auto max-w-5xl px-4 py-16">
+          <h2 className="text-2xl font-semibold tracking-tight">Pricing</h2>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            One software fee, charged on the value of payments processed through the payment page.
+            Use the service with no commitment: no setup fee, no monthly minimum and no lock-in
+            contract.
+          </p>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-brand/40 bg-card p-6">
+              <h3 className="text-sm font-semibold">Standard</h3>
+              <p className="mt-3 text-3xl font-semibold tracking-tight">
+                from 0.5%
+                <span className="ml-1 text-sm font-normal text-muted-foreground">
+                  per processed payment
+                </span>
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {[
+                  "Hosted payment page and WalletConnect checkout",
+                  "All supported assets and networks",
+                  "Live payment status, under and overpayment handling",
+                  "No setup fee, no monthly minimum, no commitment",
+                ].map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" /> {i}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#contact"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+              >
+                Get started <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h3 className="text-sm font-semibold">High volume</h3>
+              <p className="mt-3 text-3xl font-semibold tracking-tight">
+                Custom
+                <span className="ml-1 text-sm font-normal text-muted-foreground">
+                  negotiated rate
+                </span>
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {[
+                  "Special pricing below the standard rate",
+                  "Dedicated onboarding and integration support",
+                  "Priority handling of payment queries",
+                  "Connect with sales to discuss your volume",
+                ].map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" /> {i}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#contact"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
+              >
+                Connect to sales <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-4 text-xs text-muted-foreground">
+            Our fee covers the use of our software only. Blockchain network fees are set by the
+            network, are paid by the sender of a transaction, and are not received by Cryptope.
+            Final pricing is confirmed in writing before your account is activated.
+          </p>
+        </section>
+
+
         {/* Demo */}
         <section id="demo" className="mx-auto max-w-5xl px-4 py-16">
           <h2 className="text-2xl font-semibold tracking-tight">Preview the payment page</h2>

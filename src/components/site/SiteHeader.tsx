@@ -30,6 +30,9 @@ export function SiteHeader() {
           <a href="/#how" className="hidden text-muted-foreground hover:text-foreground sm:inline">
             How it works
           </a>
+          <a href="/#pricing" className="hidden text-muted-foreground hover:text-foreground sm:inline">
+            Pricing
+          </a>
           <a href="/#faq" className="hidden text-muted-foreground hover:text-foreground sm:inline">
             FAQ
           </a>
