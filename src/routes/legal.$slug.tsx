@@ -161,26 +161,76 @@ export const POLICIES: Record<string, Policy> = {
   },
   "risk-disclaimer": {
     title: "Risk Disclaimer",
-    summary: "Important risks to understand before accepting digital asset payments.",
+    summary:
+      "Please read this before sending or accepting any digital asset payment through Cryptope. Blockchain payments behave differently from card or bank payments: they are final, they are routed by address and network rather than by name, and mistakes usually cannot be undone.",
     sections: [
       {
+        h: "Payments are irreversible",
+        p: "Once a transaction is confirmed on the blockchain it cannot be recalled, cancelled, reversed or charged back — not by the customer, not by the merchant, and not by Cryptope. There is no dispute or chargeback mechanism comparable to card schemes. Any return of funds is a new, separate transaction that depends entirely on the merchant's own decision and on the funds still being available.",
+      },
+      {
+        h: "A wrong address means the assets are lost",
+        p: "Assets sent to an incorrect, mistyped, outdated or unintended address are permanently lost. The same applies to assets sent to a smart contract or exchange deposit address that cannot return them. Cryptope does not control the receiving address and has no ability to freeze, reverse or restore such a transfer. No refund is owed by Cryptope or by the merchant in these circumstances. Always copy the address shown on the payment page, verify it in your wallet, and never send from a source you do not control.",
+      },
+      {
+        h: "A wrong network means the assets are lost",
+        p: "Every payment address on the checkout is valid for one specific network only. Sending over a different network — for example sending USDT on BNB Smart Chain to an address issued for Tron or Ethereum — will normally result in a permanent loss. Recovery is not possible in the general case, and where a third party might theoretically assist, that is entirely outside Cryptope's control. Select the network in your wallet exactly as it is shown on the payment page.",
+      },
+      {
+        h: "A wrong asset means the assets are lost",
+        p: "A deposit address is issued for the specific coin or token selected at checkout. Sending a different asset to that address — including tokens issued on the same network — is treated the same way as a wrong address: the funds are unrecoverable and no credit is applied to the order.",
+      },
+      {
+        h: "Payment window and quoted amount",
+        p: "When a coin and network are selected, the checkout quotes an exact amount in that asset and opens a payment window of 60 minutes, shown as a live countdown on the payment page. The quote is valid only inside that window. If nothing has been received when the countdown reaches zero, the page marks the payment as expired and the order should be restarted so a fresh amount can be quoted. Funds that arrive after expiry are not automatically credited: they may be re-quoted at the rate in force when they were received, applied to a new order, or returned less network and processing fees, at the merchant's discretion.",
+      },
+      {
+        h: "Underpayment",
+        p: "The checkout compares the total amount received against the amount due. If less than the full amount arrives, the order is not completed: the payment page stays open, shows every transaction received so far, and displays the exact remaining balance so the customer can send a top-up before the countdown ends. Multiple incoming transfers are added together. An order that is still short when the window closes is not fulfilled, and any partial amount already sent is handled under the merchant's refund terms rather than being automatically returned.",
+      },
+      {
+        h: "Overpayment and refunds",
+        p: "If more than the amount due is received, the order is marked as paid and the excess is treated as a refundable overpayment. A return is not automatic: it must be requested from the payment page, and it is paid net of costs. Two deductions apply — the on-chain network fee for sending the return on the chosen network, and a platform fee for executing it. What remains after those deductions must still be at or above the network's minimum sendable amount. If it is not, the return cannot be broadcast and the residual amount cannot be paid out. Returns are sent to the sending address recorded for the payment; an address that cannot receive funds (for example a custodial deposit address) may cause a further permanent loss.",
+      },
+      {
         h: "Price volatility",
-        p: "Digital asset prices can move sharply. The value received may differ from the value quoted at checkout.",
+        p: "Digital asset prices can move sharply and without warning. The value of an asset can change between the moment a payment is quoted, the moment it is broadcast and the moment it is confirmed. The amount received in asset terms is what settles; its value in any national currency is not guaranteed by Cryptope.",
       },
       {
-        h: "Irreversibility",
-        p: "Transactions sent to the wrong address or over the wrong network are generally unrecoverable.",
+        h: "Network conditions outside our control",
+        p: "Public blockchains are operated by third parties. Congestion, fee spikes, stuck or dropped transactions, chain reorganisations, forks, validator outages, halted chains and node or explorer failures can delay or prevent confirmation. Cryptope cannot accelerate, alter or guarantee the behaviour of any blockchain network.",
       },
       {
-        h: "No investment advice",
-        p: "Nothing on this website is investment, tax or legal advice. Merchants should take their own professional advice.",
+        h: "Wallets, WalletConnect and device security",
+        p: "Payments are made from the customer's own wallet. Custody of private keys, seed phrases, hardware devices and the approval of any transaction or token allowance is solely the customer's responsibility. Cryptope never holds keys and never asks for a seed phrase. Wallet software, browser extensions and WalletConnect are provided by third parties; connecting a wallet or approving a request that you did not initiate can result in loss of funds.",
+      },
+      {
+        h: "Merchant responsibilities",
+        p: "Merchants are responsible for the settlement addresses and networks they configure, for keeping those details accurate and under their sole control, for the goods and services they sell, for their own refund and cancellation terms, and for their own tax, accounting, licensing and regulatory obligations in every jurisdiction where they operate.",
+      },
+      {
+        h: "Sanctions, AML and blocked funds",
+        p: "Payments connected to sanctioned parties, sanctioned jurisdictions or apparently illicit sources may be delayed, withheld, frozen or reported to the relevant authorities, and the associated order may be cancelled without a return of funds where the law requires it. Screening and reporting obligations override any expectation of refund.",
       },
       {
         h: "No deposit protection",
-        p: "Digital assets are not bank deposits and are not covered by deposit-guarantee schemes.",
+        p: "Digital assets are not bank deposits, not electronic money and not covered by any deposit-guarantee or investor-compensation scheme. There is no central authority to compensate for loss, theft or error.",
+      },
+      {
+        h: "No investment, tax or legal advice",
+        p: "Nothing on this website, in the checkout or in any related material is investment, tax, accounting or legal advice, or a recommendation to acquire or dispose of any digital asset. Merchants and customers should take their own professional advice.",
+      },
+      {
+        h: "Availability and limitation of liability",
+        p: "The service is provided without a guarantee of uninterrupted or error-free operation, and may be interrupted for maintenance, upgrades or reasons beyond our control. To the maximum extent permitted by law, Cryptope and Onternity Tech Limited are not liable for indirect or consequential loss, loss of profit, or loss arising from a wrong address, wrong network, wrong asset, blockchain behaviour, third-party wallet software, or asset price movement.",
+      },
+      {
+        h: "About the preview on this website",
+        p: "The payment page shown on the home page of this website is a preview that runs on sample data. Addresses, transaction hashes and confirmations in it are generated for demonstration only. Nothing is charged, nothing is sent on-chain, and no real order is created. Never send real funds to any address displayed in the preview.",
       },
     ],
   },
+
   "acceptable-use": {
     title: "Acceptable Use Policy",
     summary: "Activity that may not be processed through the Cryptope gateway.",
