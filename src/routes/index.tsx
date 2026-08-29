@@ -65,7 +65,7 @@ const STEPS = [
 const FAQS = [
   {
     q: "What is Cryptope?",
-    a: "Cryptope is a crypto-only payment gateway that lets online businesses accept cryptocurrency payments on their checkout.",
+    a: "Cryptope is a payment gateway that lets online businesses accept cryptocurrency payments at their checkout and receive the funds in their own wallet.",
   },
   {
     q: "What kind of payments does Cryptope process?",
