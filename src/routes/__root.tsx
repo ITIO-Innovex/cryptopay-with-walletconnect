@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AccessGate } from "../components/site/AccessGate";
 
 function NotFoundComponent() {
   return (
@@ -77,16 +78,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Crypto Checkout — Pay with crypto" },
-      { name: "description", content: "Secure crypto payment checkout. Select a currency and network, then send funds to complete your order." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Crypto Checkout — Pay with crypto" },
-      { property: "og:description", content: "Secure crypto payment checkout. Select a currency and network, then send funds to complete your order." },
+      { name: "author", content: "Onternity Tech Limited" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Crypto Checkout — Pay with crypto" },
-      { name: "twitter:description", content: "Secure crypto payment checkout. Select a currency and network, then send funds to complete your order." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1bd29bcf-57ec-4943-b56e-68dfb9f52a94" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1bd29bcf-57ec-4943-b56e-68dfb9f52a94" },
     ],
@@ -122,8 +116,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <AccessGate>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </AccessGate>
     </QueryClientProvider>
   );
 }

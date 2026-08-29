@@ -20,9 +20,9 @@ export function CheckoutHeader({ onCancel }: CheckoutHeaderProps) {
           <ArrowLeft className="h-4 w-4" />
           Cancel order
         </button>
-        <div className="flex items-center gap-1.5 text-xl font-semibold tracking-tight">
-          <span className="text-foreground">swift</span>
-          <span className="text-brand">PAY</span>
+        <div className="text-xl font-semibold tracking-tight">
+          <span className="text-foreground">crypto</span>
+          <span className="text-brand">pe</span>
         </div>
       </div>
     </header>
