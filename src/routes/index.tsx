@@ -154,21 +154,18 @@ function HomePage() {
             checkout, let them pay from any wallet, and get confirmed on-chain — with no cards,
             banks or chargebacks involved.
           </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <a
-              href="#demo"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-            >
-              Try the checkout demo <ArrowRight className="h-4 w-4" />
-            </a>
-
+          <div className="mt-7 flex flex-col items-center gap-3">
             <a
               href="#contact"
-              className="inline-flex items-center rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
-              Talk to us
+              Talk to us <ArrowRight className="h-4 w-4" />
+            </a>
+            <a href="#demo" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
+              See the payment page
             </a>
           </div>
+
         </section>
 
         {/* Problem / solution */}
