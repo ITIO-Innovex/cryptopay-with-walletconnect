@@ -1,5 +1,7 @@
 import { CRYPTO_CURRENCIES } from "@/data/cryptocurrencies";
 import { CoinIcon } from "@/components/checkout/CoinIcon";
+import { getNetworkIcon } from "@/components/checkout/icons/registry";
+
 
 /** Coins highlighted on the home page, in checkout order. */
 const HIGHLIGHT = ["USDT", "USDC", "BTC", "ETH", "SOL", "LTC", "LINK", "DOT", "MANA", "GRT", "IMX", "HBAR"];
