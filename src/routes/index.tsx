@@ -289,6 +289,37 @@ function HomePage() {
           )}
         </section>
 
+        {/* Important before you pay */}
+        <section className="mx-auto max-w-5xl px-4 pb-16">
+          <div className="rounded-2xl border border-warning/40 bg-warning/10 p-5">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-warning-foreground" aria-hidden="true" />
+              <h2 className="text-sm font-semibold">Important before you pay</h2>
+            </div>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <li>
+                Blockchain payments are final. Once a transaction is confirmed it cannot be
+                reversed, cancelled or charged back by anyone.
+              </li>
+              <li>
+                Assets sent to a wrong address are permanently lost and cannot be recovered or
+                refunded.
+              </li>
+              <li>
+                Assets sent over the wrong network, or in an asset the address was not issued for,
+                are lost in the same way. Match the coin and network exactly as shown at checkout.
+              </li>
+            </ul>
+            <Link
+              to="/legal/$slug"
+              params={{ slug: "risk-disclaimer" }}
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium underline underline-offset-4"
+            >
+              Read the full risk disclaimer <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </section>
+
 
         {/* FAQ */}
         <section id="faq" className="border-y border-border bg-card/50">
