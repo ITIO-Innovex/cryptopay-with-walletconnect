@@ -31,8 +31,8 @@ export function SiteFooter() {
               <span className="text-muted-foreground">.net</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
-              A digital asset payment gateway for online businesses. Hosted checkout, on-chain
-              confirmation, settlement to your own wallet.
+              Payment page technology for online businesses. Hosted checkout, on-chain
+              confirmation, non-custodial settlement to the merchant's own wallet.
             </p>
           </div>
 
@@ -62,8 +62,12 @@ export function SiteFooter() {
 
         <div className="mt-10 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
           <p>
-            Digital asset payments are final once confirmed on the blockchain and cannot be
-            reversed. Assets sent to a wrong address, over an unsupported network, or in an asset
+            Onternity Tech Limited, trading as Cryptope, is a technology company providing payment
+            page software. It is not a bank, money transmitter, exchange, broker or custodian, does
+            not hold customer funds, and provides no financial, investment, tax or legal advice.
+          </p>
+          <p className="mt-3">
+
             the address is not configured for are permanently lost and cannot be recovered.{" "}
             <Link
               to="/legal/$slug"
