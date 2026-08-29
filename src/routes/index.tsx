@@ -179,8 +179,10 @@ function HomePage() {
               <h2 className="text-xl font-semibold">The Cryptope way</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 One crypto-native checkout. Pick a coin and network, pay by wallet or address, and
-                settle straight to your own wallet. Nothing touches fiat rails.
+                settle straight to your own wallet — the payment stays on-chain from start to
+                finish, so there is no card network, bank hold or currency conversion in between.
               </p>
+
             </div>
           </div>
         </section>
