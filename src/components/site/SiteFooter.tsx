@@ -67,7 +67,8 @@ export function SiteFooter() {
             not hold customer funds, and provides no financial, investment, tax or legal advice.
           </p>
           <p className="mt-3">
-
+            Digital asset payments are final once confirmed on the blockchain and cannot be
+            reversed. Assets sent to a wrong address, over an unsupported network, or in an asset
             the address is not configured for are permanently lost and cannot be recovered.{" "}
             <Link
               to="/legal/$slug"
