@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
+import { SiteFooter } from "@/components/site/SiteFooter";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -9,21 +11,23 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Cryptope is a crypto-only payment gateway. Accept Bitcoin, Ethereum, USDT and more with WalletConnect checkout, live confirmations and instant settlement in crypto.",
+          "Cryptope is a crypto payment gateway for online business. Accept Bitcoin, Ethereum, USDT and more with WalletConnect checkout, live on-chain confirmations and settlement to your own wallet.",
       },
       { property: "og:title", content: "Cryptope — Crypto Payment Gateway" },
       {
         property: "og:description",
         content:
-          "Accept crypto payments on your website. WalletConnect checkout, multi-chain support, no fiat, no chargebacks.",
+          "Accept crypto payments on your website. WalletConnect checkout, multi-chain support and final on-chain settlement.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Cryptope — Crypto Payment Gateway" },
       {
         name: "twitter:description",
-        content: "Crypto-only payment gateway with WalletConnect checkout and multi-chain support.",
+        content:
+          "Crypto payment gateway with WalletConnect checkout, multi-chain support and on-chain settlement.",
       },
+
     ],
   }),
   component: HomePage,
@@ -61,12 +65,13 @@ const STEPS = [
 const FAQS = [
   {
     q: "What is Cryptope?",
-    a: "Cryptope is a crypto-only payment gateway that lets online businesses accept cryptocurrency payments on their checkout.",
+    a: "Cryptope is a payment gateway that lets online businesses accept cryptocurrency payments at their checkout and receive the funds in their own wallet.",
   },
   {
-    q: "Do you support fiat payments?",
-    a: "No. Cryptope is crypto only — there is no card, bank or fiat processing anywhere in the flow.",
+    q: "What kind of payments does Cryptope process?",
+    a: "Payments are made and settled in digital assets on public blockchains. Cryptope does not process card, bank transfer or cash payments, and it does not convert what your customer sends into a national currency — you receive the asset itself in your own wallet.",
   },
+
   {
     q: "Which coins can I accept?",
     a: "Bitcoin, Ethereum, BNB, Polygon, Avalanche, Tron and major stablecoins such as USDT and USDC on their supported networks.",
@@ -103,6 +108,9 @@ const FAQS = [
 
 function HomePage() {
   const [sent, setSent] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const [demoKey, setDemoKey] = useState(0);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -133,8 +141,10 @@ function HomePage() {
         {/* Hero */}
         <section className="mx-auto max-w-5xl px-4 py-16 text-center sm:py-24">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Bitcoin className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> Crypto only · no fiat
+            <Bitcoin className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> Digital asset payments
+            for online business
           </span>
+
           <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
             Accept crypto payments on your website
           </h1>
@@ -144,12 +154,13 @@ function HomePage() {
             banks or chargebacks involved.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/checkout"
+            <a
+              href="#demo"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
               Try the checkout demo <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
+
             <a
               href="#contact"
               className="inline-flex items-center rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
@@ -173,8 +184,10 @@ function HomePage() {
               <h2 className="text-xl font-semibold">The Cryptope way</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 One crypto-native checkout. Pick a coin and network, pay by wallet or address, and
-                settle straight to your own wallet. Nothing touches fiat rails.
+                settle straight to your own wallet — the payment stays on-chain from start to
+                finish, so there is no card network, bank hold or currency conversion in between.
               </p>
+
             </div>
           </div>
         </section>
@@ -217,7 +230,7 @@ function HomePage() {
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             A working demo of the Cryptope payment page, including WalletConnect, QR payment,
             underpayment top-up, overpayment refund and the completed order screen. It runs on
-            sample data, so nothing is charged.
+            sample data, so nothing is charged, and it opens right here on this page.
           </p>
           <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">
             {[
@@ -231,13 +244,49 @@ function HomePage() {
               </li>
             ))}
           </ul>
-          <Link
-            to="/checkout"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-          >
-            Open the demo checkout <ArrowRight className="h-4 w-4" />
-          </Link>
+
+          {!demoOpen ? (
+            <button
+              type="button"
+              onClick={() => setDemoOpen(true)}
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+            >
+              Run the demo here <ArrowRight className="h-4 w-4" />
+            </button>
+          ) : (
+            <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
+              <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Demo checkout · sample data
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setDemoKey((k) => k + 1)}
+                    className="rounded-lg border border-input px-2.5 py-1 text-xs font-medium hover:bg-accent"
+                  >
+                    Restart
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDemoOpen(false)}
+                    className="rounded-lg border border-input px-2.5 py-1 text-xs font-medium hover:bg-accent"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+              <iframe
+                key={demoKey}
+                src="/checkout"
+                title="Cryptope demo checkout"
+                loading="lazy"
+                className="h-[720px] w-full border-0 bg-background"
+              />
+            </div>
+          )}
         </section>
+
 
         {/* FAQ */}
         <section id="faq" className="border-y border-border bg-card/50">
@@ -317,15 +366,8 @@ function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-4 py-8 text-center text-sm text-muted-foreground">
-          <Wordmark />
-          <p>Onternity Tech Limited</p>
-          <a href="mailto:gateway@cryptope.net" className="hover:text-foreground">
-            gateway@cryptope.net
-          </a>
-        </div>
-      </footer>
+      <SiteFooter />
+
     </div>
   );
 }
