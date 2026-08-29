@@ -149,12 +149,13 @@ function HomePage() {
             banks or chargebacks involved.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/checkout"
+            <a
+              href="#demo"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
               Try the checkout demo <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
+
             <a
               href="#contact"
               className="inline-flex items-center rounded-xl border border-input px-5 py-3 text-sm font-semibold hover:bg-accent"
