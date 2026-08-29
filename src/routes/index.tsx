@@ -136,8 +136,10 @@ function HomePage() {
         {/* Hero */}
         <section className="mx-auto max-w-5xl px-4 py-16 text-center sm:py-24">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Bitcoin className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> Crypto only · no fiat
+            <Bitcoin className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> Digital asset payments
+            for online business
           </span>
+
           <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
             Accept crypto payments on your website
           </h1>
