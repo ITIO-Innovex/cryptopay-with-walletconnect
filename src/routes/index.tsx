@@ -126,17 +126,18 @@ function HomePage() {
         {/* Hero */}
         <section className="mx-auto max-w-5xl px-4 py-16 text-center sm:py-24">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Bitcoin className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> Digital asset payments
-            for online business
+            <Code2 className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> Payment technology for
+            online business
           </span>
 
           <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            Accept crypto payments on your website
+            Payment page software for digital asset payments
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-            Cryptope is a crypto payment gateway for online businesses. Give customers a clean
-            checkout, let them pay from any wallet, and get confirmed on-chain — with no cards,
-            banks or chargebacks involved.
+            Cryptope is a technology provider, not a financial institution. We build and operate the
+            checkout software: your customer pays from their own wallet, the transaction is
+            confirmed on the public blockchain, and the funds arrive at the wallet addresses you
+            control. We never take possession of your customers' money.
           </p>
           <div className="mt-7 flex flex-col items-center gap-3">
             <a
@@ -152,27 +153,46 @@ function HomePage() {
 
         </section>
 
-        {/* Problem / solution */}
+        {/* Who we are */}
         <section className="border-y border-border bg-card/50">
-          <div className="mx-auto grid max-w-5xl gap-6 px-4 py-14 sm:grid-cols-2">
-            <div>
-              <h2 className="text-xl font-semibold">The problem</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Global customers want to pay in crypto, but most gateways bolt crypto onto a card
-                stack: slow onboarding, fiat conversion rules, held funds and reversals.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">The Cryptope way</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                One crypto-native checkout. Pick a coin and network, pay by wallet or address, and
-                settle straight to your own wallet — the payment stays on-chain from start to
-                finish, so there is no card network, bank hold or currency conversion in between.
-              </p>
-
-            </div>
+          <div className="mx-auto max-w-5xl px-4 py-14">
+            <h2 className="text-xl font-semibold">Who we are</h2>
+            <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
+              Onternity Tech Limited trades as Cryptope. We are a software and technology company.
+              Our product is a hosted payment page and the supporting integration tools that let a
+              merchant present a digital asset payment option at their own checkout.
+            </p>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+              {[
+                "We provide software only. We do not offer banking, money transmission, brokerage, exchange or investment services, and we give no financial, tax or legal advice.",
+                "We are non-custodial by design. Payments move directly from the customer's wallet to the merchant's own wallet addresses; we do not pool, hold or control customer funds.",
+                "We do not buy, sell or convert digital assets, and we do not handle fiat currency for merchants or their customers.",
+                "Wallet infrastructure, where used, is supplied by a specialist third-party provider under contract. Merchants remain responsible for their own licensing, tax and regulatory obligations in their markets.",
+              ].map((point) => (
+                <li key={point} className="rounded-2xl border border-border bg-background p-4 text-sm text-muted-foreground">
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 max-w-3xl text-xs text-muted-foreground">
+              Merchant accounts are opened only after onboarding and due diligence checks. Access
+              may be declined or withdrawn where a business or transaction falls outside our{" "}
+              <Link
+                to="/legal/$slug"
+                params={{ slug: "acceptable-use" }}
+                className="underline underline-offset-2"
+              >
+                Acceptable Use Policy
+              </Link>{" "}
+              or{" "}
+              <Link to="/legal/$slug" params={{ slug: "aml" }} className="underline underline-offset-2">
+                AML &amp; CFT Policy
+              </Link>
+              .
+            </p>
           </div>
         </section>
+
 
         {/* Features */}
         <section id="features" className="mx-auto max-w-5xl px-4 py-16">
