@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
+import { AlertTriangle, ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { EmailPill } from "@/components/site/EmailPill";
+
 
 
 export const Route = createFileRoute("/")({
