@@ -11,21 +11,23 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Cryptope is a crypto-only payment gateway. Accept Bitcoin, Ethereum, USDT and more with WalletConnect checkout, live confirmations and instant settlement in crypto.",
+          "Cryptope is a crypto payment gateway for online business. Accept Bitcoin, Ethereum, USDT and more with WalletConnect checkout, live on-chain confirmations and settlement to your own wallet.",
       },
       { property: "og:title", content: "Cryptope — Crypto Payment Gateway" },
       {
         property: "og:description",
         content:
-          "Accept crypto payments on your website. WalletConnect checkout, multi-chain support, no fiat, no chargebacks.",
+          "Accept crypto payments on your website. WalletConnect checkout, multi-chain support and final on-chain settlement.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Cryptope — Crypto Payment Gateway" },
       {
         name: "twitter:description",
-        content: "Crypto-only payment gateway with WalletConnect checkout and multi-chain support.",
+        content:
+          "Crypto payment gateway with WalletConnect checkout, multi-chain support and on-chain settlement.",
       },
+
     ],
   }),
   component: HomePage,
