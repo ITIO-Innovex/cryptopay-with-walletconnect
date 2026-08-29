@@ -1,4 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+
 
 /**
  * Single route that renders every legal / compliance document from one
@@ -316,22 +319,17 @@ function LegalPage() {
   const { policy } = Route.useLoaderData();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border">
-        <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-4">
-          <Link to="/" className="text-xl font-semibold tracking-tight">
-            <span className="text-foreground">crypto</span>
-            <span className="text-brand">pe</span>
-            <span className="text-muted-foreground">.net</span>
-          </Link>
-          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
-            Back to home
-          </Link>
-        </div>
-      </header>
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <SiteHeader />
 
-      <main className="mx-auto max-w-3xl px-4 py-14">
-        <h1 className="text-3xl font-semibold tracking-tight">{policy.title}</h1>
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-14">
+        <p className="text-xs text-muted-foreground">
+          <Link to="/" className="hover:text-foreground">
+            Home
+          </Link>{" "}
+          / <span className="text-foreground">{policy.title}</span>
+        </p>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight">{policy.title}</h1>
         <p className="mt-3 text-sm text-muted-foreground">{policy.summary}</p>
 
         <div className="mt-9 space-y-7">
@@ -350,6 +348,9 @@ function LegalPage() {
           </a>
         </p>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }
+
