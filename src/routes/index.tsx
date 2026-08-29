@@ -341,22 +341,33 @@ function HomePage() {
         {/* Contact */}
         <section id="contact" className="mx-auto max-w-5xl px-4 py-16">
           <h2 className="text-2xl font-semibold tracking-tight">Contact us</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Tell us about your business and which coins you want to accept. Messages reach us at{" "}
-            <a href="mailto:gateway@cryptope.net" className="font-medium text-foreground underline">
-              gateway@cryptope.net
-            </a>
-            .
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            Tell us about your business and which coins you want to accept.
           </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border border-border bg-card p-5">
+            <div>
+              <p className="text-sm font-semibold">Email us</p>
+              <p className="text-xs text-muted-foreground">
+                We usually reply within one business day.
+              </p>
+            </div>
+            <EmailPill />
+          </div>
+
           {sent ? (
             <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
               <p className="font-medium">Thanks — your message is ready to send.</p>
               <p className="mt-1 text-muted-foreground">
-                Your email app should have opened with the details filled in. If it did not, write
-                to gateway@cryptope.net directly.
+                Your email app should have opened with the details filled in. If it did not, copy
+                the address below and write to us directly.
               </p>
+              <div className="mt-3">
+                <EmailPill />
+              </div>
             </div>
           ) : (
+
             <form
               className="mt-6 grid max-w-xl gap-4"
               onSubmit={(e) => {
