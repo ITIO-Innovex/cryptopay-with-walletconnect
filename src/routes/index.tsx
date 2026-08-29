@@ -225,12 +225,14 @@ function HomePage() {
 
         {/* Demo */}
         <section id="demo" className="mx-auto max-w-5xl px-4 py-16">
-          <h2 className="text-2xl font-semibold tracking-tight">See the checkout</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Preview the payment page</h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            A working demo of the Cryptope payment page, including WalletConnect, QR payment,
-            underpayment top-up, overpayment refund and the completed order screen. It runs on
-            sample data, so nothing is charged, and it opens right here on this page.
+            This is the page your customers see: coin and network selection, WalletConnect or QR
+            payment, live status, top-up on a shortfall and the completed order screen. It opens
+            below in a sample environment — the addresses and confirmations are generated for
+            illustration, so nothing is charged and nothing is sent on-chain.
           </p>
+
           <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">
             {[
               "Coin and network selection",
