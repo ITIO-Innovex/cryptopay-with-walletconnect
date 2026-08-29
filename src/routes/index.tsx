@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AlertTriangle, ArrowRight, Bitcoin, Check, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
+import { AlertTriangle, ArrowRight, Check, Code2, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SupportedAssets } from "@/components/site/SupportedAssets";
@@ -12,25 +12,25 @@ import { EmailPill } from "@/components/site/EmailPill";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cryptope — Crypto Payment Gateway for Online Business" },
+      { title: "Cryptope — Digital Asset Payment Technology for Online Business" },
       {
         name: "description",
         content:
-          "Cryptope is a crypto payment gateway for online business. Accept Bitcoin, Ethereum, USDT and more with WalletConnect checkout, live on-chain confirmations and settlement to your own wallet.",
+          "Cryptope is a payment technology provider. Our software gives online businesses a hosted payment page, WalletConnect checkout and on-chain confirmation, with settlement to the merchant's own wallet. Pricing from 0.5%.",
       },
-      { property: "og:title", content: "Cryptope — Crypto Payment Gateway" },
+      { property: "og:title", content: "Cryptope — Digital Asset Payment Technology" },
       {
         property: "og:description",
         content:
-          "Accept crypto payments on your website. WalletConnect checkout, multi-chain support and final on-chain settlement.",
+          "Payment page software for digital asset payments: WalletConnect checkout, multi-chain support, non-custodial settlement to your own wallet. From 0.5%, no commitment.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Cryptope — Crypto Payment Gateway" },
+      { name: "twitter:title", content: "Cryptope — Digital Asset Payment Technology" },
       {
         name: "twitter:description",
         content:
-          "Crypto payment gateway with WalletConnect checkout, multi-chain support and on-chain settlement.",
+          "Payment page software with WalletConnect checkout, multi-chain support and non-custodial settlement. From 0.5%.",
       },
 
     ],
