@@ -14,6 +14,8 @@ ARG VITE_BASE_PATH=/cryptope-ui/
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 ENV VITE_BASE_PATH=${VITE_BASE_PATH}
 ENV CRYPTOPE_PUBLIC_BASE=${VITE_BASE_PATH}
+# Static SPA output (no Nitro server bundle) — only for this nginx image.
+ENV CRYPTOPE_SPA_BUILD=1
 RUN npm run build \
   && test -f dist/client/index.html \
   && test -d dist/client/assets

@@ -27,11 +27,19 @@ const DOMAIN_MAP_EVENT = "pgx-domain-map-updated";
 const CACHE_KEY = "pgx.multiDomainsMap.v1";
 const CACHE_TTL_MS = 60_000;
 
+/**
+ * Branding used during server rendering and for the first client render
+ * (before the hostname is inspected) so server and client HTML match.
+ * This repository is the Cryptope site, so Cryptope is the neutral default.
+ */
 const FALLBACK_BRANDING: DomainBranding = {
   logo: "",
   favicon: "",
-  name: "PGX",
+  name: "Cryptope",
 };
+
+/** Hydration-safe initial branding — identical on server and client. */
+export const getInitialDomainBranding = (): DomainBranding => FALLBACK_BRANDING;
 
 let runtimeOverride: DomainMapOverride | null = null;
 let mapReady = false;
@@ -177,6 +185,15 @@ function isLocalDevHost(hostname: string, port: string): boolean {
   );
 }
 
+/**
+ * Lovable preview / published hosts for the Cryptope site
+ * (id-preview--*.lovable.app, *.lovableproject.com, *.lovable.app).
+ * They must brand as Cryptope, not fall through to the PGX/localhost default.
+ */
+function isLovableHost(hostname: string): boolean {
+  return hostname.endsWith(".lovable.app") || hostname.endsWith(".lovableproject.com");
+}
+
 export const getStaticDomainBranding = (): DomainBranding => {
   if (!isBrowser()) return FALLBACK_BRANDING;
   const hostname = window.location.hostname.toLowerCase();
@@ -189,7 +206,11 @@ export const getStaticDomainBranding = (): DomainBranding => {
   if (mappedHost.includes("boxchrge.com") || hostname.includes("boxchrge.com")) {
     return { logo: "/bc_logo.png", favicon: "/bc_favicon.png", name: "BoxCharge" };
   }
-  if (mappedHost.includes("cryptope") || hostname.includes("cryptope")) {
+  if (
+    mappedHost.includes("cryptope") ||
+    hostname.includes("cryptope") ||
+    isLovableHost(hostname)
+  ) {
     return { logo: "", favicon: "", name: "Cryptope" };
   }
   if (mappedHost.includes("i15.biz") || hostname.includes("i15.biz")) {
@@ -220,7 +241,7 @@ export const getStaticDomainConfig = (): DomainConfig => {
       primaryColor: "#1976d2",
     };
   }
-  if (hostname.includes("cryptope")) {
+  if (hostname.includes("cryptope") || isLovableHost(hostname)) {
     return {
       apiBaseUrl: explicitApiBaseUrl || "https://api.cryptope.net",
       theme: "cryptope",

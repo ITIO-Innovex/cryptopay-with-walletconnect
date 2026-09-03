@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
 import {
+  ClientOnly,
   Outlet,
   Link,
   createRootRouteWithContext,
@@ -8,13 +8,17 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { Suspense, lazy, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { installCryptopeGlobalLogBeacon, reportCryptopeGlobalLogError } from "../lib/globalLogBeacon";
-import { wagmiConfig } from "../lib/walletconnect";
 import { initializeDomainBranding } from "../lib/domainUtils";
+
+// WalletConnect / wagmi touch browser globals (HTMLElement) at import time, so
+// the provider module is loaded lazily and only in the browser. Do NOT import
+// `../lib/walletconnect` statically from this file — it breaks server rendering.
+const WalletProviders = lazy(() => import("../components/WalletProviders"));
 
 function NotFoundComponent() {
   return (
@@ -130,12 +134,20 @@ function RootComponent() {
     initializeDomainBranding();
   }, []);
 
+  // Required: nested routes render here. Removing <Outlet /> breaks all child routes.
+  const app = (
+    <QueryClientProvider client={queryClient}>
+      <Outlet />
+    </QueryClientProvider>
+  );
+
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </QueryClientProvider>
-    </WagmiProvider>
+    // Server / pre-hydration: render the app without wallet providers.
+    // Browser: wrap it in wagmi once the provider chunk has loaded.
+    <ClientOnly fallback={app}>
+      <Suspense fallback={app}>
+        <WalletProviders>{app}</WalletProviders>
+      </Suspense>
+    </ClientOnly>
   );
 }
