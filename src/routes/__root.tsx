@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
 import {
+  ClientOnly,
   Outlet,
   Link,
   createRootRouteWithContext,
@@ -8,13 +8,17 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { Suspense, lazy, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { installCryptopeGlobalLogBeacon, reportCryptopeGlobalLogError } from "../lib/globalLogBeacon";
-import { wagmiConfig } from "../lib/walletconnect";
 import { initializeDomainBranding } from "../lib/domainUtils";
+
+// WalletConnect / wagmi touch browser globals (HTMLElement) at import time, so
+// the provider module is loaded lazily and only in the browser. Do NOT import
+// `../lib/walletconnect` statically from this file — it breaks server rendering.
+const WalletProviders = lazy(() => import("../components/WalletProviders"));
 
 function NotFoundComponent() {
   return (
