@@ -53,10 +53,12 @@ export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     server: { entry: "server" },
-    // Shell-only server render; route components run in the browser
-    // (WalletConnect / lit need the DOM).
+    // Docker only: shell-only SPA output (dist/client/_shell.html for nginx).
+    // Lovable hosting uses full SSR; the SPA prerender step is incompatible
+    // with the Nitro worker bundle. WalletConnect/wagmi is loaded client-only
+    // (src/components/WalletProviders.tsx), so SSR is safe.
     spa: {
-      enabled: true,
+      enabled: staticSpaBuild,
     },
   },
 });
