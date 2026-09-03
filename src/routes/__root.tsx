@@ -134,12 +134,20 @@ function RootComponent() {
     initializeDomainBranding();
   }, []);
 
+  // Required: nested routes render here. Removing <Outlet /> breaks all child routes.
+  const app = (
+    <QueryClientProvider client={queryClient}>
+      <Outlet />
+    </QueryClientProvider>
+  );
+
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </QueryClientProvider>
-    </WagmiProvider>
+    // Server / pre-hydration: render the app without wallet providers.
+    // Browser: wrap it in wagmi once the provider chunk has loaded.
+    <ClientOnly fallback={app}>
+      <Suspense fallback={app}>
+        <WalletProviders>{app}</WalletProviders>
+      </Suspense>
+    </ClientOnly>
   );
 }
