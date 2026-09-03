@@ -39,12 +39,13 @@ export function SiteHeader() {
           <Link to="/login" className="text-muted-foreground hover:text-foreground">
             Log in
           </Link>
-          <a
-            href="/#contact"
+          <Link
+            to="/contact"
+            rel="nofollow"
             className="rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground"
           >
             Talk to us
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

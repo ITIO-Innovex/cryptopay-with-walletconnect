@@ -11,7 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { AccessGate } from "../components/site/AccessGate";
+// Access code gate temporarily disabled — re-enable by uncommenting the import
+// and the <AccessGate> wrapper in RootComponent below.
+// import { AccessGate } from "../components/site/AccessGate";
 
 function NotFoundComponent() {
   return (
@@ -116,10 +118,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AccessGate>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </AccessGate>
+      {/* <AccessGate> */}
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+      {/* </AccessGate> */}
     </QueryClientProvider>
   );
 }
