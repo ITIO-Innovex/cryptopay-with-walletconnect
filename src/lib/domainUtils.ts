@@ -177,6 +177,15 @@ function isLocalDevHost(hostname: string, port: string): boolean {
   );
 }
 
+/**
+ * Lovable preview / published hosts for the Cryptope site
+ * (id-preview--*.lovable.app, *.lovableproject.com, *.lovable.app).
+ * They must brand as Cryptope, not fall through to the PGX/localhost default.
+ */
+function isLovableHost(hostname: string): boolean {
+  return hostname.endsWith(".lovable.app") || hostname.endsWith(".lovableproject.com");
+}
+
 export const getStaticDomainBranding = (): DomainBranding => {
   if (!isBrowser()) return FALLBACK_BRANDING;
   const hostname = window.location.hostname.toLowerCase();
