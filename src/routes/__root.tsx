@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
 import {
   Outlet,
   Link,
@@ -11,9 +12,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-// Access code gate temporarily disabled — re-enable by uncommenting the import
-// and the <AccessGate> wrapper in RootComponent below.
-// import { AccessGate } from "../components/site/AccessGate";
+import { installCryptopeGlobalLogBeacon, reportCryptopeGlobalLogError } from "../lib/globalLogBeacon";
+import { wagmiConfig } from "../lib/walletconnect";
+import { initializeDomainBranding } from "../lib/domainUtils";
 
 function NotFoundComponent() {
   return (
@@ -42,6 +43,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportCryptopeGlobalLogError(error, "tanstack_root_error_component");
   }, [error]);
 
   return (
@@ -80,9 +82,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "author", content: "Cryptope" },
+      { title: "Crypto Checkout Page" },
+      { name: "description", content: "Crypto Checkout Page" },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "Crypto Checkout Page" },
+      { property: "og:description", content: "Crypto Checkout Page" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Crypto Checkout Page" },
+      { name: "twitter:description", content: "Crypto Checkout Page" },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1bd29bcf-57ec-4943-b56e-68dfb9f52a94" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1bd29bcf-57ec-4943-b56e-68dfb9f52a94" },
     ],
@@ -116,12 +125,17 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    installCryptopeGlobalLogBeacon();
+    initializeDomainBranding();
+  }, []);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* <AccessGate> */}
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      {/* </AccessGate> */}
-    </QueryClientProvider>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

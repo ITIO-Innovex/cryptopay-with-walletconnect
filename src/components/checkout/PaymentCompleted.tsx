@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AlertCircle, Check, CheckCircle2, Copy, Wallet } from "lucide-react";
 import type { CryptoCurrency, CryptoNetwork } from "@/data/cryptocurrencies";
-import { MOCK_DEPOSIT_ADDRESS } from "@/data/cryptocurrencies";
 import { formatAmount, shortenMiddle } from "@/lib/payment";
 import { ExplorerHashes } from "./ExplorerHashes";
 import { RefundTermsDialog } from "./RefundTermsDialog";
@@ -10,6 +9,8 @@ import { ConfirmRefundDialog } from "./ConfirmRefundDialog";
 interface PaymentCompletedProps {
   currency: CryptoCurrency;
   network: CryptoNetwork;
+  /** Issued deposit address from the backend. */
+  depositAddress: string;
   /** Total crypto amount received. */
   received: number;
   /** Extra amount overpaid (0 when exact). */
@@ -36,6 +37,7 @@ interface PaymentCompletedProps {
 export function PaymentCompleted({
   currency,
   network,
+  depositAddress,
   received,
   extra,
   senderAddress,
@@ -69,8 +71,8 @@ export function PaymentCompleted({
     },
     {
       label: "Address",
-      value: shortenMiddle(MOCK_DEPOSIT_ADDRESS),
-      copyValue: MOCK_DEPOSIT_ADDRESS,
+      value: shortenMiddle(depositAddress),
+      copyValue: depositAddress,
     },
     { label: "Currency", value: `${currency.symbol} · ${currency.name}`, copyValue: currency.symbol },
     {

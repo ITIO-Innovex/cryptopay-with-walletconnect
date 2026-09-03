@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
 import { CheckCircle2, ImagePlus, Send, X } from "lucide-react";
 import { z } from "zod";
+import { reportProblem } from "@/lib/checkout-api";
 
 interface ReportProblemDialogProps {
   open: boolean;
+  sessionId?: string;
   /** Pre-filled transaction context, if known. */
   defaultTxHash?: string;
   onClose: () => void;
@@ -23,16 +25,21 @@ const reportSchema = z.object({
 
 /**
  * Lets a buyer report a problem with their payment (wrong network, missing
- * deposit, etc.) and attach a screenshot for the support team to review. The
- * submission is mocked client-side and structured to wire to a backend later.
+ * deposit, etc.) and attach a screenshot for the support team to review.
  */
-export function ReportProblemDialog({ open, defaultTxHash, onClose }: ReportProblemDialogProps) {
+export function ReportProblemDialog({
+  open,
+  sessionId,
+  defaultTxHash,
+  onClose,
+}: ReportProblemDialogProps) {
   const [description, setDescription] = useState("");
   const [txHash, setTxHash] = useState(defaultTxHash ?? "");
   const [fileName, setFileName] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
@@ -52,17 +59,29 @@ export function ReportProblemDialog({ open, defaultTxHash, onClose }: ReportProb
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const parsed = reportSchema.safeParse({ description, txHash });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Please check your details.");
       return;
     }
+    if (!sessionId) {
+      setError("Missing checkout session.");
+      return;
+    }
     setError(null);
-    // Mock submit — payload ready to send to a backend later.
-    // BACKEND: POST /api/checkout/session/:id/report (multipart).
-    // See INTEGRATION.md §6. `reportSchema` above is the authoritative payload shape.
-    setSubmitted(true);
+    setSubmitting(true);
+    try {
+      await reportProblem(sessionId, {
+        description: parsed.data.description,
+        txHash: parsed.data.txHash || undefined,
+      });
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send report");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const reset = () => {
@@ -185,11 +204,12 @@ export function ReportProblemDialog({ open, defaultTxHash, onClose }: ReportProb
 
               <button
                 type="button"
-                onClick={handleSubmit}
-                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                onClick={() => void handleSubmit()}
+                disabled={submitting}
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
               >
                 <Send className="h-4 w-4" />
-                Send report
+                {submitting ? "Sending…" : "Send report"}
               </button>
             </div>
           </>

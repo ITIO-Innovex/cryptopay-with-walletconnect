@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AlertCircle, Check, ChevronDown, ChevronUp, Copy, QrCode, Wallet } from "lucide-react";
 import type { CryptoCurrency, CryptoNetwork } from "@/data/cryptocurrencies";
-import { MOCK_DEPOSIT_ADDRESS } from "@/data/cryptocurrencies";
 import { formatAmount } from "@/lib/payment";
 import { CountdownRing } from "./CountdownRing";
 import { PaymentQr, type QrMode } from "./PaymentQr";
@@ -11,6 +10,8 @@ import { StatusCheckButton } from "./StatusCheckButton";
 interface PaymentProcessingProps {
   currency: CryptoCurrency;
   network: CryptoNetwork;
+  /** Issued deposit address from the backend. */
+  depositAddress: string;
   /** Remaining crypto amount still owed. */
   remaining: number;
   secondsLeft: number;
@@ -24,6 +25,8 @@ interface PaymentProcessingProps {
   expired?: boolean;
   /** Opens the report-a-problem dialog. */
   onReport: () => void;
+  /** Live payment status check (Pay-In stub / gateway). */
+  onStatusCheck?: () => Promise<string | void>;
 }
 
 /**
@@ -34,6 +37,7 @@ interface PaymentProcessingProps {
 export function PaymentProcessing({
   currency,
   network,
+  depositAddress,
   remaining,
   secondsLeft,
   windowSeconds,
@@ -41,6 +45,7 @@ export function PaymentProcessing({
   expired,
   paymentMethod,
   onReport,
+  onStatusCheck,
 }: PaymentProcessingProps) {
   const remainingLabel = formatAmount(remaining);
   const [qrMode, setQrMode] = useState<QrMode>("amount");
@@ -91,7 +96,7 @@ export function PaymentProcessing({
 
       <div className="border-t border-border pt-6">
         <PaymentQr
-          address={MOCK_DEPOSIT_ADDRESS}
+          address={depositAddress}
           amount={remainingLabel}
           currency={currency}
           network={network}
@@ -156,13 +161,13 @@ export function PaymentProcessing({
                 <div className="min-w-0">
                   <p className="text-sm text-muted-foreground">Address</p>
                   <p className="mt-1 break-all text-lg font-semibold text-foreground">
-                    {MOCK_DEPOSIT_ADDRESS}
+                    {depositAddress}
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2 text-muted-foreground">
                   <button
                     type="button"
-                    onClick={() => copy(MOCK_DEPOSIT_ADDRESS, "address")}
+                    onClick={() => copy(depositAddress, "address")}
                     aria-label="Copy address"
                     className="transition-colors hover:text-foreground"
                   >
@@ -220,7 +225,10 @@ export function PaymentProcessing({
           </p>
         </div>
       ) : (
-        <StatusCheckButton resultMessage="We've received a partial payment. Send the remaining amount above, then check again — confirmations can take a few minutes." />
+        <StatusCheckButton
+          onCheck={onStatusCheck}
+          resultMessage="We've received a partial payment. Send the remaining amount above, then check again — confirmations can take a few minutes."
+        />
       )}
 
       <button

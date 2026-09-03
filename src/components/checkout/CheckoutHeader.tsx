@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react";
+import { BrandLogo } from "@/components/site/BrandLogo";
 
 interface CheckoutHeaderProps {
   /** Whether to show the "Cancel order" back affordance. */
@@ -6,7 +7,7 @@ interface CheckoutHeaderProps {
 }
 
 /**
- * Top bar with the neutral gateway wordmark and a cancel-order action.
+ * Top bar with the domain logo and a cancel-order action.
  */
 export function CheckoutHeader({ onCancel }: CheckoutHeaderProps) {
   return (
@@ -20,10 +21,7 @@ export function CheckoutHeader({ onCancel }: CheckoutHeaderProps) {
           <ArrowLeft className="h-4 w-4" />
           Cancel order
         </button>
-        <div className="text-xl font-semibold tracking-tight">
-          <span className="text-foreground">crypto</span>
-          <span className="text-brand">pe</span>
-        </div>
+        <BrandLogo />
       </div>
     </header>
   );

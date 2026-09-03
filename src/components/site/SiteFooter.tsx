@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
+import { BrandLogo } from "./BrandLogo";
 import { EmailPill } from "./EmailPill";
+import { contactEmailForBrand } from "@/lib/domainUtils";
+import { useDomainBranding } from "@/hooks/useDomainBranding";
 
-
-/** Site footer: policy navigation, support links and company details. No social links. */
 const LEGAL = [
   { slug: "terms", label: "Terms & Conditions" },
   { slug: "privacy", label: "Privacy Policy" },
@@ -20,16 +21,16 @@ const TRUST = [
 ];
 
 export function SiteFooter() {
+  const branding = useDomainBranding();
+  const brand = branding.name || "PGX";
+  const email = contactEmailForBrand(brand);
+
   return (
     <footer className="border-t border-border bg-card/40">
       <div className="mx-auto max-w-5xl px-4 py-12">
         <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="text-xl font-semibold tracking-tight">
-              <span className="text-foreground">crypto</span>
-              <span className="text-brand">pe</span>
-              <span className="text-muted-foreground">.net</span>
-            </div>
+            <BrandLogo />
             <p className="mt-3 text-sm text-muted-foreground">
               Payment page technology for online businesses. Hosted checkout, on-chain
               confirmation, non-custodial settlement to the merchant's own wallet.
@@ -42,9 +43,9 @@ export function SiteFooter() {
           <div>
             <h3 className="text-sm font-semibold">Company</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li>Cryptope</li>
+              <li>{brand}</li>
               <li className="pt-1">
-                <EmailPill compact />
+                <EmailPill email={email} compact />
               </li>
               <li>
                 <Link to="/contact" rel="nofollow" className="hover:text-foreground">
@@ -62,7 +63,7 @@ export function SiteFooter() {
 
         <div className="mt-10 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
           <p>
-            Cryptope is a technology company providing payment page software. It is not a bank,
+            {brand} is a technology company providing payment page software. It is not a bank,
             money transmitter, exchange, broker or custodian, does not hold customer funds, and
             provides no financial, investment, tax or legal advice.
           </p>
@@ -80,14 +81,13 @@ export function SiteFooter() {
             .
           </p>
           <p className="mt-3">
-            © {new Date().getFullYear()} Cryptope. All rights reserved.
+            © {new Date().getFullYear()} {brand}. All rights reserved.
           </p>
         </div>
       </div>
     </footer>
   );
 }
-
 
 function FooterColumn({ title, items }: { title: string; items: { slug: string; label: string }[] }) {
   return (

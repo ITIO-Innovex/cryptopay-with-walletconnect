@@ -3,36 +3,30 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { EmailPill } from "@/components/site/EmailPill";
+import { useDomainBranding } from "@/hooks/useDomainBranding";
+import { contactEmailForBrand } from "@/lib/domainUtils";
 
-/**
- * Contact page. Intentionally excluded from search and AI indexing
- * (noindex, nofollow, noarchive, nosnippet) — it is reachable only via the
- * footer link. The form opens the visitor's mail client (frontend only).
- */
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    feHost: typeof search.feHost === "string" ? search.feHost : undefined,
+  }),
   head: () => ({
     meta: [
-      { title: "Contact Cryptope — Payment Page Technology Enquiries" },
+      { title: "Contact — Payment page technology" },
       {
         name: "description",
-        content:
-          "Contact the Cryptope team about payment page software, supported assets, integration and pricing.",
+        content: "Contact us about payment page software, supported assets, integration and pricing.",
       },
-      { name: "robots", content: "noindex, nofollow, noarchive, nosnippet, noai, noimageindex" },
-      { name: "googlebot", content: "noindex, nofollow" },
-      { property: "og:title", content: "Contact Cryptope" },
-      {
-        property: "og:description",
-        content: "Enquiries about Cryptope payment page software, integration and pricing.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   component: ContactPage,
 });
 
 function ContactPage() {
+  const branding = useDomainBranding();
+  const brand = branding.name || "PGX";
+  const email = contactEmailForBrand(brand);
   const [sent, setSent] = useState(false);
 
   return (
@@ -56,7 +50,7 @@ function ContactPage() {
                   the address below and write to us directly.
                 </p>
                 <div className="mt-3">
-                  <EmailPill />
+                  <EmailPill email={email} />
                 </div>
               </div>
             ) : (
@@ -66,17 +60,13 @@ function ContactPage() {
                   e.preventDefault();
                   const fd = new FormData(e.currentTarget);
                   const body = `Name: ${fd.get("name")}\nEmail: ${fd.get("email")}\nWebsite: ${fd.get("website")}\n\n${fd.get("message")}`;
-                  window.location.href = `mailto:gateway@cryptope.net?subject=${encodeURIComponent("Cryptope gateway enquiry")}&body=${encodeURIComponent(body)}`;
+                  window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+                    `${brand} gateway enquiry`,
+                  )}&body=${encodeURIComponent(body)}`;
                   setSent(true);
                 }}
               >
-                <Field
-                  name="name"
-                  label="Your name"
-                  placeholder="Alex Roy"
-                  hint="So we know who to reply to."
-                  required
-                />
+                <Field name="name" label="Your name" placeholder="Alex Roy" hint="So we know who to reply to." required />
                 <Field
                   name="email"
                   label="Email"
@@ -121,23 +111,19 @@ function ContactPage() {
             <h2 className="text-sm font-semibold">Company details</h2>
             <dl className="mt-3 space-y-3 text-sm text-muted-foreground">
               <div>
-                <dt className="text-xs uppercase tracking-wide">Legal entity</dt>
-                <dd className="text-foreground">Onternity Tech Limited</dd>
-              </div>
-              <div>
                 <dt className="text-xs uppercase tracking-wide">Trading as</dt>
-                <dd className="text-foreground">Cryptope</dd>
+                <dd className="text-foreground">{brand}</dd>
               </div>
               <div>
                 <dt className="text-xs uppercase tracking-wide">Email</dt>
                 <dd className="mt-1">
-                  <EmailPill compact />
+                  <EmailPill email={email} compact />
                 </dd>
               </div>
             </dl>
             <p className="mt-4 text-xs text-muted-foreground">
-              Onternity Tech Limited is a technology company providing payment page software. It is
-              not a bank, exchange, broker or custodian and does not hold customer funds.
+              {brand} is a technology company providing payment page software. It is not a bank,
+              exchange, broker or custodian and does not hold customer funds.
             </p>
           </aside>
         </div>
@@ -148,7 +134,6 @@ function ContactPage() {
   );
 }
 
-/** Text input with label, placeholder and a short helper line. */
 function Field({
   name,
   label,

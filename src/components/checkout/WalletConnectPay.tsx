@@ -11,7 +11,7 @@ interface WalletConnectPayProps {
   /** Human amount, e.g. "14.02" */
   amount: string;
   /** Called once a tx hash is returned from the wallet. */
-  onTxSubmitted: (hash: string, amount: number) => void;
+  onTxSubmitted: (hash: string, amount: number, fromAddress?: string) => void;
 }
 
 /**
@@ -33,9 +33,9 @@ export function WalletConnectPay({
 }: WalletConnectPayProps) {
   const [open, setOpen] = useState(false);
 
-  const handleApproved = (hash: string, _fromAddress: string) => {
+  const handleApproved = (hash: string, fromAddress: string) => {
     const amountNum = parseFloat(amount) || 0;
-    onTxSubmitted(hash, amountNum);
+    onTxSubmitted(hash, amountNum, fromAddress);
   };
 
   return (

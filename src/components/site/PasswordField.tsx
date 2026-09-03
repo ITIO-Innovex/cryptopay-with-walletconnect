@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Check, Eye, EyeOff, Lock, X } from "lucide-react";
 
-/** Individual password rules shown live while the user types. */
 export const PASSWORD_RULES = [
   { id: "length", label: "At least 8 characters", test: (v: string) => v.length >= 8 },
   { id: "upper", label: "One uppercase letter", test: (v: string) => /[A-Z]/.test(v) },
@@ -10,7 +9,6 @@ export const PASSWORD_RULES = [
   { id: "symbol", label: "One special character", test: (v: string) => /[^A-Za-z0-9]/.test(v) },
 ];
 
-/** True when every password rule passes. */
 export function isStrongPassword(value: string) {
   return PASSWORD_RULES.every((r) => r.test(value));
 }
@@ -21,16 +19,10 @@ interface PasswordFieldProps {
   hint: string;
   value: string;
   onChange: (value: string) => void;
-  /** Show the live rule checklist below the field. */
   showRules?: boolean;
-  /** Message rendered in the destructive colour, e.g. a mismatch warning. */
   error?: string;
 }
 
-/**
- * Password input with a show/hide eye control and an optional live checklist
- * that verifies each password condition as the user types.
- */
 export function PasswordField({
   id,
   label,
@@ -58,6 +50,7 @@ export function PasswordField({
           title={hint}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          autoComplete="current-password"
           className="w-full bg-transparent py-2.5 text-sm outline-none"
         />
         <button

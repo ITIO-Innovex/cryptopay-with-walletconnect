@@ -9,15 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CryptoRouteImport } from './routes/crypto'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -25,14 +25,14 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
+const CryptoRoute = CryptoRouteImport.update({
+  id: '/crypto',
+  path: '/crypto',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LegalSlugRoute = LegalSlugRouteImport.update({
@@ -43,49 +43,49 @@ const LegalSlugRoute = LegalSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/crypto': typeof CryptoRoute
   '/login': typeof LoginRoute
   '/legal/$slug': typeof LegalSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/crypto': typeof CryptoRoute
   '/login': typeof LoginRoute
   '/legal/$slug': typeof LegalSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/crypto': typeof CryptoRoute
   '/login': typeof LoginRoute
   '/legal/$slug': typeof LegalSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/checkout' | '/contact' | '/login' | '/legal/$slug'
+  fullPaths: '/' | '/contact' | '/crypto' | '/login' | '/legal/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/checkout' | '/contact' | '/login' | '/legal/$slug'
-  id: '__root__' | '/' | '/checkout' | '/contact' | '/login' | '/legal/$slug'
+  to: '/' | '/contact' | '/crypto' | '/login' | '/legal/$slug'
+  id: '__root__' | '/' | '/contact' | '/crypto' | '/login' | '/legal/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
+  CryptoRoute: typeof CryptoRoute
   LoginRoute: typeof LoginRoute
   LegalSlugRoute: typeof LegalSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -95,18 +95,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
+    '/crypto': {
+      id: '/crypto'
+      path: '/crypto'
+      fullPath: '/crypto'
+      preLoaderRoute: typeof CryptoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/legal/$slug': {
@@ -121,8 +121,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
+  CryptoRoute: CryptoRoute,
   LoginRoute: LoginRoute,
   LegalSlugRoute: LegalSlugRoute,
 }

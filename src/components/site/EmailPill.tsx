@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { Check, Copy, Mail } from "lucide-react";
 
-const EMAIL = "gateway@cryptope.net";
-
 /**
- * Displays the contact email as a bordered pill with an envelope icon and a
- * copy-to-clipboard action, so visitors without a mail client can still use it.
+ * Contact email pill with copy-to-clipboard. Email is passed in so branding
+ * can swap the address without a second hardcoded constant.
  */
-export function EmailPill({ compact = false }: { compact?: boolean }) {
+export function EmailPill({ email, compact = false }: { email: string; compact?: boolean }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(EMAIL);
+      await navigator.clipboard.writeText(email);
     } catch {
-      /* clipboard unavailable — the mailto link still works */
+      /* clipboard unavailable — mailto still works */
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -26,12 +24,9 @@ export function EmailPill({ compact = false }: { compact?: boolean }) {
         compact ? "px-2.5 py-1.5 text-xs" : "px-3 py-2 text-sm"
       }`}
     >
-      <Mail
-        className={compact ? "h-3.5 w-3.5 text-brand" : "h-4 w-4 text-brand"}
-        aria-hidden="true"
-      />
-      <a href={`mailto:${EMAIL}`} className="font-medium text-foreground hover:text-brand">
-        {EMAIL}
+      <Mail className={compact ? "h-3.5 w-3.5 text-brand" : "h-4 w-4 text-brand"} aria-hidden="true" />
+      <a href={`mailto:${email}`} className="font-medium text-foreground hover:text-brand">
+        {email}
       </a>
       <button
         type="button"

@@ -2,28 +2,19 @@ import { CRYPTO_CURRENCIES } from "@/data/cryptocurrencies";
 import { CoinIcon } from "@/components/checkout/CoinIcon";
 import { getNetworkIcon } from "@/components/checkout/icons/registry";
 
-
-/** Coins highlighted on the home page, in checkout order. */
 const HIGHLIGHT = ["USDT", "USDC", "BTC", "ETH", "SOL", "LTC", "LINK", "DOT", "MANA", "GRT", "IMX", "HBAR"];
 
 const CURRENCIES = HIGHLIGHT.map((s) => CRYPTO_CURRENCIES.find((c) => c.symbol === s)).filter(
   (c): c is (typeof CRYPTO_CURRENCIES)[number] => Boolean(c),
 );
 
-/** Unique network list across the whole catalog, for the network row. */
 const NETWORKS = Array.from(
-  new Map(
-    CRYPTO_CURRENCIES.flatMap((c) => c.networks).map((n) => [n.name, n] as const),
-  ).values(),
+  new Map(CRYPTO_CURRENCIES.flatMap((c) => c.networks).map((n) => [n.name, n] as const)).values(),
 );
 
-/**
- * Shows the coins, token standards and blockchain networks the checkout can
- * accept, using the same icons the payment page renders.
- */
 export function SupportedAssets() {
   return (
-    <section id="assets" className="mx-auto max-w-5xl px-4 py-16">
+    <section id="assets" className="scroll-mt-20 mx-auto max-w-5xl px-4 py-16">
       <h2 className="text-2xl font-semibold tracking-tight">Coins, tokens and networks</h2>
       <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
         Each asset is accepted on the networks shown below. The customer picks a coin and a
@@ -65,7 +56,6 @@ export function SupportedAssets() {
   );
 }
 
-/** Small circular blockchain logo used in the network row. */
 function NetworkChipIcon({ name, color }: { name: string; color: string }) {
   const Icon = getNetworkIcon(name);
   return (
@@ -73,9 +63,7 @@ function NetworkChipIcon({ name, color }: { name: string; color: string }) {
       className="flex h-[18px] w-[18px] items-center justify-center rounded-full text-white"
       style={{ backgroundColor: color }}
     >
-      {Icon ? <Icon variant="mono" size={12} /> : (
-        <span className="text-[9px] font-semibold">{name.slice(0, 1)}</span>
-      )}
+      {Icon ? <Icon variant="mono" size={12} /> : <span className="text-[9px] font-semibold">{name.slice(0, 1)}</span>}
     </span>
   );
 }

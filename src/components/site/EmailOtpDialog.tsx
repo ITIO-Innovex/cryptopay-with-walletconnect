@@ -11,8 +11,7 @@ interface EmailOtpDialogProps {
 }
 
 /**
- * Small demonstration dialog that verifies a work email address with a
- * one-time code. No code is actually sent: 123456 is accepted.
+ * Demonstration-only OTP dialog. No code is sent; 123456 is accepted.
  */
 export function EmailOtpDialog({ open, email, onVerified, onClose }: EmailOtpDialogProps) {
   const [code, setCode] = useState("");
@@ -46,12 +45,7 @@ export function EmailOtpDialog({ open, email, onVerified, onClose }: EmailOtpDia
       >
         <div className="flex items-start justify-between gap-3">
           <h2 className="text-sm font-semibold">Verify your work email</h2>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="text-muted-foreground hover:text-foreground"
-          >
+          <button type="button" onClick={onClose} aria-label="Close" className="text-muted-foreground hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -76,9 +70,7 @@ export function EmailOtpDialog({ open, email, onVerified, onClose }: EmailOtpDia
           className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-center text-base tracking-[0.4em] outline-none focus:border-brand"
         />
         {error && (
-          <p className="mt-1.5 text-xs text-destructive">
-            That code is not correct. Check the code and try again.
-          </p>
+          <p className="mt-1.5 text-xs text-destructive">That code is not correct. Check the code and try again.</p>
         )}
         <button
           type="submit"

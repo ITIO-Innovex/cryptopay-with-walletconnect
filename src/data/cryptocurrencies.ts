@@ -198,8 +198,7 @@ export const PRICE_PER_USD: Record<string, number> = {
 };
 
 /**
- * Mock deposit address shown on the final step.
- * BACKEND: replace with per-(currency, network) address issued by
- * `POST /api/checkout/session/:id/deposit-address`. See INTEGRATION.md §2.
+ * @deprecated Prefer live deposit addresses from POST /api/checkout/session/:id/deposit-address.
+ * Kept only as a fallback constant for local UI stories.
  */
 export const MOCK_DEPOSIT_ADDRESS = "0x68436e61f2e5b07023d957c1584a53d982018b49";

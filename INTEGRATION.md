@@ -1,22 +1,19 @@
-# Backend Integration Guide (for Cursor)
+# Backend Integration Guide
 
-This checkout is **frontend-only**. Every payment outcome is currently driven
-by `SimulationPanel` and random helpers in `src/lib/payment.ts`. This document
-lists **every seam** where a real backend must be wired in, with the exact
-file/line, the current mock, and the required request/response contract.
+**Status (2026):** Checkout UI is wired to the live Cryptope API via `src/lib/checkout-api.ts`
+and `VITE_API_BASE_URL` (default `http://localhost:9005`). Open links as
+`http://localhost:5173/?session=cps_…`.
 
-Search the codebase for `BACKEND:` to jump to every integration point in code.
+This document remains the contract reference for each endpoint. Dev-only
+`SimulationPanel` calls `POST …/simulate-deposit` when `import.meta.env.DEV`.
 
 ---
 
 ## 1. Order / Checkout Session
 
-**Where:** `src/routes/index.tsx` — the `ORDER` constant + `orderId` state.
+**Where:** `src/routes/index.tsx` — loads session from query `?session=`.
 
-Today the order (`title`, `description`, `amountUsd`) is hardcoded and
-`orderId` is generated locally via `makeOrderId()`.
-
-**Backend must provide:**
+**API:**
 
 ```
 GET /api/checkout/session/:sessionId

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AlertCircle, ArrowLeft, Check, Copy, QrCode } from "lucide-react";
 import type { CryptoCurrency, CryptoNetwork } from "@/data/cryptocurrencies";
-import { MOCK_DEPOSIT_ADDRESS } from "@/data/cryptocurrencies";
 import { CountdownRing } from "./CountdownRing";
 import { PaymentQr, type QrMode } from "./PaymentQr";
 import { StatusCheckButton } from "./StatusCheckButton";
@@ -12,6 +11,9 @@ interface SendFundsProps {
   currency: CryptoCurrency;
   network: CryptoNetwork;
   amount: string;
+  /** Issued deposit address from the backend. */
+  depositAddress: string;
+  memo?: string | null;
   /** Fiat-equivalent label for the order total, e.g. "14 USD". */
   usdLabel: string;
   /** Seconds remaining before the payment window expires. */
@@ -24,7 +26,11 @@ interface SendFundsProps {
   /** Opens the report-a-problem dialog. */
   onReport: () => void;
   /** Called when the user submits a real on-chain tx via WalletConnect. */
-  onWalletTx?: (hash: string, amount: number) => void;
+  onWalletTx?: (hash: string, amount: number, fromAddress?: string) => void;
+  /** Live payment status check (Pay-In stub / gateway). */
+  onStatusCheck?: () => Promise<string | void>;
+  transID?: string;
+  depositRef?: string;
 }
 
 /**
@@ -35,6 +41,8 @@ export function SendFunds({
   currency,
   network,
   amount,
+  depositAddress,
+  memo,
   usdLabel,
   secondsLeft,
   windowSeconds,
@@ -42,6 +50,9 @@ export function SendFunds({
   onBack,
   onReport,
   onWalletTx,
+  onStatusCheck,
+  transID,
+  depositRef,
 }: SendFundsProps) {
   const [qrMode, setQrMode] = useState<QrMode>("address");
   const [copied, setCopied] = useState<"amount" | "address" | null>(null);
@@ -86,7 +97,7 @@ export function SendFunds({
           <WalletConnectPay
             currency={currency}
             network={network}
-            to={MOCK_DEPOSIT_ADDRESS as `0x${string}`}
+            to={depositAddress as `0x${string}`}
             amount={amount}
             onTxSubmitted={onWalletTx}
           />
@@ -98,7 +109,7 @@ export function SendFunds({
 
       <div className="border-t border-border pt-6">
         <PaymentQr
-          address={MOCK_DEPOSIT_ADDRESS}
+          address={depositAddress}
           amount={amount}
           currency={currency}
           network={network}
@@ -124,11 +135,25 @@ export function SendFunds({
 
         <Field
           label="Address"
-          onCopy={() => copy(MOCK_DEPOSIT_ADDRESS, "address")}
+          onCopy={() => copy(depositAddress, "address")}
           onShowQr={() => setQrMode("address")}
           copied={copied === "address"}
         >
-          <p className="break-all text-lg font-semibold text-foreground">{MOCK_DEPOSIT_ADDRESS}</p>
+          <p className="break-all text-lg font-semibold text-foreground">{depositAddress}</p>
+          {memo ? (
+            <p className="mt-1 text-sm text-muted-foreground">Memo / tag: {memo}</p>
+          ) : null}
+          {transID ? (
+            <p className="mt-2 text-sm text-muted-foreground">
+              transID <span className="font-mono text-foreground">{transID}</span>
+              {depositRef ? (
+                <>
+                  {" "}
+                  · reference <span className="font-mono text-foreground">{depositRef}</span>
+                </>
+              ) : null}
+            </p>
+          ) : null}
         </Field>
       </div>
 
@@ -166,7 +191,10 @@ export function SendFunds({
           </p>
         </div>
       ) : (
-        <StatusCheckButton resultMessage="No deposit detected yet. If you've already paid, the transaction may still be waiting for network confirmations — check again in a few minutes." />
+        <StatusCheckButton
+          onCheck={onStatusCheck}
+          resultMessage="No deposit detected yet. If you've already paid, the transaction may still be waiting for network confirmations — check again in a few minutes."
+        />
       )}
 
       <button

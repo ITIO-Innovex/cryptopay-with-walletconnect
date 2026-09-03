@@ -5,8 +5,11 @@ interface StatusCheckButtonProps {
   /**
    * Message shown after a check completes, describing the current on-chain
    * state (e.g. "No deposit detected yet" or "Waiting for confirmations").
+   * Ignored when {@link onCheck} returns a string.
    */
   resultMessage: string;
+  /** Live status poll — return a buyer-facing message (or void to use resultMessage). */
+  onCheck?: () => Promise<string | void>;
 }
 
 /**
@@ -14,17 +17,31 @@ interface StatusCheckButtonProps {
  * own wallet app, so instead of a "I have paid" button this runs a short,
  * friendly poll and reports what the gateway currently sees on-chain.
  */
-export function StatusCheckButton({ resultMessage }: StatusCheckButtonProps) {
+export function StatusCheckButton({ resultMessage, onCheck }: StatusCheckButtonProps) {
   const [checking, setChecking] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [liveMessage, setLiveMessage] = useState<string | null>(null);
 
   const runCheck = () => {
     setChecking(true);
     setChecked(false);
-    window.setTimeout(() => {
+    setLiveMessage(null);
+    const finish = (msg?: string | void) => {
       setChecking(false);
       setChecked(true);
-    }, 2000);
+      if (typeof msg === "string" && msg.trim()) {
+        setLiveMessage(msg.trim());
+      }
+    };
+    if (onCheck) {
+      void onCheck()
+        .then(finish)
+        .catch((err: unknown) => {
+          finish(err instanceof Error ? err.message : "Status check failed");
+        });
+      return;
+    }
+    window.setTimeout(() => finish(), 2000);
   };
 
   return (
@@ -58,7 +75,7 @@ export function StatusCheckButton({ resultMessage }: StatusCheckButtonProps) {
         )}
       </button>
       {checked && !checking && (
-        <p className="mt-3 text-sm text-muted-foreground">{resultMessage}</p>
+        <p className="mt-3 text-sm text-muted-foreground">{liveMessage || resultMessage}</p>
       )}
     </div>
   );
