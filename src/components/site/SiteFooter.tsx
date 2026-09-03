@@ -42,14 +42,14 @@ export function SiteFooter() {
           <div>
             <h3 className="text-sm font-semibold">Company</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li>Onternity Tech Limited</li>
+              <li>Cryptope</li>
               <li className="pt-1">
                 <EmailPill compact />
               </li>
               <li>
-                <a href="/#contact" className="hover:text-foreground">
+                <Link to="/contact" rel="nofollow" className="hover:text-foreground">
                   Contact us
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="/#faq" className="hover:text-foreground">
@@ -62,9 +62,9 @@ export function SiteFooter() {
 
         <div className="mt-10 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
           <p>
-            Onternity Tech Limited, trading as Cryptope, is a technology company providing payment
-            page software. It is not a bank, money transmitter, exchange, broker or custodian, does
-            not hold customer funds, and provides no financial, investment, tax or legal advice.
+            Cryptope is a technology company providing payment page software. It is not a bank,
+            money transmitter, exchange, broker or custodian, does not hold customer funds, and
+            provides no financial, investment, tax or legal advice.
           </p>
           <p className="mt-3">
             Digital asset payments are final once confirmed on the blockchain and cannot be
@@ -80,7 +80,7 @@ export function SiteFooter() {
             .
           </p>
           <p className="mt-3">
-            © {new Date().getFullYear()} Onternity Tech Limited. All rights reserved.
+            © {new Date().getFullYear()} Cryptope. All rights reserved.
           </p>
         </div>
       </div>

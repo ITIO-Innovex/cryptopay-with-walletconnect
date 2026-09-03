@@ -11,7 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { AccessGate } from "../components/site/AccessGate";
+// Access code gate temporarily disabled — re-enable by uncommenting the import
+// and the <AccessGate> wrapper in RootComponent below.
+// import { AccessGate } from "../components/site/AccessGate";
 
 function NotFoundComponent() {
   return (
@@ -78,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "author", content: "Onternity Tech Limited" },
+      { name: "author", content: "Cryptope" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1bd29bcf-57ec-4943-b56e-68dfb9f52a94" },
@@ -116,10 +118,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AccessGate>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </AccessGate>
+      {/* <AccessGate> */}
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
+      {/* </AccessGate> */}
     </QueryClientProvider>
   );
 }
