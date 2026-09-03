@@ -198,7 +198,11 @@ export const getStaticDomainBranding = (): DomainBranding => {
   if (mappedHost.includes("boxchrge.com") || hostname.includes("boxchrge.com")) {
     return { logo: "/bc_logo.png", favicon: "/bc_favicon.png", name: "BoxCharge" };
   }
-  if (mappedHost.includes("cryptope") || hostname.includes("cryptope")) {
+  if (
+    mappedHost.includes("cryptope") ||
+    hostname.includes("cryptope") ||
+    isLovableHost(hostname)
+  ) {
     return { logo: "", favicon: "", name: "Cryptope" };
   }
   if (mappedHost.includes("i15.biz") || hostname.includes("i15.biz")) {
