@@ -29,11 +29,19 @@ const publicBase = normalizeBase(
   process.env.VITE_BASE_PATH || process.env.CRYPTOPE_PUBLIC_BASE,
 );
 
+/**
+ * Static SPA build for the Docker/nginx deployment only (set in Dockerfile).
+ * Lovable hosting needs the Nitro server bundle — disabling it there leaves
+ * bare imports (e.g. "@tanstack/react-router") unresolved in the deployed
+ * worker and every request returns 500 "This page didn't load".
+ */
+const staticSpaBuild = process.env.CRYPTOPE_SPA_BUILD === "1";
+
 export default defineConfig({
   // Served on :8080; merchant (:3001) proxies /cryptope-ui → this app (see pgx_merchant/vite.config.ts).
-  // Docker/prod: skip Nitro SSR (WalletConnect/lit needs DOM). Client assets + ensure-spa-index.mjs.
-  // Skip Nitro deploy bundle — SPA prerender emits dist/client/_shell.html for nginx.
-  nitro: false,
+  // Docker/prod (CRYPTOPE_SPA_BUILD=1): skip Nitro — SPA prerender emits dist/client/_shell.html
+  // for nginx via scripts/ensure-spa-index.mjs. Everywhere else keep the default deploy bundle.
+  ...(staticSpaBuild ? { nitro: false as const } : {}),
   vite: {
     base: publicBase,
     server: {
@@ -45,6 +53,8 @@ export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     server: { entry: "server" },
+    // Shell-only server render; route components run in the browser
+    // (WalletConnect / lit need the DOM).
     spa: {
       enabled: true,
     },
