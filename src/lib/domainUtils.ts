@@ -27,11 +27,19 @@ const DOMAIN_MAP_EVENT = "pgx-domain-map-updated";
 const CACHE_KEY = "pgx.multiDomainsMap.v1";
 const CACHE_TTL_MS = 60_000;
 
+/**
+ * Branding used during server rendering and for the first client render
+ * (before the hostname is inspected) so server and client HTML match.
+ * This repository is the Cryptope site, so Cryptope is the neutral default.
+ */
 const FALLBACK_BRANDING: DomainBranding = {
   logo: "",
   favicon: "",
-  name: "PGX",
+  name: "Cryptope",
 };
+
+/** Hydration-safe initial branding — identical on server and client. */
+export const getInitialDomainBranding = (): DomainBranding => FALLBACK_BRANDING;
 
 let runtimeOverride: DomainMapOverride | null = null;
 let mapReady = false;
