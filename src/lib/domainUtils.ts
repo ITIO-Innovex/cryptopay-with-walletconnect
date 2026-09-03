@@ -233,7 +233,7 @@ export const getStaticDomainConfig = (): DomainConfig => {
       primaryColor: "#1976d2",
     };
   }
-  if (hostname.includes("cryptope")) {
+  if (hostname.includes("cryptope") || isLovableHost(hostname)) {
     return {
       apiBaseUrl: explicitApiBaseUrl || "https://api.cryptope.net",
       theme: "cryptope",
