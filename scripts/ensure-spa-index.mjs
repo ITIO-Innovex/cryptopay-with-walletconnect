@@ -1,10 +1,20 @@
 #!/usr/bin/env node
 /**
- * After `vite build` (TanStack SPA, nitro:false), ensure dist/client/index.html exists
- * for nginx try_files. Shell usually lands as dist/client/_shell.html.
+ * After `vite build` with CRYPTOPE_SPA_BUILD=1 (TanStack SPA, nitro:false, Docker/nginx),
+ * ensure dist/client/index.html exists for nginx try_files. Shell usually lands as
+ * dist/client/_shell.html.
+ *
+ * Skipped for every other build: on Lovable hosting a static dist/client/index.html
+ * would be served for "/" INSTEAD of the server-rendered page and the site would
+ * render blank.
  */
 import fs from "node:fs";
 import path from "node:path";
+
+if (process.env.CRYPTOPE_SPA_BUILD !== "1") {
+  console.log("[ensure-spa-index] skipped (not a CRYPTOPE_SPA_BUILD=1 static build)");
+  process.exit(0);
+}
 
 const clientDir = path.resolve(process.cwd(), "dist/client");
 
