@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "author", content: "Onternity Tech Limited" },
+      { name: "author", content: "Cryptope" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1bd29bcf-57ec-4943-b56e-68dfb9f52a94" },
