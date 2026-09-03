@@ -7,9 +7,8 @@ import { useDomainBranding } from "@/hooks/useDomainBranding";
 import { contactEmailForBrand } from "@/lib/domainUtils";
 
 export const Route = createFileRoute("/contact")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    feHost: typeof search.feHost === "string" ? search.feHost : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { feHost?: string } =>
+    typeof search.feHost === "string" ? { feHost: search.feHost } : {},
   head: () => ({
     meta: [
       { title: "Contact — Payment page technology" },

@@ -64,6 +64,7 @@ function Checkout() {
   // responses (INTEGRATION.md §1 & §7). Random generators are dev-only.
   const [orderId] = useState(makeOrderId);
   const [senderAddress] = useState(randomWalletAddress);
+  const [depositAddress] = useState(randomWalletAddress);
   const [reportOpen, setReportOpen] = useState(false);
   const customerEmail = "ar*n@it*o.in";
 
@@ -234,6 +235,7 @@ function Checkout() {
             <SendFunds
               currency={currency}
               network={network}
+              depositAddress={depositAddress}
               amount={cryptoAmount}
               usdLabel={`${ORDER.amountUsd} USD`}
               secondsLeft={secondsLeft}
@@ -249,6 +251,7 @@ function Checkout() {
             <PaymentProcessing
               currency={currency}
               network={network}
+              depositAddress={depositAddress}
               remaining={remaining}
               secondsLeft={secondsLeft}
               windowSeconds={PAYMENT_WINDOW_SECONDS}
@@ -263,6 +266,7 @@ function Checkout() {
             <PaymentCompleted
               currency={currency}
               network={network}
+              depositAddress={depositAddress}
               received={received}
               extra={extra}
               senderAddress={senderAddress}
