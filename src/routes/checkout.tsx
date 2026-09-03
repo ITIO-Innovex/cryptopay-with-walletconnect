@@ -64,6 +64,7 @@ function Checkout() {
   // responses (INTEGRATION.md §1 & §7). Random generators are dev-only.
   const [orderId] = useState(makeOrderId);
   const [senderAddress] = useState(randomWalletAddress);
+  const [depositAddress] = useState(randomWalletAddress);
   const [reportOpen, setReportOpen] = useState(false);
   const customerEmail = "ar*n@it*o.in";
 
