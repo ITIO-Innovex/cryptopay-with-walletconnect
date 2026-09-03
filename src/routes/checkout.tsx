@@ -234,6 +234,7 @@ function Checkout() {
             <SendFunds
               currency={currency}
               network={network}
+              depositAddress={depositAddress}
               amount={cryptoAmount}
               usdLabel={`${ORDER.amountUsd} USD`}
               secondsLeft={secondsLeft}
@@ -249,6 +250,7 @@ function Checkout() {
             <PaymentProcessing
               currency={currency}
               network={network}
+              depositAddress={depositAddress}
               remaining={remaining}
               secondsLeft={secondsLeft}
               windowSeconds={PAYMENT_WINDOW_SECONDS}
@@ -263,6 +265,7 @@ function Checkout() {
             <PaymentCompleted
               currency={currency}
               network={network}
+              depositAddress={depositAddress}
               received={received}
               extra={extra}
               senderAddress={senderAddress}
