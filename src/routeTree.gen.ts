@@ -22,6 +22,7 @@ import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardWalletsRouteImport } from './routes/_authenticated/dashboard.wallets'
+import { Route as AuthenticatedDashboardVerificationRouteImport } from './routes/_authenticated/dashboard.verification'
 import { Route as AuthenticatedDashboardTransactionsRouteImport } from './routes/_authenticated/dashboard.transactions'
 import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
 import { Route as AuthenticatedDashboardPayoutsRouteImport } from './routes/_authenticated/dashboard.payouts'
@@ -96,6 +97,12 @@ const AuthenticatedDashboardWalletsRoute =
     path: '/wallets',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardVerificationRoute =
+  AuthenticatedDashboardVerificationRouteImport.update({
+    id: '/verification',
+    path: '/verification',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardTransactionsRoute =
   AuthenticatedDashboardTransactionsRouteImport.update({
     id: '/transactions',
@@ -154,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/payouts': typeof AuthenticatedDashboardPayoutsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
+  '/dashboard/verification': typeof AuthenticatedDashboardVerificationRoute
   '/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
@@ -174,6 +182,7 @@ export interface FileRoutesByTo {
   '/dashboard/payouts': typeof AuthenticatedDashboardPayoutsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
+  '/dashboard/verification': typeof AuthenticatedDashboardVerificationRoute
   '/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
@@ -197,6 +206,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/payouts': typeof AuthenticatedDashboardPayoutsRoute
   '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/_authenticated/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
+  '/_authenticated/dashboard/verification': typeof AuthenticatedDashboardVerificationRoute
   '/_authenticated/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
     | '/dashboard/payouts'
     | '/dashboard/settings'
     | '/dashboard/transactions'
+    | '/dashboard/verification'
     | '/dashboard/wallets'
     | '/dashboard/'
     | '/api/public/v1/invoices'
@@ -240,6 +251,7 @@ export interface FileRouteTypes {
     | '/dashboard/payouts'
     | '/dashboard/settings'
     | '/dashboard/transactions'
+    | '/dashboard/verification'
     | '/dashboard/wallets'
     | '/dashboard'
     | '/api/public/v1/invoices'
@@ -262,6 +274,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/payouts'
     | '/_authenticated/dashboard/settings'
     | '/_authenticated/dashboard/transactions'
+    | '/_authenticated/dashboard/verification'
     | '/_authenticated/dashboard/wallets'
     | '/_authenticated/dashboard/'
     | '/api/public/v1/invoices'
@@ -376,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardWalletsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/verification': {
+      id: '/_authenticated/dashboard/verification'
+      path: '/verification'
+      fullPath: '/dashboard/verification'
+      preLoaderRoute: typeof AuthenticatedDashboardVerificationRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/transactions': {
       id: '/_authenticated/dashboard/transactions'
       path: '/transactions'
@@ -434,6 +454,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardPayoutsRoute: typeof AuthenticatedDashboardPayoutsRoute
   AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
   AuthenticatedDashboardTransactionsRoute: typeof AuthenticatedDashboardTransactionsRoute
+  AuthenticatedDashboardVerificationRoute: typeof AuthenticatedDashboardVerificationRoute
   AuthenticatedDashboardWalletsRoute: typeof AuthenticatedDashboardWalletsRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
@@ -446,6 +467,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
     AuthenticatedDashboardTransactionsRoute:
       AuthenticatedDashboardTransactionsRoute,
+    AuthenticatedDashboardVerificationRoute:
+      AuthenticatedDashboardVerificationRoute,
     AuthenticatedDashboardWalletsRoute: AuthenticatedDashboardWalletsRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   }

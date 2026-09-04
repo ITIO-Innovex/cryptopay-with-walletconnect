@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { AuthShell } from "@/features/auth/components/AuthShell";
-import { SignUpForm } from "@/features/auth/components/SignUpForm";
+import { SignUpWizard } from "@/features/auth/components/SignUpWizard";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -27,7 +27,7 @@ function SignUpPage() {
   return (
     <AuthShell
       title="Create a merchant account"
-      subtitle="Tell us about your business. Accounts are reviewed before going live."
+      subtitle="It takes four short steps: your details, a password, your business and verification."
       footer={
         <>
           Already registered?{" "}
@@ -37,7 +37,7 @@ function SignUpPage() {
         </>
       }
     >
-      <SignUpForm />
+      <SignUpWizard />
     </AuthShell>
   );
 }

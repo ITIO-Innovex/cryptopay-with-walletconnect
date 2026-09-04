@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { VerificationGate } from "@/features/merchant/shared/VerificationGate";
 import { DashboardShell } from "@/features/merchant/layout/DashboardShell";
 import { EmptyState, ErrorState, LoadingState } from "@/features/merchant/shared/PageState";
 import { StatusBadge } from "@/features/merchant/shared/StatusBadge";
@@ -88,6 +89,9 @@ function InvoicesPage() {
             onClick={() => downloadCsv("invoices.csv", query.data ?? [])}
             className="rounded-xl border border-border px-3 py-2 text-sm font-medium"
           >
+      <div className="mb-4">
+        <VerificationGate feature="Creating invoices">{null}</VerificationGate>
+      </div>
             Export CSV
           </button>
           <button

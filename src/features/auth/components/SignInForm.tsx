@@ -1,19 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 
 import { PasswordField } from "@/components/site/PasswordField";
 import { AuthField, AuthMessage } from "./AuthShell";
 import { signInWithEmailAndPassword } from "../lib/auth-client";
+import {
+  DEMO_EMAIL,
+  DEMO_PASSWORD,
+  ensureDemoMerchant,
+} from "../lib/demo-merchant.functions";
 
 const REMEMBER_KEY = "cryptope-remember-email";
 
 /** Merchant sign-in form. Lands on the merchant dashboard on success. */
 export function SignInForm() {
   const navigate = useNavigate();
+  const prepareDemo = useServerFn(ensureDemoMerchant);
   const [email, setEmail] = useState(() =>
-    typeof window === "undefined" ? "" : (localStorage.getItem(REMEMBER_KEY) ?? ""),
+    typeof window === "undefined" ? "" : (localStorage.getItem(REMEMBER_KEY) || DEMO_EMAIL),
   );
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(DEMO_PASSWORD);
+
+  // The demonstration merchant is created on first visit so the pre-filled
+  // credentials always work and land on a fully verified account.
+  useEffect(() => {
+    void prepareDemo({ data: undefined as never }).catch(() => undefined);
+  }, [prepareDemo]);
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -61,6 +74,24 @@ export function SignInForm() {
           value={password}
           onChange={setPassword}
         />
+      </div>
+
+      <div className="mt-4 rounded-xl border border-brand/30 bg-brand/5 p-3 text-xs">
+        <p className="font-semibold text-foreground">Demonstration merchant (pre-filled)</p>
+        <p className="mt-1 text-muted-foreground">
+          {DEMO_EMAIL} / {DEMO_PASSWORD} — a fully verified account with sample invoices, payouts
+          and every feature enabled. New sign-ups start unverified until KYB and KYC are approved.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setEmail(DEMO_EMAIL);
+            setPassword(DEMO_PASSWORD);
+          }}
+          className="mt-2 rounded-lg border border-border bg-background px-2.5 py-1 font-medium"
+        >
+          Use demo credentials
+        </button>
       </div>
 
       <div className="mt-4 flex items-center justify-between text-sm">

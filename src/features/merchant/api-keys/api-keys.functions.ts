@@ -4,7 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { resolveMerchantId } from "../shared/merchant.server";
+import { resolveMerchantId, resolveVerifiedMerchantId } from "../shared/merchant.server";
 
 function randomKey(prefix: string, bytes = 24): string {
   const buf = new Uint8Array(bytes);
@@ -38,7 +38,7 @@ export const createApiKey = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => z.object({ label: z.string().min(1).max(80) }).parse(data))
   .handler(async ({ data, context }) => {
-    const merchantId = await resolveMerchantId(context.supabase, context.userId);
+    const merchantId = await resolveVerifiedMerchantId(context.supabase, context.userId);
     const publicKey = randomKey("pk_live");
     const secret = randomKey("sk_live");
     const { error } = await context.supabase.from("merchant_api_key").insert({

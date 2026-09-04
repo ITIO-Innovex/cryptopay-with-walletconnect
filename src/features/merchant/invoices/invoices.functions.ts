@@ -4,7 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { resolveMerchantId } from "../shared/merchant.server";
+import { resolveMerchantId, resolveVerifiedMerchantId } from "../shared/merchant.server";
 
 const filterSchema = z.object({
   search: z.string().max(120).optional(),
@@ -73,7 +73,7 @@ export const createInvoice = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data, context }) => {
-    const merchantId = await resolveMerchantId(context.supabase, context.userId);
+    const merchantId = await resolveVerifiedMerchantId(context.supabase, context.userId);
     const { data: account } = await context.supabase
       .from("merchant_account")
       .select("terno")

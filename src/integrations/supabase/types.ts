@@ -206,9 +206,12 @@ export type Database = {
           contact_phone: string | null
           created_at: string
           created_by: string | null
+          email_verified: boolean
+          first_name: string | null
           full_name: string | null
           id: string
           is_active: boolean
+          last_name: string | null
           status: Database["public"]["Enums"]["account_status"]
           updated_at: string
           updated_by: string | null
@@ -220,9 +223,12 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string
           created_by?: string | null
+          email_verified?: boolean
+          first_name?: string | null
           full_name?: string | null
           id?: string
           is_active?: boolean
+          last_name?: string | null
           status?: Database["public"]["Enums"]["account_status"]
           updated_at?: string
           updated_by?: string | null
@@ -234,9 +240,12 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string
           created_by?: string | null
+          email_verified?: boolean
+          first_name?: string | null
           full_name?: string | null
           id?: string
           is_active?: boolean
+          last_name?: string | null
           status?: Database["public"]["Enums"]["account_status"]
           updated_at?: string
           updated_by?: string | null
@@ -1249,11 +1258,17 @@ export type Database = {
           created_by: string | null
           id: string
           is_active: boolean
+          is_demo: boolean
           owner_user_id: string
           status: Database["public"]["Enums"]["account_status"]
           terno: string
           updated_at: string
           updated_by: string | null
+          verification_ref: string | null
+          verification_skipped: boolean
+          verification_status: string
+          verification_submitted_at: string | null
+          verified_at: string | null
         }
         Insert: {
           business_email?: string | null
@@ -1262,11 +1277,17 @@ export type Database = {
           created_by?: string | null
           id?: string
           is_active?: boolean
+          is_demo?: boolean
           owner_user_id: string
           status?: Database["public"]["Enums"]["account_status"]
           terno: string
           updated_at?: string
           updated_by?: string | null
+          verification_ref?: string | null
+          verification_skipped?: boolean
+          verification_status?: string
+          verification_submitted_at?: string | null
+          verified_at?: string | null
         }
         Update: {
           business_email?: string | null
@@ -1275,11 +1296,17 @@ export type Database = {
           created_by?: string | null
           id?: string
           is_active?: boolean
+          is_demo?: boolean
           owner_user_id?: string
           status?: Database["public"]["Enums"]["account_status"]
           terno?: string
           updated_at?: string
           updated_by?: string | null
+          verification_ref?: string | null
+          verification_skipped?: boolean
+          verification_status?: string
+          verification_submitted_at?: string | null
+          verified_at?: string | null
         }
         Relationships: []
       }
