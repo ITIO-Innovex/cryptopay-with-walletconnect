@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/cryptope-logo.png.asset.json";
+import logoAsset from "@/assets/crypto_pe_logo_v1.png.asset.json";
 import { useDomainBranding } from "@/hooks/useDomainBranding";
 
 /** Logo height presets used by the /home1../home4 size comparison pages. */

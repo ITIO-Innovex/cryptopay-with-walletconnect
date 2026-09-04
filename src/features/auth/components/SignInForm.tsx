@@ -57,9 +57,6 @@ export function SignInForm() {
     <form onSubmit={submit} noValidate>
       {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
 
-      <GoogleSignInButton />
-      <AuthDivider />
-
       <div className="space-y-4">
         <AuthField
           id="email"
@@ -78,24 +75,6 @@ export function SignInForm() {
           value={password}
           onChange={setPassword}
         />
-      </div>
-
-      <div className="mt-4 rounded-xl border border-brand/30 bg-brand/5 p-3 text-xs">
-        <p className="font-semibold text-foreground">Demonstration merchant (pre-filled)</p>
-        <p className="mt-1 text-muted-foreground">
-          {DEMO_EMAIL} / {DEMO_PASSWORD} — a fully verified account with sample invoices, payouts
-          and every feature enabled. New sign-ups start unverified until KYB and KYC are approved.
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            setEmail(DEMO_EMAIL);
-            setPassword(DEMO_PASSWORD);
-          }}
-          className="mt-2 rounded-lg border border-border bg-background px-2.5 py-1 font-medium"
-        >
-          Use demo credentials
-        </button>
       </div>
 
       <div className="mt-4 flex items-center justify-between text-sm">
@@ -120,6 +99,9 @@ export function SignInForm() {
       >
         {busy ? "Signing in…" : "Sign in"}
       </button>
+
+      <AuthDivider />
+      <GoogleSignInButton />
     </form>
   );
 }

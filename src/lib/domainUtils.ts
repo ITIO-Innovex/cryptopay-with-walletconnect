@@ -34,7 +34,7 @@ const CACHE_TTL_MS = 60_000;
  */
 const FALLBACK_BRANDING: DomainBranding = {
   logo: "",
-  favicon: "/favicon.png",
+  favicon: "/crypto_pe_fevicon_v1.png",
   name: "Cryptope",
 };
 
@@ -201,22 +201,22 @@ export const getStaticDomainBranding = (): DomainBranding => {
   const mappedHost = hostOnly(currentFrontendHost()) || hostname;
 
   if (isLocalDevHost(hostname, port) || isLocalDevHost(mappedHost, port)) {
-    return { logo: "", favicon: "/favicon.png", name: "BoxCharge" };
+    return { logo: "", favicon: "/crypto_pe_fevicon_v1.png", name: "BoxCharge" };
   }
   if (mappedHost.includes("boxchrge.com") || hostname.includes("boxchrge.com")) {
-    return { logo: "", favicon: "/favicon.png", name: "BoxCharge" };
+    return { logo: "", favicon: "/crypto_pe_fevicon_v1.png", name: "BoxCharge" };
   }
   if (
     mappedHost.includes("cryptope") ||
     hostname.includes("cryptope") ||
     isLovableHost(hostname)
   ) {
-    return { logo: "", favicon: "/favicon.png", name: "Cryptope" };
+    return { logo: "", favicon: "/crypto_pe_fevicon_v1.png", name: "Cryptope" };
   }
   if (mappedHost.includes("i15.biz") || hostname.includes("i15.biz")) {
-    return { logo: "", favicon: "/favicon.png", name: "PGX" };
+    return { logo: "", favicon: "/crypto_pe_fevicon_v1.png", name: "PGX" };
   }
-  return { logo: "", favicon: "/favicon.png", name: "PGX" };
+  return { logo: "", favicon: "/crypto_pe_fevicon_v1.png", name: "PGX" };
 };
 
 export const getStaticDomainConfig = (): DomainConfig => {
