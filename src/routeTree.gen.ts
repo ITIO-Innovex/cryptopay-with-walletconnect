@@ -20,6 +20,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardInvoicesRouteImport } from './routes/_authenticated/dashboard.invoices'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -75,6 +77,18 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardInvoicesRoute =
+  AuthenticatedDashboardInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -85,8 +99,10 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/legal/$slug': typeof LegalSlugRoute
+  '/dashboard/invoices': typeof AuthenticatedDashboardInvoicesRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -97,8 +113,9 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
   '/legal/$slug': typeof LegalSlugRoute
+  '/dashboard/invoices': typeof AuthenticatedDashboardInvoicesRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -111,8 +128,10 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/legal/$slug': typeof LegalSlugRoute
+  '/_authenticated/dashboard/invoices': typeof AuthenticatedDashboardInvoicesRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +146,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/dashboard'
     | '/legal/$slug'
+    | '/dashboard/invoices'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -137,8 +158,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/signup'
-    | '/dashboard'
     | '/legal/$slug'
+    | '/dashboard/invoices'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -152,6 +174,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/dashboard'
     | '/legal/$slug'
+    | '/_authenticated/dashboard/invoices'
+    | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -246,15 +270,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/invoices': {
+      id: '/_authenticated/dashboard/invoices'
+      path: '/invoices'
+      fullPath: '/dashboard/invoices'
+      preLoaderRoute: typeof AuthenticatedDashboardInvoicesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardInvoicesRoute: typeof AuthenticatedDashboardInvoicesRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardInvoicesRoute: AuthenticatedDashboardInvoicesRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
