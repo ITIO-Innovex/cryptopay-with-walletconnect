@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BrandLogo } from "./BrandLogo";
+import { BrandLogo, type BrandLogoSize } from "./BrandLogo";
 import { EmailPill } from "./EmailPill";
 import { contactEmailForBrand } from "@/lib/domainUtils";
 import { useDomainBranding } from "@/hooks/useDomainBranding";
@@ -20,7 +20,7 @@ const TRUST = [
   { slug: "risk-disclaimer", label: "Risk Disclaimer" },
 ];
 
-export function SiteFooter() {
+export function SiteFooter({ logoSize = "md" }: { logoSize?: BrandLogoSize }) {
   const branding = useDomainBranding();
   const brand = branding.name || "PGX";
   const email = contactEmailForBrand(brand);
@@ -30,7 +30,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-5xl px-4 py-12">
         <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <BrandLogo />
+            <BrandLogo size={logoSize} />
             <p className="mt-3 text-sm text-muted-foreground">
               Payment page technology for online businesses. Hosted checkout, on-chain
               confirmation, non-custodial settlement to the merchant's own wallet.
