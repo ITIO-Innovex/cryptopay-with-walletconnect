@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 
 import { PasswordField } from "@/components/site/PasswordField";
 import { AuthField, AuthMessage } from "./AuthShell";
+import { AuthDivider, GoogleSignInButton } from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "../lib/auth-client";
 import {
   DEMO_EMAIL,
@@ -55,6 +56,9 @@ export function SignInForm() {
   return (
     <form onSubmit={submit} noValidate>
       {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
+
+      <GoogleSignInButton />
+      <AuthDivider />
 
       <div className="space-y-4">
         <AuthField
