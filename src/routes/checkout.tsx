@@ -87,11 +87,22 @@ function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState<"wallet_connect" | "manual" | null>(null);
   // BACKEND: `orderId` and `senderAddress` come from the session/status
   // responses (INTEGRATION.md §1 & §7). Random generators are dev-only.
-  const [orderId] = useState(makeOrderId);
+  const [demoOrderId] = useState(makeOrderId);
   const [senderAddress] = useState(randomWalletAddress);
-  const [depositAddress] = useState(randomWalletAddress);
+  const [demoAddress] = useState(randomWalletAddress);
   const [reportOpen, setReportOpen] = useState(false);
-  const customerEmail = "ar*n@it*o.in";
+
+  // A merchant invoice replaces the demo order details when present.
+  const order = invoice
+    ? {
+        title: invoice.productName,
+        description: invoice.description ?? invoice.merchantName,
+        amountUsd: invoice.amountUsd,
+      }
+    : ORDER;
+  const orderId = invoice ? invoice.orderId : demoOrderId;
+  const depositAddress = liveAddress ?? invoice?.depositAddress ?? demoAddress;
+  const customerEmail = invoice?.customerEmail ?? "ar*n@it*o.in";
 
   const currency: CryptoCurrency | null = useMemo(
     () => CRYPTO_CURRENCIES.find((c) => c.symbol === symbol) ?? null,
@@ -101,10 +112,10 @@ function Checkout() {
   const cryptoAmount = useMemo(() => {
     if (!currency) return "0";
     const unitsPerUsd = PRICE_PER_USD[currency.symbol] ?? 1;
-    const units = ORDER.amountUsd * unitsPerUsd;
+    const units = order.amountUsd * unitsPerUsd;
     const decimals = units < 1 ? 6 : 3;
     return units.toFixed(decimals);
-  }, [currency]);
+  }, [currency, order.amountUsd]);
 
   const dueNum = useMemo(() => parseFloat(cryptoAmount) || 0, [cryptoAmount]);
   const received = useMemo(() => txs.reduce((sum, t) => sum + t.amount, 0), [txs]);
