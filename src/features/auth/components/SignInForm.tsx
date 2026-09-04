@@ -57,9 +57,6 @@ export function SignInForm() {
     <form onSubmit={submit} noValidate>
       {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
 
-      <GoogleSignInButton />
-      <AuthDivider />
-
       <div className="space-y-4">
         <AuthField
           id="email"
