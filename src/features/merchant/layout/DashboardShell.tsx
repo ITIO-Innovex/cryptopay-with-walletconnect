@@ -48,6 +48,7 @@ const NAV = [
   { to: "/dashboard/wallets", label: "Wallets" },
   { to: "/dashboard/api-keys", label: "API keys" },
   { to: "/dashboard/settings", label: "Settings" },
+  { to: "/dashboard/verification", label: "Verification" },
 ] as const;
 
 export function DashboardShell({
