@@ -9,7 +9,7 @@ import { EmailChangeEmail } from '@/lib/email-templates/email-change'
 import { ReauthenticationEmail } from '@/lib/email-templates/reauthentication'
 
 // Configuration
-const SITE_NAME = "WalletConnect and Cryptope Crypto Checkout System"
+const SITE_NAME = "Cryptope"
 const SENDER_DOMAIN = "notify.cryptope.net"
 const ROOT_DOMAIN = "cryptope.net"
 const FROM_DOMAIN = "notify.cryptope.net"
