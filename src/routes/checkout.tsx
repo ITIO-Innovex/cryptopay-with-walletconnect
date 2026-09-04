@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import {
   CRYPTO_CURRENCIES,
   PRICE_PER_USD,
@@ -19,8 +21,17 @@ import { CheckingStatus } from "@/components/checkout/CheckingStatus";
 import { ReportProblemDialog } from "@/components/checkout/ReportProblemDialog";
 import { SimulationPanel } from "@/components/checkout/SimulationPanel";
 import { derivePaymentStatus, makeOrderId, randomTxHash, randomWalletAddress } from "@/lib/payment";
+import {
+  getPublicInvoice,
+  recordInvoiceDeposit,
+  selectInvoiceAsset,
+} from "@/features/payments/checkout.functions";
 
 export const Route = createFileRoute("/checkout")({
+  validateSearch: (search: Record<string, unknown>): { invoice?: string } => {
+    const invoice = typeof search.invoice === "string" ? search.invoice.trim() : "";
+    return invoice ? { invoice } : {};
+  },
   head: () => ({
     meta: [
       { title: "Checkout — Cryptope" },
@@ -50,6 +61,20 @@ const ORDER = {
 const PAYMENT_WINDOW_SECONDS = 60 * 60;
 
 function Checkout() {
+  const { invoice: invoiceId } = Route.useSearch();
+  const loadInvoice = useServerFn(getPublicInvoice);
+  const lockAsset = useServerFn(selectInvoiceAsset);
+  const postDeposit = useServerFn(recordInvoiceDeposit);
+
+  // Live merchant invoice, when the buyer arrived from a merchant checkout link.
+  const invoiceQuery = useQuery({
+    queryKey: ["checkout", "invoice", invoiceId],
+    queryFn: () => loadInvoice({ data: { invoiceId: invoiceId! } }),
+    enabled: !!invoiceId,
+  });
+  const invoice = invoiceQuery.data ?? null;
+  const [liveAddress, setLiveAddress] = useState<string | null>(null);
+
   const [step, setStep] = useState<Step>("currency");
   const [symbol, setSymbol] = useState<string | null>(null);
   const [network, setNetwork] = useState<CryptoNetwork | null>(null);
@@ -62,11 +87,22 @@ function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState<"wallet_connect" | "manual" | null>(null);
   // BACKEND: `orderId` and `senderAddress` come from the session/status
   // responses (INTEGRATION.md §1 & §7). Random generators are dev-only.
-  const [orderId] = useState(makeOrderId);
+  const [demoOrderId] = useState(makeOrderId);
   const [senderAddress] = useState(randomWalletAddress);
-  const [depositAddress] = useState(randomWalletAddress);
+  const [demoAddress] = useState(randomWalletAddress);
   const [reportOpen, setReportOpen] = useState(false);
-  const customerEmail = "ar*n@it*o.in";
+
+  // A merchant invoice replaces the demo order details when present.
+  const order = invoice
+    ? {
+        title: invoice.productName,
+        description: invoice.description ?? invoice.merchantName,
+        amountUsd: invoice.amountUsd,
+      }
+    : ORDER;
+  const orderId = invoice ? invoice.orderId : demoOrderId;
+  const depositAddress = liveAddress ?? invoice?.depositAddress ?? demoAddress;
+  const customerEmail = invoice?.customerEmail ?? "ar*n@it*o.in";
 
   const currency: CryptoCurrency | null = useMemo(
     () => CRYPTO_CURRENCIES.find((c) => c.symbol === symbol) ?? null,
@@ -76,10 +112,10 @@ function Checkout() {
   const cryptoAmount = useMemo(() => {
     if (!currency) return "0";
     const unitsPerUsd = PRICE_PER_USD[currency.symbol] ?? 1;
-    const units = ORDER.amountUsd * unitsPerUsd;
+    const units = order.amountUsd * unitsPerUsd;
     const decimals = units < 1 ? 6 : 3;
     return units.toFixed(decimals);
-  }, [currency]);
+  }, [currency, order.amountUsd]);
 
   const dueNum = useMemo(() => parseFloat(cryptoAmount) || 0, [cryptoAmount]);
   const received = useMemo(() => txs.reduce((sum, t) => sum + t.amount, 0), [txs]);
@@ -90,13 +126,24 @@ function Checkout() {
   const expired =
     step === "send" && secondsLeft === 0 && (status === "awaiting" || status === "insufficient");
 
+  /** Records a transfer locally and, for merchant invoices, on the server. */
+  const registerTx = (hash: string, amount: number, source: "simulated" | "wallet_connect") => {
+    setTxs((prev) => [...prev, { hash, amount }]);
+    if (invoiceId) {
+      void postDeposit({
+        data: { invoiceId, amount, txHash: hash, senderAddress, source },
+      })
+        .then(() => invoiceQuery.refetch())
+        .catch(() => undefined);
+    }
+  };
   const handleReceive = (amount: number) => {
     setPaymentMethod((prev) => prev ?? "manual");
-    setTxs((prev) => [...prev, { hash: randomTxHash(), amount }]);
+    registerTx(randomTxHash(), amount, "simulated");
   };
   const handleWalletTx = (hash: string, amount: number) => {
     setPaymentMethod("wallet_connect");
-    setTxs((prev) => [...prev, { hash, amount }]);
+    registerTx(hash, amount, "wallet_connect");
   };
   const handleResetSim = () => {
     setTxs([]);
@@ -139,6 +186,14 @@ function Checkout() {
     setTxs([]);
     setPaymentMethod(null);
     setStep("send");
+    // Merchant invoices get a unique deposit address from the wallet provider.
+    if (invoiceId) {
+      void lockAsset({
+        data: { invoiceId, asset: currency.symbol, network: net.name },
+      })
+        .then((result) => setLiveAddress(result.address))
+        .catch(() => undefined);
+    }
   };
   const goToSend = () => {
     if (currency && network) startSend(network);
@@ -198,9 +253,9 @@ function Checkout() {
 
       {!isFinalScreen && (
         <OrderSummary
-          title={ORDER.title}
-          description={ORDER.description}
-          amountLabel={`${ORDER.amountUsd} USD`}
+          title={order.title}
+          description={order.description}
+          amountLabel={`${order.amountUsd} USD`}
         />
       )}
 
@@ -237,7 +292,7 @@ function Checkout() {
               network={network}
               depositAddress={depositAddress}
               amount={cryptoAmount}
-              usdLabel={`${ORDER.amountUsd} USD`}
+              usdLabel={`${order.amountUsd} USD`}
               secondsLeft={secondsLeft}
               windowSeconds={PAYMENT_WINDOW_SECONDS}
               expired={expired}
@@ -284,7 +339,7 @@ function Checkout() {
       {showFooter && (
         <FooterBar
           mode={footer.mode}
-          totalLabel={`Total amount ${ORDER.amountUsd} USD`}
+          totalLabel={`Total amount ${order.amountUsd} USD`}
           currency={currency}
           network={network}
           cryptoAmount={cryptoAmount}

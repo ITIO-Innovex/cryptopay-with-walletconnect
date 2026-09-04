@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 
-import { getOrCreateAccount } from "@/features/auth/server/account.functions";
+import { getOrCreateAccount } from "@/features/auth/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardLayout,

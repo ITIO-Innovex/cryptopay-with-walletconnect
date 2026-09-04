@@ -21,7 +21,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardWalletsRouteImport } from './routes/_authenticated/dashboard.wallets'
+import { Route as AuthenticatedDashboardTransactionsRouteImport } from './routes/_authenticated/dashboard.transactions'
+import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
+import { Route as AuthenticatedDashboardPayoutsRouteImport } from './routes/_authenticated/dashboard.payouts'
 import { Route as AuthenticatedDashboardInvoicesRouteImport } from './routes/_authenticated/dashboard.invoices'
+import { Route as AuthenticatedDashboardApiKeysRouteImport } from './routes/_authenticated/dashboard.api-keys'
+import { Route as ApiPublicV1SettlementRunRouteImport } from './routes/api/public/v1/settlement-run'
+import { Route as ApiPublicV1InvoicesRouteImport } from './routes/api/public/v1/invoices'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -83,12 +90,53 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardWalletsRoute =
+  AuthenticatedDashboardWalletsRouteImport.update({
+    id: '/wallets',
+    path: '/wallets',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardTransactionsRoute =
+  AuthenticatedDashboardTransactionsRouteImport.update({
+    id: '/transactions',
+    path: '/transactions',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSettingsRoute =
+  AuthenticatedDashboardSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardPayoutsRoute =
+  AuthenticatedDashboardPayoutsRouteImport.update({
+    id: '/payouts',
+    path: '/payouts',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardInvoicesRoute =
   AuthenticatedDashboardInvoicesRouteImport.update({
     id: '/invoices',
     path: '/invoices',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardApiKeysRoute =
+  AuthenticatedDashboardApiKeysRouteImport.update({
+    id: '/api-keys',
+    path: '/api-keys',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const ApiPublicV1SettlementRunRoute =
+  ApiPublicV1SettlementRunRouteImport.update({
+    id: '/api/public/v1/settlement-run',
+    path: '/api/public/v1/settlement-run',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicV1InvoicesRoute = ApiPublicV1InvoicesRouteImport.update({
+  id: '/api/public/v1/invoices',
+  path: '/api/public/v1/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,8 +149,15 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/legal/$slug': typeof LegalSlugRoute
+  '/dashboard/api-keys': typeof AuthenticatedDashboardApiKeysRoute
   '/dashboard/invoices': typeof AuthenticatedDashboardInvoicesRoute
+  '/dashboard/payouts': typeof AuthenticatedDashboardPayoutsRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
+  '/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
+  '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -114,8 +169,15 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/legal/$slug': typeof LegalSlugRoute
+  '/dashboard/api-keys': typeof AuthenticatedDashboardApiKeysRoute
   '/dashboard/invoices': typeof AuthenticatedDashboardInvoicesRoute
+  '/dashboard/payouts': typeof AuthenticatedDashboardPayoutsRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
+  '/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
+  '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -130,8 +192,15 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/legal/$slug': typeof LegalSlugRoute
+  '/_authenticated/dashboard/api-keys': typeof AuthenticatedDashboardApiKeysRoute
   '/_authenticated/dashboard/invoices': typeof AuthenticatedDashboardInvoicesRoute
+  '/_authenticated/dashboard/payouts': typeof AuthenticatedDashboardPayoutsRoute
+  '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/_authenticated/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
+  '/_authenticated/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
+  '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,8 +215,15 @@ export interface FileRouteTypes {
     | '/signup'
     | '/dashboard'
     | '/legal/$slug'
+    | '/dashboard/api-keys'
     | '/dashboard/invoices'
+    | '/dashboard/payouts'
+    | '/dashboard/settings'
+    | '/dashboard/transactions'
+    | '/dashboard/wallets'
     | '/dashboard/'
+    | '/api/public/v1/invoices'
+    | '/api/public/v1/settlement-run'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -159,8 +235,15 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/legal/$slug'
+    | '/dashboard/api-keys'
     | '/dashboard/invoices'
+    | '/dashboard/payouts'
+    | '/dashboard/settings'
+    | '/dashboard/transactions'
+    | '/dashboard/wallets'
     | '/dashboard'
+    | '/api/public/v1/invoices'
+    | '/api/public/v1/settlement-run'
   id:
     | '__root__'
     | '/'
@@ -174,8 +257,15 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/dashboard'
     | '/legal/$slug'
+    | '/_authenticated/dashboard/api-keys'
     | '/_authenticated/dashboard/invoices'
+    | '/_authenticated/dashboard/payouts'
+    | '/_authenticated/dashboard/settings'
+    | '/_authenticated/dashboard/transactions'
+    | '/_authenticated/dashboard/wallets'
     | '/_authenticated/dashboard/'
+    | '/api/public/v1/invoices'
+    | '/api/public/v1/settlement-run'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -189,6 +279,8 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
   LegalSlugRoute: typeof LegalSlugRoute
+  ApiPublicV1InvoicesRoute: typeof ApiPublicV1InvoicesRoute
+  ApiPublicV1SettlementRunRoute: typeof ApiPublicV1SettlementRunRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -277,6 +369,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/wallets': {
+      id: '/_authenticated/dashboard/wallets'
+      path: '/wallets'
+      fullPath: '/dashboard/wallets'
+      preLoaderRoute: typeof AuthenticatedDashboardWalletsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/transactions': {
+      id: '/_authenticated/dashboard/transactions'
+      path: '/transactions'
+      fullPath: '/dashboard/transactions'
+      preLoaderRoute: typeof AuthenticatedDashboardTransactionsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/settings': {
+      id: '/_authenticated/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof AuthenticatedDashboardSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/payouts': {
+      id: '/_authenticated/dashboard/payouts'
+      path: '/payouts'
+      fullPath: '/dashboard/payouts'
+      preLoaderRoute: typeof AuthenticatedDashboardPayoutsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/invoices': {
       id: '/_authenticated/dashboard/invoices'
       path: '/invoices'
@@ -284,17 +404,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardInvoicesRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/api-keys': {
+      id: '/_authenticated/dashboard/api-keys'
+      path: '/api-keys'
+      fullPath: '/dashboard/api-keys'
+      preLoaderRoute: typeof AuthenticatedDashboardApiKeysRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/api/public/v1/settlement-run': {
+      id: '/api/public/v1/settlement-run'
+      path: '/api/public/v1/settlement-run'
+      fullPath: '/api/public/v1/settlement-run'
+      preLoaderRoute: typeof ApiPublicV1SettlementRunRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/v1/invoices': {
+      id: '/api/public/v1/invoices'
+      path: '/api/public/v1/invoices'
+      fullPath: '/api/public/v1/invoices'
+      preLoaderRoute: typeof ApiPublicV1InvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardApiKeysRoute: typeof AuthenticatedDashboardApiKeysRoute
   AuthenticatedDashboardInvoicesRoute: typeof AuthenticatedDashboardInvoicesRoute
+  AuthenticatedDashboardPayoutsRoute: typeof AuthenticatedDashboardPayoutsRoute
+  AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
+  AuthenticatedDashboardTransactionsRoute: typeof AuthenticatedDashboardTransactionsRoute
+  AuthenticatedDashboardWalletsRoute: typeof AuthenticatedDashboardWalletsRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
+    AuthenticatedDashboardApiKeysRoute: AuthenticatedDashboardApiKeysRoute,
     AuthenticatedDashboardInvoicesRoute: AuthenticatedDashboardInvoicesRoute,
+    AuthenticatedDashboardPayoutsRoute: AuthenticatedDashboardPayoutsRoute,
+    AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
+    AuthenticatedDashboardTransactionsRoute:
+      AuthenticatedDashboardTransactionsRoute,
+    AuthenticatedDashboardWalletsRoute: AuthenticatedDashboardWalletsRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   }
 
@@ -325,6 +477,8 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
   LegalSlugRoute: LegalSlugRoute,
+  ApiPublicV1InvoicesRoute: ApiPublicV1InvoicesRoute,
+  ApiPublicV1SettlementRunRoute: ApiPublicV1SettlementRunRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
