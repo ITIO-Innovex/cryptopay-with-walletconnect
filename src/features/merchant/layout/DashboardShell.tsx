@@ -1,9 +1,39 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
+import { BadgeCheck, ShieldAlert } from "lucide-react";
 
 import { BrandLogo } from "@/components/site/BrandLogo";
 import { signOutCurrentUser } from "@/features/auth/lib/auth-client";
+import { useVerification } from "@/features/merchant/shared/useVerification";
+
+/** Company badge in the header: green when verified, red until then. */
+function VerificationPill() {
+  const { state, isLoading } = useVerification();
+  if (isLoading || !state) return null;
+
+  if (state.status === "verified") {
+    return (
+      <Link
+        to="/dashboard/verification"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-semibold text-emerald-600"
+      >
+        <BadgeCheck className="h-4 w-4" />
+        <span className="hidden sm:inline">{state.companyName}</span> Verified
+      </Link>
+    );
+  }
+
+  return (
+    <Link
+      to="/dashboard/verification"
+      className="inline-flex items-center gap-1.5 rounded-lg border border-destructive/50 bg-destructive/10 px-2.5 py-1.5 text-xs font-semibold text-destructive"
+    >
+      <ShieldAlert className="h-4 w-4" />
+      {state.status === "in_review" ? "Verification in review" : "Verify your company"}
+    </Link>
+  );
+}
 
 /**
  * Chrome shared by every merchant dashboard page: brand, section navigation
@@ -51,13 +81,16 @@ export function DashboardShell({
               Merchant dashboard
             </span>
           </Link>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
-          >
-            Sign out
-          </button>
+          <div className="flex items-center gap-2">
+            <VerificationPill />
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
         <nav className="mx-auto w-full max-w-7xl overflow-x-auto px-4">
           <ul className="flex gap-1 pb-2 text-sm">
