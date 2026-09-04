@@ -6,6 +6,7 @@ import { BadgeCheck, Loader2, ShieldCheck } from "lucide-react";
 import { PasswordField, isStrongPassword } from "@/components/site/PasswordField";
 import { EmailOtpDialog } from "@/components/site/EmailOtpDialog";
 import { AuthField, AuthMessage } from "./AuthShell";
+import { AuthDivider, GoogleSignInButton } from "./GoogleSignInButton";
 import { signUpMerchantAccount } from "../lib/auth-client";
 import { savePersonalDetails, saveBusinessDetails } from "../lib/signup.functions";
 import { getOrCreateAccount } from "../lib/account.functions";
@@ -210,6 +211,8 @@ export function SignUpWizard() {
 
       {step === "details" && (
         <form onSubmit={submitDetails} noValidate className="space-y-4">
+          <GoogleSignInButton />
+          <AuthDivider />
           <div className="grid gap-4 sm:grid-cols-2">
             <AuthField
               id="firstName"
