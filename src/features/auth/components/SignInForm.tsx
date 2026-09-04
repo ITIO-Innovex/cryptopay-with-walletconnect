@@ -99,6 +99,9 @@ export function SignInForm() {
       >
         {busy ? "Signing in…" : "Sign in"}
       </button>
+
+      <AuthDivider />
+      <GoogleSignInButton />
     </form>
   );
 }
