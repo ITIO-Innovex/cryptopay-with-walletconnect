@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { AlertTriangle, ArrowRight, Check, Code2, Globe, ShieldCheck, Wallet, Zap } from "lucide-react";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import type { BrandLogoSize } from "@/components/site/BrandLogo";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SupportedAssets } from "@/components/site/SupportedAssets";
 import { CurrencyList } from "@/components/checkout/CurrencyList";
@@ -102,7 +103,7 @@ function faqs(brand: string) {
  * Replica marketing site shown when /crypto (or /) is opened without a payment id.
  * No deposit addresses or live payment APIs are used here.
  */
-export function MarketingLanding() {
+export function MarketingLanding({ logoSize = "md" }: { logoSize?: BrandLogoSize } = {}) {
   const branding = useDomainBranding();
   const brand = branding.name || "PGX";
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -118,7 +119,7 @@ export function MarketingLanding() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
+      <SiteHeader logoSize={logoSize} />
 
       <main>
         <section className="mx-auto max-w-5xl px-4 py-16 text-center sm:py-24">
@@ -405,7 +406,7 @@ export function MarketingLanding() {
         </section>
       </main>
 
-      <SiteFooter />
+      <SiteFooter logoSize={logoSize} />
     </div>
   );
 }

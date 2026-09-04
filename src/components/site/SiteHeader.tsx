@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
-import { BrandLogo } from "./BrandLogo";
+import { BrandLogo, type BrandLogoSize } from "./BrandLogo";
 
 const NAV = [
   { href: "/#features", label: "Features" },
@@ -19,7 +19,7 @@ function feHostSearch(): { feHost?: string } {
 /**
  * Shared marketing header. Log in stays on the replica SS3 merchant log-in page.
  */
-export function SiteHeader() {
+export function SiteHeader({ logoSize = "md" }: { logoSize?: BrandLogoSize }) {
   const [open, setOpen] = useState(false);
   const loginSearch = feHostSearch();
 
@@ -27,7 +27,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4">
         <Link to="/" search={loginSearch} aria-label="Home" onClick={() => setOpen(false)}>
-          <BrandLogo />
+          <BrandLogo size={logoSize} />
         </Link>
 
         <nav className="hidden items-center gap-5 text-sm sm:flex">
