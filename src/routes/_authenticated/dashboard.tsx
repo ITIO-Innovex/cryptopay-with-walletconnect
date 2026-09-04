@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 function DashboardLayout() {
   const bootstrap = useServerFn(getOrCreateAccount);
   useEffect(() => {
-    void bootstrap({ data: {} }).catch(() => undefined);
+    void bootstrap(undefined as never).catch(() => undefined);
   }, [bootstrap]);
 
   return <Outlet />;
