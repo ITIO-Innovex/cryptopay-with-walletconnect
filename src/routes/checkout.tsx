@@ -253,9 +253,9 @@ function Checkout() {
 
       {!isFinalScreen && (
         <OrderSummary
-          title={ORDER.title}
-          description={ORDER.description}
-          amountLabel={`${ORDER.amountUsd} USD`}
+          title={order.title}
+          description={order.description}
+          amountLabel={`${order.amountUsd} USD`}
         />
       )}
 
@@ -292,7 +292,7 @@ function Checkout() {
               network={network}
               depositAddress={depositAddress}
               amount={cryptoAmount}
-              usdLabel={`${ORDER.amountUsd} USD`}
+              usdLabel={`${order.amountUsd} USD`}
               secondsLeft={secondsLeft}
               windowSeconds={PAYMENT_WINDOW_SECONDS}
               expired={expired}
@@ -339,7 +339,7 @@ function Checkout() {
       {showFooter && (
         <FooterBar
           mode={footer.mode}
-          totalLabel={`Total amount ${ORDER.amountUsd} USD`}
+          totalLabel={`Total amount ${order.amountUsd} USD`}
           currency={currency}
           network={network}
           cryptoAmount={cryptoAmount}
