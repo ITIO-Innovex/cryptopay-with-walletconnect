@@ -41,11 +41,15 @@ export function SiteFooter({ logoSize = "md" }: { logoSize?: BrandLogoSize }) {
           <FooterColumn title="Compliance & trust" items={TRUST} />
 
           <div>
-            <h3 className="text-sm font-semibold">Company</h3>
+            <h3 className="text-sm font-semibold">Get in touch</h3>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Questions about integration, pricing or compliance? Write to us — we usually reply
+              within one business day.
+            </p>
+            <div className="mt-3">
+              <EmailPill email={email} compact />
+            </div>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li className="pt-1">
-                <EmailPill email={email} compact />
-              </li>
               <li>
                 <Link to="/contact" rel="nofollow" className="hover:text-foreground">
                   Contact us
