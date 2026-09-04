@@ -440,7 +440,7 @@ export function merchantSignupUrl(): string {
   return `${merchantAppOrigin().replace(/\/$/, "")}/signup`;
 }
 
-/** Load /bc_logo.png (etc.) from the merchant host, not the iframe origin. */
+/** Resolve a public asset path against the merchant host, not the iframe origin. */
 export function resolvePublicAssetUrl(pathOrUrl: string | null | undefined): string {
   if (!pathOrUrl) return "";
   if (/^https?:\/\//i.test(pathOrUrl) || pathOrUrl.startsWith("data:")) return pathOrUrl;
