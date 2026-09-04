@@ -4,7 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { resolveMerchantId } from "../shared/merchant.server";
+import { resolveMerchantId, resolveVerifiedMerchantId } from "../shared/merchant.server";
 
 export const listPayouts = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -44,7 +44,7 @@ export const listPayouts = createServerFn({ method: "POST" })
 export const settleNow = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const merchantId = await resolveMerchantId(context.supabase, context.userId);
+    const merchantId = await resolveVerifiedMerchantId(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { runSettlement } = await import("@/features/payments/settlement.server");
     return runSettlement(supabaseAdmin, { merchantId, force: true });
