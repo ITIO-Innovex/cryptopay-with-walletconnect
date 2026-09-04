@@ -126,13 +126,24 @@ function Checkout() {
   const expired =
     step === "send" && secondsLeft === 0 && (status === "awaiting" || status === "insufficient");
 
+  /** Records a transfer locally and, for merchant invoices, on the server. */
+  const registerTx = (hash: string, amount: number, source: "simulated" | "wallet_connect") => {
+    setTxs((prev) => [...prev, { hash, amount }]);
+    if (invoiceId) {
+      void postDeposit({
+        data: { invoiceId, amount, txHash: hash, senderAddress, source },
+      })
+        .then(() => invoiceQuery.refetch())
+        .catch(() => undefined);
+    }
+  };
   const handleReceive = (amount: number) => {
     setPaymentMethod((prev) => prev ?? "manual");
-    setTxs((prev) => [...prev, { hash: randomTxHash(), amount }]);
+    registerTx(randomTxHash(), amount, "simulated");
   };
   const handleWalletTx = (hash: string, amount: number) => {
     setPaymentMethod("wallet_connect");
-    setTxs((prev) => [...prev, { hash, amount }]);
+    registerTx(hash, amount, "wallet_connect");
   };
   const handleResetSim = () => {
     setTxs([]);
