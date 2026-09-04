@@ -8,6 +8,7 @@ import { EmailOtpDialog } from "@/components/site/EmailOtpDialog";
 import { AuthField, AuthMessage } from "./AuthShell";
 import { signUpMerchantAccount } from "../lib/auth-client";
 import { savePersonalDetails, saveBusinessDetails } from "../lib/signup.functions";
+import { getOrCreateAccount } from "../lib/account.functions";
 import {
   startVerification,
   skipVerification,
@@ -54,6 +55,7 @@ function Steps({ current }: { current: Step }) {
  */
 export function SignUpWizard() {
   const navigate = useNavigate();
+  const bootstrapAccount = useServerFn(getOrCreateAccount);
   const persistPersonal = useServerFn(savePersonalDetails);
   const persistBusiness = useServerFn(saveBusinessDetails);
   const beginVerification = useServerFn(startVerification);
@@ -129,6 +131,9 @@ export function SignUpWizard() {
         companyName: "",
         contactPhone: phone,
       });
+      // Creates the profile, merchant account, payout setting and first API key
+      // so the business and verification steps have something to write to.
+      await bootstrapAccount({ data: undefined as never });
       await persistPersonal({
         data: { firstName: firstName.trim(), lastName: lastName.trim(), phone: phone.trim(), emailVerified: true },
       });
