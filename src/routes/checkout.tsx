@@ -59,6 +59,20 @@ const ORDER = {
 const PAYMENT_WINDOW_SECONDS = 60 * 60;
 
 function Checkout() {
+  const { invoice: invoiceId } = Route.useSearch();
+  const loadInvoice = useServerFn(getPublicInvoice);
+  const lockAsset = useServerFn(selectInvoiceAsset);
+  const postDeposit = useServerFn(recordInvoiceDeposit);
+
+  // Live merchant invoice, when the buyer arrived from a merchant checkout link.
+  const invoiceQuery = useQuery({
+    queryKey: ["checkout", "invoice", invoiceId],
+    queryFn: () => loadInvoice({ data: { invoiceId: invoiceId! } }),
+    enabled: !!invoiceId,
+  });
+  const invoice = invoiceQuery.data ?? null;
+  const [liveAddress, setLiveAddress] = useState<string | null>(null);
+
   const [step, setStep] = useState<Step>("currency");
   const [symbol, setSymbol] = useState<string | null>(null);
   const [network, setNetwork] = useState<CryptoNetwork | null>(null);
