@@ -1,19 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 
 import { PasswordField } from "@/components/site/PasswordField";
 import { AuthField, AuthMessage } from "./AuthShell";
 import { signInWithEmailAndPassword } from "../lib/auth-client";
+import {
+  DEMO_EMAIL,
+  DEMO_PASSWORD,
+  ensureDemoMerchant,
+} from "../lib/demo-merchant.functions";
 
 const REMEMBER_KEY = "cryptope-remember-email";
 
 /** Merchant sign-in form. Lands on the merchant dashboard on success. */
 export function SignInForm() {
   const navigate = useNavigate();
+  const prepareDemo = useServerFn(ensureDemoMerchant);
   const [email, setEmail] = useState(() =>
-    typeof window === "undefined" ? "" : (localStorage.getItem(REMEMBER_KEY) ?? ""),
+    typeof window === "undefined" ? "" : (localStorage.getItem(REMEMBER_KEY) || DEMO_EMAIL),
   );
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(DEMO_PASSWORD);
+
+  // The demonstration merchant is created on first visit so the pre-filled
+  // credentials always work and land on a fully verified account.
+  useEffect(() => {
+    void prepareDemo({ data: undefined as never }).catch(() => undefined);
+  }, [prepareDemo]);
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
