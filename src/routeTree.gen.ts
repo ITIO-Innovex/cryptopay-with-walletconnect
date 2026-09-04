@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as Home1RouteImport } from './routes/home1'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as CryptoRouteImport } from './routes/crypto'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -46,6 +47,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Home1Route = Home1RouteImport.update({
+  id: '/home1',
+  path: '/home1',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/crypto': typeof CryptoRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/home1': typeof Home1Route
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/crypto': typeof CryptoRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/home1': typeof Home1Route
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/crypto': typeof CryptoRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/home1': typeof Home1Route
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/crypto'
     | '/forgot-password'
+    | '/home1'
     | '/login'
     | '/reset-password'
     | '/signup'
@@ -262,6 +272,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/crypto'
     | '/forgot-password'
+    | '/home1'
     | '/login'
     | '/reset-password'
     | '/signup'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/crypto'
     | '/forgot-password'
+    | '/home1'
     | '/login'
     | '/reset-password'
     | '/signup'
@@ -312,6 +324,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CryptoRoute: typeof CryptoRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  Home1Route: typeof Home1Route
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
@@ -343,6 +356,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home1': {
+      id: '/home1'
+      path: '/home1'
+      fullPath: '/home1'
+      preLoaderRoute: typeof Home1RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -536,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CryptoRoute: CryptoRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  Home1Route: Home1Route,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
