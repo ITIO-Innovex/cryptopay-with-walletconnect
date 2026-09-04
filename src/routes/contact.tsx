@@ -16,7 +16,7 @@ export const Route = createFileRoute("/contact")({
         name: "description",
         content: "Contact us about payment page software, supported assets, integration and pricing.",
       },
-      { name: "robots", content: "noindex, nofollow" },
+      { name: "robots", content: "noindex, nofollow, noarchive, nosnippet" },
     ],
   }),
   component: ContactPage,
@@ -110,6 +110,10 @@ function ContactPage() {
             <h2 className="text-sm font-semibold">Company details</h2>
             <dl className="mt-3 space-y-3 text-sm text-muted-foreground">
               <div>
+                <dt className="text-xs uppercase tracking-wide">Legal entity</dt>
+                <dd className="text-foreground">Onternity Tech Limited</dd>
+              </div>
+              <div>
                 <dt className="text-xs uppercase tracking-wide">Trading as</dt>
                 <dd className="text-foreground">{brand}</dd>
               </div>
@@ -121,8 +125,9 @@ function ContactPage() {
               </div>
             </dl>
             <p className="mt-4 text-xs text-muted-foreground">
-              {brand} is a technology company providing payment page software. It is not a bank,
-              exchange, broker or custodian and does not hold customer funds.
+              Onternity Tech Limited, trading as {brand}, is a technology company providing payment
+              page software. It is not a bank, exchange, broker or custodian and does not hold
+              customer funds.
             </p>
           </aside>
         </div>

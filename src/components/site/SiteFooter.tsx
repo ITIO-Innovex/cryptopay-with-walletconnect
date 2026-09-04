@@ -43,7 +43,6 @@ export function SiteFooter() {
           <div>
             <h3 className="text-sm font-semibold">Company</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li>{brand}</li>
               <li className="pt-1">
                 <EmailPill email={email} compact />
               </li>
