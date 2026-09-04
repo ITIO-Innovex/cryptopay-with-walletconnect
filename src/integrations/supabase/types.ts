@@ -200,6 +200,84 @@ export type Database = {
         }
         Relationships: []
       }
+      auth_user_profile: {
+        Row: {
+          company_name: string | null
+          contact_phone: string | null
+          created_at: string
+          created_by: string | null
+          full_name: string | null
+          id: string
+          is_active: boolean
+          status: Database["public"]["Enums"]["account_status"]
+          updated_at: string
+          updated_by: string | null
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          status?: Database["public"]["Enums"]["account_status"]
+          updated_at?: string
+          updated_by?: string | null
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          status?: Database["public"]["Enums"]["account_status"]
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      auth_user_role: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+          updated_by: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          updated_by?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       authorized_emails: {
         Row: {
           active: number | null
@@ -1163,6 +1241,48 @@ export type Database = {
         }
         Relationships: []
       }
+      merchant_account: {
+        Row: {
+          business_email: string | null
+          company_name: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          owner_user_id: string
+          status: Database["public"]["Enums"]["account_status"]
+          terno: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          business_email?: string | null
+          company_name: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          owner_user_id: string
+          status?: Database["public"]["Enums"]["account_status"]
+          terno: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          business_email?: string | null
+          company_name?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          owner_user_id?: string
+          status?: Database["public"]["Enums"]["account_status"]
+          terno?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       merchant_announcement: {
         Row: {
           announcement_id: number
@@ -1192,6 +1312,168 @@ export type Database = {
           user_id?: number
         }
         Relationships: []
+      }
+      merchant_api_key: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          label: string
+          last_used_at: string | null
+          merchant_id: string
+          public_key: string
+          revoked_at: string | null
+          secret_hash: string
+          secret_preview: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          label?: string
+          last_used_at?: string | null
+          merchant_id: string
+          public_key: string
+          revoked_at?: string | null
+          secret_hash: string
+          secret_preview: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          label?: string
+          last_used_at?: string | null
+          merchant_id?: string
+          public_key?: string
+          revoked_at?: string | null
+          secret_hash?: string
+          secret_preview?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_api_key_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      merchant_audit_log: {
+        Row: {
+          action: string
+          created_at: string
+          created_by: string | null
+          data: Json
+          entity: string | null
+          entity_id: string | null
+          id: string
+          is_active: boolean
+          merchant_id: string
+          updated_at: string
+          updated_by: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          is_active?: boolean
+          merchant_id: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+          is_active?: boolean
+          merchant_id?: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_audit_log_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      merchant_payout_setting: {
+        Row: {
+          auto_refund_overpayment: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          merchant_id: string
+          min_payout_usd: number
+          mode: Database["public"]["Enums"]["payout_mode"]
+          next_run_at: string | null
+          notification_email: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          auto_refund_overpayment?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          merchant_id: string
+          min_payout_usd?: number
+          mode?: Database["public"]["Enums"]["payout_mode"]
+          next_run_at?: string | null
+          notification_email?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          auto_refund_overpayment?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          merchant_id?: string
+          min_payout_usd?: number
+          mode?: Database["public"]["Enums"]["payout_mode"]
+          next_run_at?: string | null
+          notification_email?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_payout_setting_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: true
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       merchant_referral: {
         Row: {
@@ -1285,6 +1567,65 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      merchant_wallet: {
+        Row: {
+          address: string
+          asset: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          is_default: boolean
+          label: string | null
+          merchant_id: string
+          min_payout: number
+          network: string
+          updated_at: string
+          updated_by: string | null
+          verified: boolean
+        }
+        Insert: {
+          address: string
+          asset: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          label?: string | null
+          merchant_id: string
+          min_payout?: number
+          network: string
+          updated_at?: string
+          updated_by?: string | null
+          verified?: boolean
+        }
+        Update: {
+          address?: string
+          asset?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          label?: string | null
+          merchant_id?: string
+          min_payout?: number
+          network?: string
+          updated_at?: string
+          updated_by?: string | null
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_wallet_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mop_connector_icon: {
         Row: {
@@ -1390,6 +1731,349 @@ export type Database = {
           udate?: string | null
         }
         Relationships: []
+      }
+      payment_address_pool: {
+        Row: {
+          address: string
+          asset: string
+          assigned_at: string | null
+          assigned_invoice_id: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          memo: string | null
+          network: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          address: string
+          asset: string
+          assigned_at?: string | null
+          assigned_invoice_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          memo?: string | null
+          network: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          address?: string
+          asset?: string
+          assigned_at?: string | null
+          assigned_invoice_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          memo?: string | null
+          network?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      payment_deposit: {
+        Row: {
+          amount: number
+          asset: string | null
+          confirmations: number
+          confirmed: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          invoice_id: string
+          is_active: boolean
+          network: string | null
+          received_at: string
+          sender_address: string | null
+          source: string
+          tx_hash: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          amount: number
+          asset?: string | null
+          confirmations?: number
+          confirmed?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          invoice_id: string
+          is_active?: boolean
+          network?: string | null
+          received_at?: string
+          sender_address?: string | null
+          source?: string
+          tx_hash: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          amount?: number
+          asset?: string | null
+          confirmations?: number
+          confirmed?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          invoice_id?: string
+          is_active?: boolean
+          network?: string | null
+          received_at?: string
+          sender_address?: string | null
+          source?: string
+          tx_hash?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_deposit_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "payment_invoice"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_invoice: {
+        Row: {
+          amount_usd: number
+          asset: string | null
+          created_at: string
+          created_by: string | null
+          customer_email: string | null
+          deposit_address: string | null
+          deposit_memo: string | null
+          description: string | null
+          due_amount: number | null
+          expires_at: string
+          fiat_currency: string
+          id: string
+          is_active: boolean
+          merchant_id: string
+          metadata: Json
+          network: string | null
+          order_id: string
+          paid_at: string | null
+          product_name: string
+          public_key: string | null
+          received_amount: number
+          redirect_url: string | null
+          settled: boolean
+          status: Database["public"]["Enums"]["invoice_status"]
+          terno: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          amount_usd: number
+          asset?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          deposit_address?: string | null
+          deposit_memo?: string | null
+          description?: string | null
+          due_amount?: number | null
+          expires_at?: string
+          fiat_currency?: string
+          id?: string
+          is_active?: boolean
+          merchant_id: string
+          metadata?: Json
+          network?: string | null
+          order_id: string
+          paid_at?: string | null
+          product_name: string
+          public_key?: string | null
+          received_amount?: number
+          redirect_url?: string | null
+          settled?: boolean
+          status?: Database["public"]["Enums"]["invoice_status"]
+          terno?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          amount_usd?: number
+          asset?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          deposit_address?: string | null
+          deposit_memo?: string | null
+          description?: string | null
+          due_amount?: number | null
+          expires_at?: string
+          fiat_currency?: string
+          id?: string
+          is_active?: boolean
+          merchant_id?: string
+          metadata?: Json
+          network?: string | null
+          order_id?: string
+          paid_at?: string | null
+          product_name?: string
+          public_key?: string | null
+          received_amount?: number
+          redirect_url?: string | null
+          settled?: boolean
+          status?: Database["public"]["Enums"]["invoice_status"]
+          terno?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_invoice_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payout_batch: {
+        Row: {
+          asset: string
+          created_at: string
+          created_by: string | null
+          destination_address: string | null
+          error_message: string | null
+          fee_amount: number
+          gross_amount: number
+          id: string
+          is_active: boolean
+          merchant_id: string
+          mode: Database["public"]["Enums"]["payout_mode"]
+          net_amount: number
+          network: string
+          scheduled_at: string
+          sent_at: string | null
+          status: Database["public"]["Enums"]["payout_status"]
+          tx_hash: string | null
+          updated_at: string
+          updated_by: string | null
+          wallet_id: string | null
+        }
+        Insert: {
+          asset: string
+          created_at?: string
+          created_by?: string | null
+          destination_address?: string | null
+          error_message?: string | null
+          fee_amount?: number
+          gross_amount?: number
+          id?: string
+          is_active?: boolean
+          merchant_id: string
+          mode?: Database["public"]["Enums"]["payout_mode"]
+          net_amount?: number
+          network: string
+          scheduled_at?: string
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          tx_hash?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          wallet_id?: string | null
+        }
+        Update: {
+          asset?: string
+          created_at?: string
+          created_by?: string | null
+          destination_address?: string | null
+          error_message?: string | null
+          fee_amount?: number
+          gross_amount?: number
+          id?: string
+          is_active?: boolean
+          merchant_id?: string
+          mode?: Database["public"]["Enums"]["payout_mode"]
+          net_amount?: number
+          network?: string
+          scheduled_at?: string
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          tx_hash?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          wallet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_batch_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_batch_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_wallet"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payout_batch_item: {
+        Row: {
+          amount: number
+          batch_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          invoice_id: string
+          is_active: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          amount: number
+          batch_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          invoice_id: string
+          is_active?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          amount?: number
+          batch_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          invoice_id?: string
+          is_active?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_batch_item_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "payout_batch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_batch_item_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "payment_invoice"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       referral_commission: {
         Row: {
@@ -1889,15 +2573,146 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_delivery: {
+        Row: {
+          attempt: number
+          created_at: string
+          created_by: string | null
+          delivered_at: string | null
+          endpoint_id: string
+          error_message: string | null
+          event: string
+          id: string
+          invoice_id: string | null
+          is_active: boolean
+          payload: Json
+          status_code: number | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          attempt?: number
+          created_at?: string
+          created_by?: string | null
+          delivered_at?: string | null
+          endpoint_id: string
+          error_message?: string | null
+          event: string
+          id?: string
+          invoice_id?: string | null
+          is_active?: boolean
+          payload?: Json
+          status_code?: number | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          attempt?: number
+          created_at?: string
+          created_by?: string | null
+          delivered_at?: string | null
+          endpoint_id?: string
+          error_message?: string | null
+          event?: string
+          id?: string
+          invoice_id?: string | null
+          is_active?: boolean
+          payload?: Json
+          status_code?: number | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_delivery_endpoint_id_fkey"
+            columns: ["endpoint_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_endpoint"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "webhook_delivery_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "payment_invoice"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_endpoint: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          is_enabled: boolean
+          merchant_id: string
+          signing_secret: string
+          updated_at: string
+          updated_by: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          is_enabled?: boolean
+          merchant_id: string
+          signing_secret: string
+          updated_at?: string
+          updated_by?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          is_enabled?: boolean
+          merchant_id?: string
+          signing_secret?: string
+          updated_at?: string
+          updated_by?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_endpoint_merchant_id_fkey"
+            columns: ["merchant_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_account"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      owns_merchant: { Args: { _merchant_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      account_status: "pending" | "active" | "suspended"
+      app_role: "merchant" | "admin"
+      invoice_status:
+        | "awaiting"
+        | "underpaid"
+        | "paid"
+        | "overpaid"
+        | "expired"
+        | "cancelled"
+        | "refunded"
+      payout_mode: "instant" | "hourly" | "daily" | "manual"
+      payout_status: "queued" | "processing" | "sent" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2024,6 +2839,20 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_status: ["pending", "active", "suspended"],
+      app_role: ["merchant", "admin"],
+      invoice_status: [
+        "awaiting",
+        "underpaid",
+        "paid",
+        "overpaid",
+        "expired",
+        "cancelled",
+        "refunded",
+      ],
+      payout_mode: ["instant", "hourly", "daily", "manual"],
+      payout_status: ["queued", "processing", "sent", "failed"],
+    },
   },
 } as const
