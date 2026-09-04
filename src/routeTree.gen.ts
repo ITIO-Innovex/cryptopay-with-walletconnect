@@ -28,6 +28,8 @@ import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_au
 import { Route as AuthenticatedDashboardPayoutsRouteImport } from './routes/_authenticated/dashboard.payouts'
 import { Route as AuthenticatedDashboardInvoicesRouteImport } from './routes/_authenticated/dashboard.invoices'
 import { Route as AuthenticatedDashboardApiKeysRouteImport } from './routes/_authenticated/dashboard.api-keys'
+import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
+import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicV1SettlementRunRouteImport } from './routes/api/public/v1/settlement-run'
 import { Route as ApiPublicV1InvoicesRouteImport } from './routes/api/public/v1/invoices'
 
@@ -133,6 +135,16 @@ const AuthenticatedDashboardApiKeysRoute =
     path: '/api-keys',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
+  id: '/lovable/email/auth/webhook',
+  path: '/lovable/email/auth/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
+  id: '/lovable/email/auth/preview',
+  path: '/lovable/email/auth/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicV1SettlementRunRoute =
   ApiPublicV1SettlementRunRouteImport.update({
     id: '/api/public/v1/settlement-run',
@@ -166,6 +178,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
   '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -187,6 +201,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
   '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -211,6 +227,8 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
   '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -235,6 +253,8 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/api/public/v1/invoices'
     | '/api/public/v1/settlement-run'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -256,6 +276,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/public/v1/invoices'
     | '/api/public/v1/settlement-run'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
   id:
     | '__root__'
     | '/'
@@ -279,6 +301,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/'
     | '/api/public/v1/invoices'
     | '/api/public/v1/settlement-run'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -294,6 +318,8 @@ export interface RootRouteChildren {
   LegalSlugRoute: typeof LegalSlugRoute
   ApiPublicV1InvoicesRoute: typeof ApiPublicV1InvoicesRoute
   ApiPublicV1SettlementRunRoute: typeof ApiPublicV1SettlementRunRoute
+  LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
+  LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -431,6 +457,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardApiKeysRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/lovable/email/auth/webhook': {
+      id: '/lovable/email/auth/webhook'
+      path: '/lovable/email/auth/webhook'
+      fullPath: '/lovable/email/auth/webhook'
+      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/auth/preview': {
+      id: '/lovable/email/auth/preview'
+      path: '/lovable/email/auth/preview'
+      fullPath: '/lovable/email/auth/preview'
+      preLoaderRoute: typeof LovableEmailAuthPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/v1/settlement-run': {
       id: '/api/public/v1/settlement-run'
       path: '/api/public/v1/settlement-run'
@@ -502,6 +542,8 @@ const rootRouteChildren: RootRouteChildren = {
   LegalSlugRoute: LegalSlugRoute,
   ApiPublicV1InvoicesRoute: ApiPublicV1InvoicesRoute,
   ApiPublicV1SettlementRunRoute: ApiPublicV1SettlementRunRoute,
+  LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
+  LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
