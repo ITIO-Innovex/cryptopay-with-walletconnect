@@ -19,8 +19,17 @@ import { CheckingStatus } from "@/components/checkout/CheckingStatus";
 import { ReportProblemDialog } from "@/components/checkout/ReportProblemDialog";
 import { SimulationPanel } from "@/components/checkout/SimulationPanel";
 import { derivePaymentStatus, makeOrderId, randomTxHash, randomWalletAddress } from "@/lib/payment";
+import {
+  getPublicInvoice,
+  recordInvoiceDeposit,
+  selectInvoiceAsset,
+} from "@/features/payments/checkout.functions";
 
 export const Route = createFileRoute("/checkout")({
+  validateSearch: (search: Record<string, unknown>): { invoice?: string } => {
+    const invoice = typeof search.invoice === "string" ? search.invoice.trim() : "";
+    return invoice ? { invoice } : {};
+  },
   head: () => ({
     meta: [
       { title: "Checkout — Cryptope" },
