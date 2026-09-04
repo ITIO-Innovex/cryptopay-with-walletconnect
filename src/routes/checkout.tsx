@@ -186,6 +186,14 @@ function Checkout() {
     setTxs([]);
     setPaymentMethod(null);
     setStep("send");
+    // Merchant invoices get a unique deposit address from the wallet provider.
+    if (invoiceId) {
+      void lockAsset({
+        data: { invoiceId, asset: currency.symbol, network: net.name },
+      })
+        .then((result) => setLiveAddress(result.address))
+        .catch(() => undefined);
+    }
   };
   const goToSend = () => {
     if (currency && network) startSend(network);
