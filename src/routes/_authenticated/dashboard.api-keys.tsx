@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { VerificationGate } from "@/features/merchant/shared/VerificationGate";
 import { DashboardShell } from "@/features/merchant/layout/DashboardShell";
 import { EmptyState, ErrorState, LoadingState } from "@/features/merchant/shared/PageState";
 import { formatDateTime } from "@/features/merchant/shared/format";
@@ -46,6 +47,9 @@ function ApiKeysPage() {
       title="API keys"
       description="Use the secret key to create invoices from your server. The public key identifies you on the checkout page."
     >
+      <div className="mb-4">
+        <VerificationGate feature="Creating API keys">{null}</VerificationGate>
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
