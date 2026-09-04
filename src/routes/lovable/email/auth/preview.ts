@@ -18,7 +18,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "WalletConnect and Cryptope Crypto Checkout System"
+const SITE_NAME = "Cryptope"
 const ROOT_DOMAIN = "cryptope.net"
 
 // Sample data for preview mode ONLY (not used in actual email sending).
