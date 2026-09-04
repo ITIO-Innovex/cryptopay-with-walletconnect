@@ -11,8 +11,8 @@ export const Route = createFileRoute("/api/public/v1/settlement-run")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const authorized = await authenticateCronRequest(request);
-        if (!authorized) return new Response("Unauthorized", { status: 401 });
+        const denied = await authenticateCronRequest(request);
+        if (denied) return denied;
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { runSettlement } = await import("@/features/payments/settlement.server");
