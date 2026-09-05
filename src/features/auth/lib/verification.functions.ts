@@ -12,8 +12,6 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-/** Hosted KYB/KYC flow. Replace with the live didit.me session URL. */
-export const VERIFICATION_PROVIDER_URL = "https://verify.didit.me/cryptope/start";
 export const VERIFICATION_PROVIDER_NAME = "didit.me";
 
 export interface VerificationState {
