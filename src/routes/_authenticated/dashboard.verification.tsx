@@ -9,7 +9,7 @@ import { LoadingState } from "@/features/merchant/shared/PageState";
 import { useVerification } from "@/features/merchant/shared/useVerification";
 import { formatDateTime } from "@/features/merchant/shared/format";
 import {
-  applyVerificationDecision,
+  refreshVerificationStatus,
   startVerification,
   VERIFICATION_PROVIDER_NAME,
 } from "@/features/auth/lib/verification.functions";
@@ -49,7 +49,7 @@ function VerificationPage() {
   const queryClient = useQueryClient();
   const { state, isLoading } = useVerification();
   const begin = useServerFn(startVerification);
-  const decide = useServerFn(applyVerificationDecision);
+  const refreshStatus = useServerFn(refreshVerificationStatus);
   const [busy, setBusy] = useState(false);
   const [opened, setOpened] = useState(false);
 
@@ -60,7 +60,7 @@ function VerificationPage() {
   async function handleStart() {
     setBusy(true);
     try {
-      const result = await begin({ data: undefined as never });
+      const result = await begin({ data: { origin: window.location.origin } });
       setOpened(true);
       window.open(result.url, "_blank", "noopener");
       await refresh();
@@ -72,7 +72,7 @@ function VerificationPage() {
   async function handleCompleted() {
     setBusy(true);
     try {
-      await decide({ data: { decision: "verified" } });
+      await refreshStatus({ data: undefined as never });
       await refresh();
     } finally {
       setBusy(false);
@@ -155,7 +155,7 @@ function VerificationPage() {
                     disabled={busy}
                     className="rounded-xl border border-emerald-500/50 px-4 py-2 text-sm font-semibold text-emerald-600 disabled:opacity-60"
                   >
-                    I have completed verification
+                    Refresh verification status
                   </button>
                 )}
               </div>
