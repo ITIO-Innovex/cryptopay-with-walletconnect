@@ -132,22 +132,36 @@ export const skipVerification = createServerFn({ method: "POST" })
   });
 
 /**
- * Applies a verification decision. Until the provider webhook is wired up this
- * is called from the "I have completed verification" button so the flow can be
- * exercised end to end.
+ * Pulls the latest decision for the merchant's session straight from the
+ * provider. The signed webhook remains the source of truth; this only lets a
+ * merchant refresh the page without waiting for the next delivery.
  */
-export const applyVerificationDecision = createServerFn({ method: "POST" })
+export const refreshVerificationStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) =>
-    z.object({ decision: z.enum(["verified", "rejected", "in_review"]) }).parse(data),
-  )
-  .handler(async ({ data, context }) => {
+  .handler(async ({ context }): Promise<VerificationState | null> => {
+    const { data: merchant } = await context.supabase
+      .from("merchant_account")
+      .select("id, verification_session_id")
+      .eq("owner_user_id", context.userId)
+      .maybeSingle();
+    if (!merchant?.verification_session_id) return null;
+
+    const { fetchDiditDecision, mapDiditStatus } = await import("./didit.server");
+    let decision: { status?: string } | null = null;
+    try {
+      decision = (await fetchDiditDecision(merchant.verification_session_id)) as { status?: string };
+    } catch (error) {
+      console.error("[didit] decision fetch failed", error);
+      return null;
+    }
+
+    const mapped = mapDiditStatus(decision?.status);
     const { data: row, error } = await context.supabase
       .from("merchant_account")
       .update({
-        verification_status: data.decision,
-        verified_at: data.decision === "verified" ? new Date().toISOString() : null,
-        verification_skipped: false,
+        verification_status: mapped.verification,
+        verification_reason: mapped.reason,
+        verified_at: mapped.verification === "verified" ? new Date().toISOString() : null,
         updated_by: context.userId,
       })
       .eq("owner_user_id", context.userId)
@@ -156,3 +170,4 @@ export const applyVerificationDecision = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return mapRow(row);
   });
+
