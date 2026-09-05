@@ -68,17 +68,40 @@ export const getVerificationState = createServerFn({ method: "GET" })
     return data ? mapRow(data) : null;
   });
 
-/** Records that the merchant has been sent to the provider, returns the URL. */
+/**
+ * Creates a real hosted verification session with our provider and returns the
+ * URL the merchant should open.
+ */
 export const startVerification = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const reference = `KYB-${Date.now().toString(36).toUpperCase()}`;
-    const { data, error } = await context.supabase
+  .inputValidator((data) =>
+    z.object({ origin: z.string().url().optional() }).parse(data ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    const { data: merchant, error: readError } = await context.supabase
+      .from("merchant_account")
+      .select("id, company_name, business_email")
+      .eq("owner_user_id", context.userId)
+      .maybeSingle();
+    if (readError) throw new Error(readError.message);
+    if (!merchant) throw new Error("No merchant account found. Sign out and back in to create one.");
+
+    const { createDiditSession } = await import("./didit.server");
+    const origin = data.origin ?? "https://cryptope.net";
+    const session = await createDiditSession({
+      vendorData: merchant.id,
+      vendorBusinessId: merchant.id,
+      callbackUrl: `${origin}/dashboard/verification`,
+      contactEmail: merchant.business_email,
+    });
+
+    const { data: row, error } = await context.supabase
       .from("merchant_account")
       .update({
         verification_status: "in_review",
         verification_skipped: false,
-        verification_ref: reference,
+        verification_ref: session.session_id,
+        verification_session_id: session.session_id,
         verification_submitted_at: new Date().toISOString(),
         updated_by: context.userId,
       })
@@ -87,11 +110,12 @@ export const startVerification = createServerFn({ method: "POST" })
       .single();
     if (error) throw new Error(error.message);
     return {
-      state: mapRow(data),
-      url: `${VERIFICATION_PROVIDER_URL}?reference=${encodeURIComponent(reference)}`,
+      state: mapRow(row),
+      url: session.url,
       provider: VERIFICATION_PROVIDER_NAME,
     };
   });
+
 
 /** Merchant chose to look around the dashboard before verifying. */
 export const skipVerification = createServerFn({ method: "POST" })
