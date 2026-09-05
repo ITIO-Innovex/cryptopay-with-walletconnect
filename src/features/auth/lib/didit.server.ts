@@ -213,6 +213,9 @@ export async function applyDiditStatus(
   if (payload.session_id) update["verification_session_id"] = payload.session_id;
   if (payload.decision !== undefined) update["verification_decision"] = payload.decision;
 
-  const { error } = await admin.from("merchant_account").update(update).eq("id", merchantId);
+  const { error } = await admin
+    .from("merchant_account")
+    .update(update as never)
+    .eq("id", merchantId);
   if (error) console.error("[didit] merchant update failed", error.message);
 }
