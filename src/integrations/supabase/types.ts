@@ -911,6 +911,45 @@ export type Database = {
         }
         Relationships: []
       }
+      kyc_webhook_event: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          is_active: boolean
+          payload: Json
+          session_id: string | null
+          status: string | null
+          updated_at: string
+          vendor_data: string | null
+          webhook_type: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          is_active?: boolean
+          payload: Json
+          session_id?: string | null
+          status?: string | null
+          updated_at?: string
+          vendor_data?: string | null
+          webhook_type?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          is_active?: boolean
+          payload?: Json
+          session_id?: string | null
+          status?: string | null
+          updated_at?: string
+          vendor_data?: string | null
+          webhook_type?: string | null
+        }
+        Relationships: []
+      }
       master_transaction: {
         Row: {
           attempt_number: number | null
@@ -1297,7 +1336,10 @@ export type Database = {
           terno: string
           updated_at: string
           updated_by: string | null
+          verification_decision: Json | null
+          verification_reason: string | null
           verification_ref: string | null
+          verification_session_id: string | null
           verification_skipped: boolean
           verification_status: string
           verification_submitted_at: string | null
@@ -1316,7 +1358,10 @@ export type Database = {
           terno: string
           updated_at?: string
           updated_by?: string | null
+          verification_decision?: Json | null
+          verification_reason?: string | null
           verification_ref?: string | null
+          verification_session_id?: string | null
           verification_skipped?: boolean
           verification_status?: string
           verification_submitted_at?: string | null
@@ -1335,7 +1380,10 @@ export type Database = {
           terno?: string
           updated_at?: string
           updated_by?: string | null
+          verification_decision?: Json | null
+          verification_reason?: string | null
           verification_ref?: string | null
+          verification_session_id?: string | null
           verification_skipped?: boolean
           verification_status?: string
           verification_submitted_at?: string | null
