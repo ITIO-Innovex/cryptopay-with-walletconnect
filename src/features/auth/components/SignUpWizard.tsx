@@ -13,7 +13,7 @@ import { getOrCreateAccount } from "../lib/account.functions";
 import {
   startVerification,
   skipVerification,
-  applyVerificationDecision,
+  refreshVerificationStatus,
   VERIFICATION_PROVIDER_NAME,
 } from "../lib/verification.functions";
 
@@ -61,7 +61,7 @@ export function SignUpWizard() {
   const persistBusiness = useServerFn(saveBusinessDetails);
   const beginVerification = useServerFn(startVerification);
   const postponeVerification = useServerFn(skipVerification);
-  const decideVerification = useServerFn(applyVerificationDecision);
+  const refreshVerification = useServerFn(refreshVerificationStatus);
 
   const [step, setStep] = useState<Step>("details");
   const [firstName, setFirstName] = useState("");
@@ -175,7 +175,7 @@ export function SignUpWizard() {
     setBusy(true);
     setError("");
     try {
-      const result = await beginVerification({ data: undefined as never });
+      const result = await beginVerification({ data: { origin: window.location.origin } });
       setVerificationSent(true);
       setBusy(false);
       window.open(result.url, "_blank", "noopener");
@@ -187,7 +187,7 @@ export function SignUpWizard() {
   async function completeVerification() {
     setBusy(true);
     try {
-      await decideVerification({ data: { decision: "verified" } });
+      await refreshVerification({ data: undefined as never });
       await navigate({ to: "/dashboard" });
     } catch (err) {
       fail(err instanceof Error ? err.message : "Could not update verification");

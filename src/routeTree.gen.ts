@@ -25,6 +25,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LegalSlugRouteImport } from './routes/legal.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as KycProviderWebhookDiditRouteImport } from './routes/kyc-provider/webhook/didit'
 import { Route as AuthenticatedDashboardWalletsRouteImport } from './routes/_authenticated/dashboard.wallets'
 import { Route as AuthenticatedDashboardVerificationRouteImport } from './routes/_authenticated/dashboard.verification'
 import { Route as AuthenticatedDashboardTransactionsRouteImport } from './routes/_authenticated/dashboard.transactions'
@@ -118,6 +119,11 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const KycProviderWebhookDiditRoute = KycProviderWebhookDiditRouteImport.update({
+  id: '/kyc-provider/webhook/didit',
+  path: '/kyc-provider/webhook/didit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardWalletsRoute =
   AuthenticatedDashboardWalletsRouteImport.update({
     id: '/wallets',
@@ -210,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
   '/dashboard/verification': typeof AuthenticatedDashboardVerificationRoute
   '/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
+  '/kyc-provider/webhook/didit': typeof KycProviderWebhookDiditRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
   '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
@@ -238,6 +245,7 @@ export interface FileRoutesByTo {
   '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
   '/dashboard/verification': typeof AuthenticatedDashboardVerificationRoute
   '/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
+  '/kyc-provider/webhook/didit': typeof KycProviderWebhookDiditRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
   '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
   '/_authenticated/dashboard/verification': typeof AuthenticatedDashboardVerificationRoute
   '/_authenticated/dashboard/wallets': typeof AuthenticatedDashboardWalletsRoute
+  '/kyc-provider/webhook/didit': typeof KycProviderWebhookDiditRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/api/public/v1/invoices': typeof ApiPublicV1InvoicesRoute
   '/api/public/v1/settlement-run': typeof ApiPublicV1SettlementRunRoute
@@ -300,6 +309,7 @@ export interface FileRouteTypes {
     | '/dashboard/transactions'
     | '/dashboard/verification'
     | '/dashboard/wallets'
+    | '/kyc-provider/webhook/didit'
     | '/dashboard/'
     | '/api/public/v1/invoices'
     | '/api/public/v1/settlement-run'
@@ -328,6 +338,7 @@ export interface FileRouteTypes {
     | '/dashboard/transactions'
     | '/dashboard/verification'
     | '/dashboard/wallets'
+    | '/kyc-provider/webhook/didit'
     | '/dashboard'
     | '/api/public/v1/invoices'
     | '/api/public/v1/settlement-run'
@@ -358,6 +369,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/transactions'
     | '/_authenticated/dashboard/verification'
     | '/_authenticated/dashboard/wallets'
+    | '/kyc-provider/webhook/didit'
     | '/_authenticated/dashboard/'
     | '/api/public/v1/invoices'
     | '/api/public/v1/settlement-run'
@@ -381,6 +393,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
   LegalSlugRoute: typeof LegalSlugRoute
+  KycProviderWebhookDiditRoute: typeof KycProviderWebhookDiditRoute
   ApiPublicV1InvoicesRoute: typeof ApiPublicV1InvoicesRoute
   ApiPublicV1SettlementRunRoute: typeof ApiPublicV1SettlementRunRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -501,6 +514,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/kyc-provider/webhook/didit': {
+      id: '/kyc-provider/webhook/didit'
+      path: '/kyc-provider/webhook/didit'
+      fullPath: '/kyc-provider/webhook/didit'
+      preLoaderRoute: typeof KycProviderWebhookDiditRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/wallets': {
       id: '/_authenticated/dashboard/wallets'
@@ -645,6 +665,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
   LegalSlugRoute: LegalSlugRoute,
+  KycProviderWebhookDiditRoute: KycProviderWebhookDiditRoute,
   ApiPublicV1InvoicesRoute: ApiPublicV1InvoicesRoute,
   ApiPublicV1SettlementRunRoute: ApiPublicV1SettlementRunRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
