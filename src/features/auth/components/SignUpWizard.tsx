@@ -33,6 +33,8 @@ export function SignUpWizard() {
   const bootstrapAccount = useServerFn(getOrCreateAccount);
   const persistPersonal = useServerFn(savePersonalDetails);
   const persistBusiness = useServerFn(saveBusinessDetails);
+  const inspectWebsite = useServerFn(checkWebsiteAvailability);
+  const inspectEmail = useServerFn(checkEmailAvailability);
   const beginVerification = useServerFn(startVerification);
   const postponeVerification = useServerFn(skipVerification);
   const refreshVerification = useServerFn(refreshVerificationStatus);
