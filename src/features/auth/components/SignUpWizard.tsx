@@ -52,7 +52,7 @@ export function SignUpWizard() {
 
   const [businessName, setBusinessName] = useState("");
   const [website, setWebsite] = useState("");
-  const [site, setSite] = useState<{ url: string; domain: string; previewUrl: string } | null>(null);
+  const [site, setSite] = useState<{ url: string; domain: string } | null>(null);
   const [siteError, setSiteError] = useState("");
   const [checkingSite, setCheckingSite] = useState(false);
   const [corporateEmail, setCorporateEmail] = useState("");
@@ -134,7 +134,7 @@ export function SignUpWizard() {
 
   // --- step 3: business ----------------------------------------------------
 
-  /** Confirms the website answers and shows a preview beside the field. */
+  /** Confirms the website answers. */
   async function runWebsiteCheck() {
     const value = website.trim();
     if (!value) {
@@ -147,7 +147,7 @@ export function SignUpWizard() {
     try {
       const result = await inspectWebsite({ data: { website: value } });
       if (result.ok) {
-        setSite({ url: result.url, domain: result.domain, previewUrl: result.previewUrl });
+        setSite({ url: result.url, domain: result.domain });
         setWebsite(result.url);
       } else {
         setSite(null);
@@ -209,7 +209,7 @@ export function SignUpWizard() {
     }
     if (!site) {
       fail(
-        "We still need a working website. Reason: the address has not been confirmed yet. Solution: enter your website address and wait for the preview to appear.",
+        "We still need a working website. Reason: the address has not been confirmed yet. Solution: enter your website address and wait for the check to finish.",
       );
       return;
     }
@@ -301,7 +301,7 @@ export function SignUpWizard() {
 
           <div>
             <label htmlFor="email" className="text-sm font-medium">
-              Work email
+              Email address
             </label>
             <div className="mt-1.5 flex gap-2">
               <input
