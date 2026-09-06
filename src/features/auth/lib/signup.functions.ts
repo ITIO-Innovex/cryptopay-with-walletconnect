@@ -54,7 +54,7 @@ export function normaliseWebsite(raw: string): { url: string; domain: string } |
 
 /**
  * Checks that the website the merchant typed actually answers, and returns the
- * tidied https address plus a preview image URL to show beside the field.
+ * tidied https address.
  */
 export const checkWebsiteAvailability = createServerFn({ method: "POST" })
   .inputValidator((data) => z.object({ website: z.string().trim().max(200) }).parse(data))
@@ -83,7 +83,6 @@ export const checkWebsiteAvailability = createServerFn({ method: "POST" })
             ok: true as const,
             url: finalUrl,
             domain,
-            previewUrl: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(finalUrl)}?w=640&h=420`,
           };
         }
       } catch {
