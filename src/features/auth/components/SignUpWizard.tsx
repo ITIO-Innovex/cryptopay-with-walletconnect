@@ -45,6 +45,12 @@ export function SignUpWizard() {
 
   const [businessName, setBusinessName] = useState("");
   const [website, setWebsite] = useState("");
+  const [site, setSite] = useState<{ url: string; domain: string; previewUrl: string } | null>(null);
+  const [siteError, setSiteError] = useState("");
+  const [checkingSite, setCheckingSite] = useState(false);
+  const [corporateEmail, setCorporateEmail] = useState("");
+  const [corporateEmailError, setCorporateEmailError] = useState("");
+  const [checkingCorporateEmail, setCheckingCorporateEmail] = useState(false);
 
   const [verificationSent, setVerificationSent] = useState(false);
   const [busy, setBusy] = useState(false);
