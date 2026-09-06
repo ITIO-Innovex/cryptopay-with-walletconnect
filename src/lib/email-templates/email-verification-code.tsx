@@ -51,7 +51,9 @@ const EmailVerificationCode = ({ code = '000000', minutes = 10 }: EmailVerificat
 
 export const template = {
   component: EmailVerificationCode,
-  subject: `Your ${SITE_NAME} verification code`,
+  // The code is repeated in the subject so it can be read from the inbox list.
+  subject: (data: Record<string, unknown>) =>
+    data['code'] ? `${data['code']} is your ${SITE_NAME} verification code` : `Your ${SITE_NAME} verification code`,
   displayName: 'Email verification code',
   previewData: { code: '482913', minutes: 10 },
 } satisfies TemplateEntry

@@ -8,7 +8,12 @@ import { EmailOtpDialog } from "@/components/site/EmailOtpDialog";
 import { AuthField, AuthMessage } from "./AuthShell";
 import { AuthDivider, GoogleSignInButton } from "./GoogleSignInButton";
 import { signUpMerchantAccount } from "../lib/auth-client";
-import { savePersonalDetails, saveBusinessDetails } from "../lib/signup.functions";
+import {
+  savePersonalDetails,
+  saveBusinessDetails,
+  checkWebsiteAvailability,
+  checkEmailAvailability,
+} from "../lib/signup.functions";
 import { getOrCreateAccount } from "../lib/account.functions";
 import {
   startVerification,
@@ -19,37 +24,6 @@ import {
 
 type Step = "details" | "password" | "business" | "verification";
 
-const STEP_LABELS: Record<Step, string> = {
-  details: "Your details",
-  password: "Create a password",
-  business: "Your business",
-  verification: "Verification",
-};
-
-/** Small progress rail so the merchant always knows where they are. */
-function Steps({ current }: { current: Step }) {
-  const order: Step[] = ["details", "password", "business", "verification"];
-  const index = order.indexOf(current);
-  return (
-    <ol className="mb-6 flex items-center gap-2 text-[11px]">
-      {order.map((step, i) => (
-        <li key={step} className="flex flex-1 items-center gap-2">
-          <span
-            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold ${
-              i <= index ? "bg-brand text-brand-foreground" : "bg-muted text-muted-foreground"
-            }`}
-          >
-            {i + 1}
-          </span>
-          <span className={i === index ? "font-medium" : "text-muted-foreground"}>
-            {STEP_LABELS[step]}
-          </span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 /**
  * Four-step merchant registration: personal details with email verification,
  * password, business name, then KYB/KYC with the option to skip for now.
@@ -59,6 +33,8 @@ export function SignUpWizard() {
   const bootstrapAccount = useServerFn(getOrCreateAccount);
   const persistPersonal = useServerFn(savePersonalDetails);
   const persistBusiness = useServerFn(saveBusinessDetails);
+  const inspectWebsite = useServerFn(checkWebsiteAvailability);
+  const inspectEmail = useServerFn(checkEmailAvailability);
   const beginVerification = useServerFn(startVerification);
   const postponeVerification = useServerFn(skipVerification);
   const refreshVerification = useServerFn(refreshVerificationStatus);
@@ -76,6 +52,12 @@ export function SignUpWizard() {
 
   const [businessName, setBusinessName] = useState("");
   const [website, setWebsite] = useState("");
+  const [site, setSite] = useState<{ url: string; domain: string; previewUrl: string } | null>(null);
+  const [siteError, setSiteError] = useState("");
+  const [checkingSite, setCheckingSite] = useState(false);
+  const [corporateEmail, setCorporateEmail] = useState("");
+  const [corporateEmailError, setCorporateEmailError] = useState("");
+  const [checkingCorporateEmail, setCheckingCorporateEmail] = useState(false);
 
   const [verificationSent, setVerificationSent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -151,6 +133,71 @@ export function SignUpWizard() {
   }
 
   // --- step 3: business ----------------------------------------------------
+
+  /** Confirms the website answers and shows a preview beside the field. */
+  async function runWebsiteCheck() {
+    const value = website.trim();
+    if (!value) {
+      setSite(null);
+      setSiteError("");
+      return;
+    }
+    setCheckingSite(true);
+    setSiteError("");
+    try {
+      const result = await inspectWebsite({ data: { website: value } });
+      if (result.ok) {
+        setSite({ url: result.url, domain: result.domain, previewUrl: result.previewUrl });
+        setWebsite(result.url);
+      } else {
+        setSite(null);
+        setSiteError(result.reason);
+      }
+    } catch {
+      setSite(null);
+      setSiteError(
+        "We could not check that website. Reason: the check did not complete. Solution: try again in a moment.",
+      );
+    } finally {
+      setCheckingSite(false);
+    }
+  }
+
+  /** Corporate email must match the website domain and be free to use. */
+  async function runCorporateEmailCheck(): Promise<boolean> {
+    const value = corporateEmail.trim().toLowerCase();
+    if (!site) return false;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+      setCorporateEmailError(
+        "That does not look like an email address. Solution: enter it like you@" + site.domain + ".",
+      );
+      return false;
+    }
+    if (!value.endsWith("@" + site.domain)) {
+      setCorporateEmailError(
+        `This address does not belong to your website. Reason: it must end with @${site.domain}. Solution: use your company address on that domain.`,
+      );
+      return false;
+    }
+    setCheckingCorporateEmail(true);
+    try {
+      const result = await inspectEmail({ data: { email: value } });
+      if (!result.available) {
+        setCorporateEmailError(
+          "This address already has an account. Reason: it was registered before. Solution: sign in with it, or use a different company address.",
+        );
+        return false;
+      }
+      setCorporateEmailError("");
+      return true;
+    } catch {
+      setCorporateEmailError("We could not check that address just now. Please try again.");
+      return false;
+    } finally {
+      setCheckingCorporateEmail(false);
+    }
+  }
+
   async function submitBusiness(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -160,9 +207,27 @@ export function SignUpWizard() {
       );
       return;
     }
+    if (!site) {
+      fail(
+        "We still need a working website. Reason: the address has not been confirmed yet. Solution: enter your website address and wait for the preview to appear.",
+      );
+      return;
+    }
+    if (!(await runCorporateEmailCheck())) {
+      fail(
+        "We cannot continue without a valid corporate email. Reason: see the message under that field. Solution: correct the address and try again.",
+      );
+      return;
+    }
     setBusy(true);
     try {
-      await persistBusiness({ data: { businessName: businessName.trim(), website: website.trim() } });
+      await persistBusiness({
+        data: {
+          businessName: businessName.trim(),
+          website: site.url,
+          corporateEmail: corporateEmail.trim().toLowerCase(),
+        },
+      });
       setBusy(false);
       setStep("verification");
     } catch (err) {
@@ -206,7 +271,7 @@ export function SignUpWizard() {
 
   return (
     <>
-      <Steps current={step} />
+      
       {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
 
       {step === "details" && (
@@ -258,16 +323,15 @@ export function SignUpWizard() {
                 <span className="flex shrink-0 items-center gap-1 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 text-xs font-semibold text-emerald-600">
                   <BadgeCheck className="h-4 w-4" /> Verified
                 </span>
-              ) : (
+              ) : emailLooksValid ? (
                 <button
                   type="button"
-                  disabled={!emailLooksValid}
                   onClick={() => setOtpOpen(true)}
-                  className="shrink-0 rounded-xl border border-brand px-3 text-xs font-semibold text-brand disabled:opacity-50"
+                  className="shrink-0 rounded-xl border border-brand px-3 text-xs font-semibold text-brand"
                 >
                   Verify
                 </button>
-              )}
+              ) : null}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
               We send a one-time code to confirm the address. Everything about your account is sent
@@ -349,15 +413,89 @@ export function SignUpWizard() {
             value={businessName}
             onChange={setBusinessName}
           />
-          <AuthField
-            id="website"
-            label="Website (optional)"
-            hint="Where your customers pay. It helps speed up the review."
-            required={false}
-            placeholder="https://yourcompany.com"
-            value={website}
-            onChange={setWebsite}
-          />
+
+          <div className="grid gap-4 sm:grid-cols-[1fr_11rem] sm:items-start">
+            <div>
+              <label htmlFor="website" className="text-sm font-medium">
+                Website
+              </label>
+              <input
+                id="website"
+                placeholder="yourcompany.com"
+                value={website}
+                onChange={(e) => {
+                  setWebsite(e.target.value);
+                  setSite(null);
+                  setSiteError("");
+                  setCorporateEmail("");
+                  setCorporateEmailError("");
+                }}
+                onBlur={() => void runWebsiteCheck()}
+                className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-brand"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Just the address is fine — we add the secure https:// part for you and open a
+                preview to confirm it is the right site.
+              </p>
+              {checkingSite ? (
+                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Checking the website…
+                </p>
+              ) : null}
+              {siteError ? <p className="mt-1.5 text-xs text-destructive">{siteError}</p> : null}
+              {site ? (
+                <p className="mt-1.5 text-xs text-emerald-600">Reachable at {site.url}</p>
+              ) : null}
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-border bg-muted/40">
+              {site ? (
+                <img
+                  src={site.previewUrl}
+                  alt={`Preview of ${site.domain}`}
+                  loading="lazy"
+                  className="h-28 w-full object-cover object-top"
+                />
+              ) : (
+                <div className="flex h-28 items-center justify-center px-3 text-center text-[11px] text-muted-foreground">
+                  Website preview appears here
+                </div>
+              )}
+            </div>
+          </div>
+
+          {site ? (
+            <div>
+              <label htmlFor="corporateEmail" className="text-sm font-medium">
+                Corporate email
+              </label>
+              <input
+                id="corporateEmail"
+                type="email"
+                placeholder={`you@${site.domain}`}
+                value={corporateEmail}
+                onChange={(e) => {
+                  setCorporateEmail(e.target.value);
+                  setCorporateEmailError("");
+                }}
+                onBlur={() => void runCorporateEmailCheck()}
+                className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-brand"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Must use the same domain as your website ({site.domain}) and must not already have
+                an account with us.
+              </p>
+              {checkingCorporateEmail ? (
+                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Checking this address…
+                </p>
+              ) : null}
+              {corporateEmailError ? (
+                <p className="mt-1.5 text-xs text-destructive">{corporateEmailError}</p>
+              ) : null}
+            </div>
+          ) : null}
+
           <button
             type="submit"
             disabled={busy}
