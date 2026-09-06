@@ -8,7 +8,12 @@ import { EmailOtpDialog } from "@/components/site/EmailOtpDialog";
 import { AuthField, AuthMessage } from "./AuthShell";
 import { AuthDivider, GoogleSignInButton } from "./GoogleSignInButton";
 import { signUpMerchantAccount } from "../lib/auth-client";
-import { savePersonalDetails, saveBusinessDetails } from "../lib/signup.functions";
+import {
+  savePersonalDetails,
+  saveBusinessDetails,
+  checkWebsiteAvailability,
+  checkEmailAvailability,
+} from "../lib/signup.functions";
 import { getOrCreateAccount } from "../lib/account.functions";
 import {
   startVerification,
