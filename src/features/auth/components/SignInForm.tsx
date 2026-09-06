@@ -60,7 +60,7 @@ export function SignInForm() {
       <div className="space-y-4">
         <AuthField
           id="email"
-          label="Work email"
+          label="Email address"
           hint="The email address your merchant account was created with."
           type="email"
           autoComplete="email"
