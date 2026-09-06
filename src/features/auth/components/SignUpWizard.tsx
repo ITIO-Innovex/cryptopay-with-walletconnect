@@ -126,6 +126,71 @@ export function SignUpWizard() {
   }
 
   // --- step 3: business ----------------------------------------------------
+
+  /** Confirms the website answers and shows a preview beside the field. */
+  async function runWebsiteCheck() {
+    const value = website.trim();
+    if (!value) {
+      setSite(null);
+      setSiteError("");
+      return;
+    }
+    setCheckingSite(true);
+    setSiteError("");
+    try {
+      const result = await inspectWebsite({ data: { website: value } });
+      if (result.ok) {
+        setSite({ url: result.url, domain: result.domain, previewUrl: result.previewUrl });
+        setWebsite(result.url);
+      } else {
+        setSite(null);
+        setSiteError(result.reason);
+      }
+    } catch {
+      setSite(null);
+      setSiteError(
+        "We could not check that website. Reason: the check did not complete. Solution: try again in a moment.",
+      );
+    } finally {
+      setCheckingSite(false);
+    }
+  }
+
+  /** Corporate email must match the website domain and be free to use. */
+  async function runCorporateEmailCheck(): Promise<boolean> {
+    const value = corporateEmail.trim().toLowerCase();
+    if (!site) return false;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+      setCorporateEmailError(
+        "That does not look like an email address. Solution: enter it like you@" + site.domain + ".",
+      );
+      return false;
+    }
+    if (!value.endsWith("@" + site.domain)) {
+      setCorporateEmailError(
+        `This address does not belong to your website. Reason: it must end with @${site.domain}. Solution: use your company address on that domain.`,
+      );
+      return false;
+    }
+    setCheckingCorporateEmail(true);
+    try {
+      const result = await inspectEmail({ data: { email: value } });
+      if (!result.available) {
+        setCorporateEmailError(
+          "This address already has an account. Reason: it was registered before. Solution: sign in with it, or use a different company address.",
+        );
+        return false;
+      }
+      setCorporateEmailError("");
+      return true;
+    } catch {
+      setCorporateEmailError("We could not check that address just now. Please try again.");
+      return false;
+    } finally {
+      setCheckingCorporateEmail(false);
+    }
+  }
+
   async function submitBusiness(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -135,9 +200,27 @@ export function SignUpWizard() {
       );
       return;
     }
+    if (!site) {
+      fail(
+        "We still need a working website. Reason: the address has not been confirmed yet. Solution: enter your website address and wait for the preview to appear.",
+      );
+      return;
+    }
+    if (!(await runCorporateEmailCheck())) {
+      fail(
+        "We cannot continue without a valid corporate email. Reason: see the message under that field. Solution: correct the address and try again.",
+      );
+      return;
+    }
     setBusy(true);
     try {
-      await persistBusiness({ data: { businessName: businessName.trim(), website: website.trim() } });
+      await persistBusiness({
+        data: {
+          businessName: businessName.trim(),
+          website: site.url,
+          corporateEmail: corporateEmail.trim().toLowerCase(),
+        },
+      });
       setBusy(false);
       setStep("verification");
     } catch (err) {
