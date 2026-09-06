@@ -19,37 +19,6 @@ import {
 
 type Step = "details" | "password" | "business" | "verification";
 
-const STEP_LABELS: Record<Step, string> = {
-  details: "Your details",
-  password: "Create a password",
-  business: "Your business",
-  verification: "Verification",
-};
-
-/** Small progress rail so the merchant always knows where they are. */
-function Steps({ current }: { current: Step }) {
-  const order: Step[] = ["details", "password", "business", "verification"];
-  const index = order.indexOf(current);
-  return (
-    <ol className="mb-6 flex items-center gap-2 text-[11px]">
-      {order.map((step, i) => (
-        <li key={step} className="flex flex-1 items-center gap-2">
-          <span
-            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold ${
-              i <= index ? "bg-brand text-brand-foreground" : "bg-muted text-muted-foreground"
-            }`}
-          >
-            {i + 1}
-          </span>
-          <span className={i === index ? "font-medium" : "text-muted-foreground"}>
-            {STEP_LABELS[step]}
-          </span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 /**
  * Four-step merchant registration: personal details with email verification,
  * password, business name, then KYB/KYC with the option to skip for now.
