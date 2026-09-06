@@ -414,54 +414,35 @@ export function SignUpWizard() {
             onChange={setBusinessName}
           />
 
-          <div className="grid gap-4 sm:grid-cols-[1fr_11rem] sm:items-start">
-            <div>
-              <label htmlFor="website" className="text-sm font-medium">
-                Website
-              </label>
-              <input
-                id="website"
-                placeholder="yourcompany.com"
-                value={website}
-                onChange={(e) => {
-                  setWebsite(e.target.value);
-                  setSite(null);
-                  setSiteError("");
-                  setCorporateEmail("");
-                  setCorporateEmailError("");
-                }}
-                onBlur={() => void runWebsiteCheck()}
-                className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-brand"
-              />
-              <p className="mt-1 text-xs text-muted-foreground">
-                Just the address is fine — we add the secure https:// part for you and open a
-                preview to confirm it is the right site.
+          <div>
+            <label htmlFor="website" className="text-sm font-medium">
+              Website
+            </label>
+            <input
+              id="website"
+              placeholder="yourcompany.com"
+              value={website}
+              onChange={(e) => {
+                setWebsite(e.target.value);
+                setSite(null);
+                setSiteError("");
+                setCorporateEmail("");
+                setCorporateEmailError("");
+              }}
+              onBlur={() => void runWebsiteCheck()}
+              className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-brand"
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Just the address is fine — we add the secure https:// part for you and check it
+              responds.
+            </p>
+            {checkingSite ? (
+              <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Checking the website…
               </p>
-              {checkingSite ? (
-                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <Loader2 className="h-3 w-3 animate-spin" /> Checking the website…
-                </p>
-              ) : null}
-              {siteError ? <p className="mt-1.5 text-xs text-destructive">{siteError}</p> : null}
-              {site ? (
-                <p className="mt-1.5 text-xs text-emerald-600">Reachable at {site.url}</p>
-              ) : null}
-            </div>
-
-            <div className="overflow-hidden rounded-xl border border-border bg-muted/40">
-              {site ? (
-                <img
-                  src={site.previewUrl}
-                  alt={`Preview of ${site.domain}`}
-                  loading="lazy"
-                  className="h-28 w-full object-cover object-top"
-                />
-              ) : (
-                <div className="flex h-28 items-center justify-center px-3 text-center text-[11px] text-muted-foreground">
-                  Website preview appears here
-                </div>
-              )}
-            </div>
+            ) : null}
+            {siteError ? <p className="mt-1.5 text-xs text-destructive">{siteError}</p> : null}
+            {site ? <p className="mt-1.5 text-xs text-emerald-600">Reachable at {site.url}</p> : null}
           </div>
 
           {site ? (
