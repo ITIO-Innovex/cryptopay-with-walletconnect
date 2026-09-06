@@ -227,16 +227,15 @@ export function SignUpWizard() {
                 <span className="flex shrink-0 items-center gap-1 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 text-xs font-semibold text-emerald-600">
                   <BadgeCheck className="h-4 w-4" /> Verified
                 </span>
-              ) : (
+              ) : emailLooksValid ? (
                 <button
                   type="button"
-                  disabled={!emailLooksValid}
                   onClick={() => setOtpOpen(true)}
-                  className="shrink-0 rounded-xl border border-brand px-3 text-xs font-semibold text-brand disabled:opacity-50"
+                  className="shrink-0 rounded-xl border border-brand px-3 text-xs font-semibold text-brand"
                 >
                   Verify
                 </button>
-              )}
+              ) : null}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
               We send a one-time code to confirm the address. Everything about your account is sent
