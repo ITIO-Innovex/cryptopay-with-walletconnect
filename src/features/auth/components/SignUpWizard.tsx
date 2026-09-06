@@ -175,7 +175,7 @@ export function SignUpWizard() {
 
   return (
     <>
-      <Steps current={step} />
+      
       {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
 
       {step === "details" && (
